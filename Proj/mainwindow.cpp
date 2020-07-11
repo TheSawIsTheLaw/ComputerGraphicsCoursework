@@ -18,7 +18,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     QListWidgetItem *barChairIMG = new QListWidgetItem(QIcon("../Proj/imgs/barChair.png"), "Высокий стул");
     ui->listWidget->addItem(barChairIMG);
-    ui->listWidget->addItem("Диван");
+
+    QListWidgetItem *sofaIMG = new QListWidgetItem(QIcon("../Proj/imgs/sofa.png"), "Диван");
+    ui->listWidget->addItem(sofaIMG);
     ui->listWidget->addItem("Растение в горшке");
     ui->listWidget->addItem("Подиум");
     ui->listWidget->addItem("Экран для проектора");
