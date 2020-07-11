@@ -31,7 +31,8 @@ MainWindow::MainWindow(QWidget *parent)
     QListWidgetItem *proectorIMG = new QListWidgetItem(QIcon("../Proj/imgs/proector.png"), "Экран для проектора");
     ui->listWidget->addItem(proectorIMG);
 
-    ui->listWidget->addItem("Плазменный телевизор");
+    QListWidgetItem *tvIMG = new QListWidgetItem(QIcon("../Proj/imgs/tv.png"), "Плазменный телевизор");
+    ui->listWidget->addItem(tvIMG);
 
     ui->listWidget->addItem("Шкаф");
 
