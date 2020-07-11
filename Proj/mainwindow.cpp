@@ -25,7 +25,8 @@ MainWindow::MainWindow(QWidget *parent)
     QListWidgetItem *greenIMG = new QListWidgetItem(QIcon("../Proj/imgs/green.png"), "Растение");
     ui->listWidget->addItem(greenIMG);
 
-    ui->listWidget->addItem("Подиум");
+    QListWidgetItem *podiumIMG = new QListWidgetItem(QIcon("../Proj/imgs/podium.png"), "Подиум");
+    ui->listWidget->addItem(podiumIMG);
 
     ui->listWidget->addItem("Экран для проектора");
 
