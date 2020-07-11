@@ -28,7 +28,8 @@ MainWindow::MainWindow(QWidget *parent)
     QListWidgetItem *podiumIMG = new QListWidgetItem(QIcon("../Proj/imgs/podium.png"), "Подиум");
     ui->listWidget->addItem(podiumIMG);
 
-    ui->listWidget->addItem("Экран для проектора");
+    QListWidgetItem *proectorIMG = new QListWidgetItem(QIcon("../Proj/imgs/proector.png"), "Экран для проектора");
+    ui->listWidget->addItem(proectorIMG);
 
     ui->listWidget->addItem("Плазменный телевизор");
 
