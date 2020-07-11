@@ -37,7 +37,8 @@ MainWindow::MainWindow(QWidget *parent)
     QListWidgetItem *cupboardIMG = new QListWidgetItem(QIcon("../Proj/imgs/cupboard.png"), "Шкаф");
     ui->listWidget->addItem(cupboardIMG);
 
-    ui->listWidget->addItem("Стеллаж");
+    QListWidgetItem *rackIMG = new QListWidgetItem(QIcon("../Proj/imgs/rack.png"), "Стеллаж");
+    ui->listWidget->addItem(rackIMG);
 
     ui->listWidget->addItem("Источник света");
 }
