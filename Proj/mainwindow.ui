@@ -180,8 +180,14 @@
     <property name="font">
      <font>
       <family>Consolas</family>
-      <pointsize>14</pointsize>
+      <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>100</width>
+      <height>100</height>
+     </size>
     </property>
    </widget>
   </widget>

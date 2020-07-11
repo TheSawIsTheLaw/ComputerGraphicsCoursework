@@ -7,10 +7,17 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->listWidget->addItem("Стол");
-    ui->listWidget->addItem("Высокий стол");
-    ui->listWidget->addItem("Стул");
-    ui->listWidget->addItem("Высокий стул");
+    QListWidgetItem *tableIMG = new QListWidgetItem(QIcon("../Proj/imgs/table.png"), "Стол");
+    ui->listWidget->addItem(tableIMG);
+
+    QListWidgetItem *barTableIMG = new QListWidgetItem(QIcon("../Proj/imgs/barTable.png"), "Высокий стол");
+    ui->listWidget->addItem(barTableIMG);
+
+    QListWidgetItem *chairIMG = new QListWidgetItem(QIcon("../Proj/imgs/chair.png"), "Стул");
+    ui->listWidget->addItem(chairIMG);
+
+    QListWidgetItem *barChairIMG = new QListWidgetItem(QIcon("../Proj/imgs/barChair.png"), "Высокий стул");
+    ui->listWidget->addItem(barChairIMG);
     ui->listWidget->addItem("Диван");
     ui->listWidget->addItem("Растение в горшке");
     ui->listWidget->addItem("Подиум");
