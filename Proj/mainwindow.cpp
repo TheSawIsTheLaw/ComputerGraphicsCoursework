@@ -40,7 +40,8 @@ MainWindow::MainWindow(QWidget *parent)
     QListWidgetItem *rackIMG = new QListWidgetItem(QIcon("../Proj/imgs/rack.png"), "Стеллаж");
     ui->listWidget->addItem(rackIMG);
 
-    ui->listWidget->addItem("Источник света");
+    QListWidgetItem *flashlightIMG = new QListWidgetItem(QIcon("../Proj/imgs/flashlight.png"), "Источник света");
+    ui->listWidget->addItem(flashlightIMG);
 }
 
 MainWindow::~MainWindow()
