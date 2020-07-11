@@ -21,12 +21,20 @@ MainWindow::MainWindow(QWidget *parent)
 
     QListWidgetItem *sofaIMG = new QListWidgetItem(QIcon("../Proj/imgs/sofa.png"), "Диван");
     ui->listWidget->addItem(sofaIMG);
-    ui->listWidget->addItem("Растение в горшке");
+
+    QListWidgetItem *greenIMG = new QListWidgetItem(QIcon("../Proj/imgs/green.png"), "Растение");
+    ui->listWidget->addItem(greenIMG);
+
     ui->listWidget->addItem("Подиум");
+
     ui->listWidget->addItem("Экран для проектора");
+
     ui->listWidget->addItem("Плазменный телевизор");
+
     ui->listWidget->addItem("Шкаф");
+
     ui->listWidget->addItem("Стеллаж");
+
     ui->listWidget->addItem("Источник света");
 }
 
