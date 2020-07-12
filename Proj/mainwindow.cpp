@@ -28,10 +28,10 @@ MainWindow::MainWindow(QWidget *parent)
     QListWidgetItem *podiumIMG = new QListWidgetItem(QIcon("../Proj/imgs/podium.png"), "Подиум");
     ui->listWidget->addItem(podiumIMG);
 
-    QListWidgetItem *proectorIMG = new QListWidgetItem(QIcon("../Proj/imgs/proector.png"), "Экран для проектора");
+    QListWidgetItem *proectorIMG = new QListWidgetItem(QIcon("../Proj/imgs/proector.png"), "Экран для\nпроектора");
     ui->listWidget->addItem(proectorIMG);
 
-    QListWidgetItem *tvIMG = new QListWidgetItem(QIcon("../Proj/imgs/tv.png"), "Плазменный телевизор");
+    QListWidgetItem *tvIMG = new QListWidgetItem(QIcon("../Proj/imgs/tv.png"), "Плазменный\nтелевизор");
     ui->listWidget->addItem(tvIMG);
 
     QListWidgetItem *cupboardIMG = new QListWidgetItem(QIcon("../Proj/imgs/cupboard.png"), "Шкаф");
