@@ -15,6 +15,9 @@ public:
     explicit SizeChooser(QWidget *parent = nullptr);
     ~SizeChooser();
 
+private slots:
+    void on_buttonBox_accepted();
+
 private:
     Ui::SizeChooser *ui;
 };
