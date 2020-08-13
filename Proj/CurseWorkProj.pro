@@ -21,7 +21,7 @@ SOURCES += \
     mainwindow.cpp \
     managers.cpp \
     objects.cpp \
-    scene.cpp \
+    sizechooser.cpp \
     usagefacade.cpp
 
 HEADERS += \
@@ -29,11 +29,12 @@ HEADERS += \
     mainwindow.h \
     managers.hpp \
     objects.hpp \
-    scene.hpp \
+    sizechooser.hpp \
     usagefacade.hpp
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    sizechooser.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

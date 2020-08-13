@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "sizechooser.hpp"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -49,3 +51,10 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    SizeChooser chooserWindow;
+    chooserWindow.setModal(true);
+    chooserWindow.exec();
+}

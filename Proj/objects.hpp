@@ -32,8 +32,12 @@ private:
     MathVec vector;
 };
 
-class cellScene
+class CellScene
 {
+public:
+    CellScene();
+    CellScene(size_t width_, size_t length_);
+
 private:
     size_t width, length;
 

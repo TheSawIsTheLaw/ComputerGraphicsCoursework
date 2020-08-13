@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 #include <QGraphicsView>
 
+#include "usagefacade.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,7 +19,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_pushButton_4_clicked();
+
 private:
     Ui::MainWindow *ui;
+    UsageFacade facade;
 };
 #endif // MAINWINDOW_H
