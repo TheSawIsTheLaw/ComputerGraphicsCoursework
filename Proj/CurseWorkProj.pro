@@ -19,12 +19,18 @@ SOURCES += \
     additivemathelements.cpp \
     main.cpp \
     mainwindow.cpp \
-    objects.cpp
+    managers.cpp \
+    objects.cpp \
+    scene.cpp \
+    usagefacade.cpp
 
 HEADERS += \
     additivemathelements.hpp \
     mainwindow.h \
-    objects.hpp
+    managers.hpp \
+    objects.hpp \
+    scene.hpp \
+    usagefacade.hpp
 
 FORMS += \
     mainwindow.ui
