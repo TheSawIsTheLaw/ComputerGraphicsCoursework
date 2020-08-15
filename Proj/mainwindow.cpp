@@ -57,5 +57,5 @@ void MainWindow::on_pushButton_4_clicked()
     chooserWindow.setModal(true);
     chooserWindow.exec();
 
-    facade.setCellScene(chooserWindow.getWidth(), chooserWindow.getLength());
+    facade->setCellScene(chooserWindow.getWidth(), chooserWindow.getLength());
 }
