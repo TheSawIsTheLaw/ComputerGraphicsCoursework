@@ -34,6 +34,7 @@ HEADERS += \
 
 FORMS += \
     mainwindow.ui \
+    sizechanger.ui \
     sizechooser.ui
 
 # Default rules for deployment.
