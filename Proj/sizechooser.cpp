@@ -3,17 +3,12 @@
 
 #include <QErrorMessage>
 
-SizeChooser::SizeChooser(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::SizeChooser)
+SizeChooser::SizeChooser(QWidget *parent) : QDialog(parent), ui(new Ui::SizeChooser)
 {
     ui->setupUi(this);
 }
 
-SizeChooser::~SizeChooser()
-{
-    delete ui;
-}
+SizeChooser::~SizeChooser() { delete ui; }
 
 void SizeChooser::on_buttonBox_accepted()
 {
@@ -40,22 +35,10 @@ void SizeChooser::on_buttonBox_accepted()
     }
 }
 
-void SizeChooser::setWidth(size_t width_)
-{
-    width = width_;
-}
+void SizeChooser::setWidth(size_t width_) { width = width_; }
 
-size_t SizeChooser::getWidth()
-{
-    return width;
-}
+size_t SizeChooser::getWidth() { return width; }
 
-void SizeChooser::setLength(size_t length_)
-{
-    length = length_;
-}
+void SizeChooser::setLength(size_t length_) { length = length_; }
 
-size_t SizeChooser::getLength()
-{
-    return length;
-}
+size_t SizeChooser::getLength() { return length; }

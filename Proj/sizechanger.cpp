@@ -3,17 +3,12 @@
 
 #include <QErrorMessage>
 
-SizeChanger::SizeChanger(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::SizeChanger)
+SizeChanger::SizeChanger(QWidget *parent) : QDialog(parent), ui(new Ui::SizeChanger)
 {
     ui->setupUi(this);
 }
 
-SizeChanger::~SizeChanger()
-{
-    delete ui;
-}
+SizeChanger::~SizeChanger() { delete ui; }
 
 void SizeChanger::on_buttonBox_accepted()
 {
@@ -56,12 +51,6 @@ void SizeChanger::on_buttonBox_accepted()
     }
 }
 
-size_t SizeChanger::getNewWidth()
-{
-    return newWidth;
-}
+size_t SizeChanger::getNewWidth() { return newWidth; }
 
-size_t SizeChanger::getNewLength()
-{
-    return newLength;
-}
+size_t SizeChanger::getNewLength() { return newLength; }

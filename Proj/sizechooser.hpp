@@ -3,7 +3,8 @@
 
 #include <QDialog>
 
-namespace Ui {
+namespace Ui
+{
 class SizeChooser;
 }
 
@@ -23,7 +24,6 @@ public:
 
 private slots:
     void on_buttonBox_accepted();
-
 
 private:
     Ui::SizeChooser *ui;

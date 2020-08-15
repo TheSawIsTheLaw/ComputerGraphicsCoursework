@@ -4,8 +4,6 @@
 class Drawer
 {
 public:
-
-
 private:
     int xCamera;
     int yCamera;

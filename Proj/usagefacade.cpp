@@ -15,7 +15,4 @@ void UsageFacade::changeCellScene(size_t newWidth, size_t newLength)
     scene->changeSize(newWidth, newLength);
 }
 
-bool UsageFacade::isSceneSet()
-{
-    return scene->getLength() && scene->getWidth();
-}
+bool UsageFacade::isSceneSet() { return scene->getLength() && scene->getWidth(); }

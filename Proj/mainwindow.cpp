@@ -3,51 +3,61 @@
 
 #include <QErrorMessage>
 
-#include "sizechooser.hpp"
 #include "sizechanger.hpp"
+#include "sizechooser.hpp"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
     facade = new UsageFacade;
 
-    QListWidgetItem *tableIMG = new QListWidgetItem(QIcon("../Proj/imgs/table.png"), "Стол");
+    QListWidgetItem *tableIMG =
+    new QListWidgetItem(QIcon("../Proj/imgs/table.png"), "Стол");
     ui->listWidget->addItem(tableIMG);
 
-    QListWidgetItem *barTableIMG = new QListWidgetItem(QIcon("../Proj/imgs/barTable.png"), "Высокий стол");
+    QListWidgetItem *barTableIMG =
+    new QListWidgetItem(QIcon("../Proj/imgs/barTable.png"), "Высокий стол");
     ui->listWidget->addItem(barTableIMG);
 
-    QListWidgetItem *chairIMG = new QListWidgetItem(QIcon("../Proj/imgs/chair.png"), "Стул");
+    QListWidgetItem *chairIMG =
+    new QListWidgetItem(QIcon("../Proj/imgs/chair.png"), "Стул");
     ui->listWidget->addItem(chairIMG);
 
-    QListWidgetItem *barChairIMG = new QListWidgetItem(QIcon("../Proj/imgs/barChair.png"), "Высокий стул");
+    QListWidgetItem *barChairIMG =
+    new QListWidgetItem(QIcon("../Proj/imgs/barChair.png"), "Высокий стул");
     ui->listWidget->addItem(barChairIMG);
 
-    QListWidgetItem *sofaIMG = new QListWidgetItem(QIcon("../Proj/imgs/sofa.png"), "Диван");
+    QListWidgetItem *sofaIMG =
+    new QListWidgetItem(QIcon("../Proj/imgs/sofa.png"), "Диван");
     ui->listWidget->addItem(sofaIMG);
 
-    QListWidgetItem *greenIMG = new QListWidgetItem(QIcon("../Proj/imgs/green.png"), "Растение");
+    QListWidgetItem *greenIMG =
+    new QListWidgetItem(QIcon("../Proj/imgs/green.png"), "Растение");
     ui->listWidget->addItem(greenIMG);
 
-    QListWidgetItem *podiumIMG = new QListWidgetItem(QIcon("../Proj/imgs/podium.png"), "Подиум");
+    QListWidgetItem *podiumIMG =
+    new QListWidgetItem(QIcon("../Proj/imgs/podium.png"), "Подиум");
     ui->listWidget->addItem(podiumIMG);
 
-    QListWidgetItem *proectorIMG = new QListWidgetItem(QIcon("../Proj/imgs/proector.png"), "Экран для\nпроектора");
+    QListWidgetItem *proectorIMG =
+    new QListWidgetItem(QIcon("../Proj/imgs/proector.png"), "Экран для\nпроектора");
     ui->listWidget->addItem(proectorIMG);
 
-    QListWidgetItem *tvIMG = new QListWidgetItem(QIcon("../Proj/imgs/tv.png"), "Плазменный\nтелевизор");
+    QListWidgetItem *tvIMG =
+    new QListWidgetItem(QIcon("../Proj/imgs/tv.png"), "Плазменный\nтелевизор");
     ui->listWidget->addItem(tvIMG);
 
-    QListWidgetItem *cupboardIMG = new QListWidgetItem(QIcon("../Proj/imgs/cupboard.png"), "Шкаф");
+    QListWidgetItem *cupboardIMG =
+    new QListWidgetItem(QIcon("../Proj/imgs/cupboard.png"), "Шкаф");
     ui->listWidget->addItem(cupboardIMG);
 
-    QListWidgetItem *rackIMG = new QListWidgetItem(QIcon("../Proj/imgs/rack.png"), "Стеллаж");
+    QListWidgetItem *rackIMG =
+    new QListWidgetItem(QIcon("../Proj/imgs/rack.png"), "Стеллаж");
     ui->listWidget->addItem(rackIMG);
 
-    QListWidgetItem *flashlightIMG = new QListWidgetItem(QIcon("../Proj/imgs/flashlight.png"), "Источник света");
+    QListWidgetItem *flashlightIMG =
+    new QListWidgetItem(QIcon("../Proj/imgs/flashlight.png"), "Источник света");
     ui->listWidget->addItem(flashlightIMG);
 
     /**************************************************************
@@ -59,10 +69,7 @@ MainWindow::MainWindow(QWidget *parent)
     **************************************************************/
 }
 
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
+MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::on_pushButton_4_clicked()
 {

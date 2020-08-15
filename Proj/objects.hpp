@@ -2,8 +2,8 @@
 #define OBJS_HPP
 
 #include "additivemathelements.hpp"
-#include <vector>
 #include <iostream>
+#include <vector>
 
 class Vertex
 {
