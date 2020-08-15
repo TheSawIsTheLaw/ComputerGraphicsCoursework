@@ -51,10 +51,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
 void MainWindow::on_pushButton_4_clicked()
 {
-    SizeChooser chooserWindow;
+    SizeChooser chooserWindow(nullptr);
     chooserWindow.setModal(true);
     chooserWindow.exec();
+
+    facade.setCellScene(chooserWindow.getWidth(), chooserWindow.getLength());
 }
