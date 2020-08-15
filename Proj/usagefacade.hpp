@@ -8,9 +8,12 @@ class UsageFacade
 public:
     void setCellScene(size_t width_, size_t length_);
 
+    void changeCellScene(size_t newWidth, size_t newLength);
+
+    bool isSceneSet();
+
 private:
     CellScene *scene;
-
 };
 
 #endif // USAGEFACADE_HPP
