@@ -21,6 +21,7 @@ SOURCES += \
     mainwindow.cpp \
     managers.cpp \
     objects.cpp \
+    sizechanger.cpp \
     sizechooser.cpp \
     usagefacade.cpp
 
@@ -29,6 +30,7 @@ HEADERS += \
     mainwindow.h \
     managers.hpp \
     objects.hpp \
+    sizechanger.hpp \
     sizechooser.hpp \
     usagefacade.hpp
 

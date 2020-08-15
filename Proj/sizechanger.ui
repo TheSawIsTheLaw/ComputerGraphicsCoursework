@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>SizeChanger</class>
+ <widget class="QDialog" name="SizeChanger">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>440</width>
-    <height>249</height>
+    <height>225</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Новая ширина плоскости:</string>
+      <string>Новая длина плоскости (в клетках):</string>
      </property>
     </widget>
    </item>
@@ -27,7 +27,7 @@
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Новая длина плоскости:</string>
+      <string>Новая ширина плоскости (в клетках):</string>
      </property>
     </widget>
    </item>
@@ -58,7 +58,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>SizeChanger</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -74,7 +74,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>SizeChanger</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
