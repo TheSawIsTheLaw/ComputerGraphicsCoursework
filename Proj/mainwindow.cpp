@@ -44,6 +44,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     QListWidgetItem *flashlightIMG = new QListWidgetItem(QIcon("../Proj/imgs/flashlight.png"), "Источник света");
     ui->listWidget->addItem(flashlightIMG);
+
+    /**************************************************************
+    ui->graphicsView->setScene(new QGraphicsScene);
+    ui->graphicsView->scene()->addLine(100, 100, 400, 400, QPen());
+    delete ui->graphicsView->scene();
+    ui->graphicsView->setScene(new QGraphicsScene);
+    ui->graphicsView->scene()->addLine(400, 100, 400, 400, QPen());
+    **************************************************************/
 }
 
 MainWindow::~MainWindow()
