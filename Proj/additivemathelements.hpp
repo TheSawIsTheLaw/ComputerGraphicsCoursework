@@ -30,7 +30,6 @@ public:
 
     double getZCoordinate();
     void setZCoordinate(double value);
-
 };
 
 class MathVec
