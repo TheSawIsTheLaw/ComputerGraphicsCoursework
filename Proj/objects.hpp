@@ -64,10 +64,18 @@ public:
     size_t getWidth();
     size_t getLength();
 
+    const Dot3D getStartOfPlate();
+    void setStartOfPlate(Dot3D dot_);
+
+    const Dot3D getEndOfPlate();
+    void setEndOfPlate(Dot3D dot_);
+
     void changeSize(size_t newWidth, size_t newLength);
 
 private:
     size_t width, length;
+
+    Dot3D startOfPlate, endOfPlate;
 
     size_t modelsNum;
     std::vector<PolModel> models;

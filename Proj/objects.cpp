@@ -50,6 +50,14 @@ size_t CellScene::getWidth() { return width; }
 
 size_t CellScene::getLength() { return length; }
 
+const Dot3D CellScene::getStartOfPlate() { return startOfPlate; }
+
+void CellScene::setStartOfPlate(Dot3D dot_) { startOfPlate = dot_; }
+
+const Dot3D CellScene::getEndOfPlate() { return endOfPlate; }
+
+void CellScene::setEndOfPlate(Dot3D dot_) { endOfPlate = dot_; }
+
 void CellScene::changeSize(size_t newWidth, size_t newLength)
 {
     if (newWidth >= width)
