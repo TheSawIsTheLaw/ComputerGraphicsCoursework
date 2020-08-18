@@ -5,6 +5,8 @@
 UsageFacade::UsageFacade()
 {
     scene = new CellScene;
+
+    drawer = new Drawer;
 }
 
 void UsageFacade::setCellScene(size_t width_, size_t length_)
@@ -21,3 +23,11 @@ void UsageFacade::changeCellScene(size_t newWidth, size_t newLength)
 }
 
 bool UsageFacade::isSceneSet() { return scene->getLength() && scene->getWidth(); }
+
+void UsageFacade::drawScene()
+{
+    if (isSceneSet())
+        drawer->drawScene(scene);
+}
+
+QGraphicsScene &Drawer::drawScene(CellScene *scene) {}

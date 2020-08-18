@@ -4,21 +4,6 @@
 #include "objects.hpp"
 #include <QGraphicsScene>
 
-class UsageFacade
-{
-public:
-    UsageFacade();
-
-    void setCellScene(size_t width_, size_t length_);
-
-    void changeCellScene(size_t newWidth, size_t newLength);
-
-    bool isSceneSet();
-
-private:
-    CellScene *scene;
-};
-
 class Drawer
 {
 public:
@@ -26,6 +11,23 @@ public:
 
 private:
     std::vector<PolModel> models;
+};
+
+class UsageFacade
+{
+public:
+    UsageFacade();
+
+    void setCellScene(size_t width_, size_t length_);
+    void changeCellScene(size_t newWidth, size_t newLength);
+    bool isSceneSet();
+
+    void drawScene();
+
+private:
+    CellScene *scene;
+
+    Drawer *drawer;
 };
 
 #endif // USAGEFACADE_HPP
