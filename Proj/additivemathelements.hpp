@@ -22,6 +22,9 @@ private:
     double xCoordinate, yCoordinate, zCoordinate;
 
 public:
+    Dot3D() {};
+    Dot3D(double xCoord_, double yCoord_, double zCoord_) : xCoordinate(xCoord_), yCoordinate(yCoord_), zCoordinate(zCoord_) {}
+
     double getXCoordinate();
     void setXCoordinate(double value);
 

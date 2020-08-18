@@ -39,6 +39,8 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     size_t width = scene->getWidth() * 60;
     size_t length = scene->getLength() * 60;
 
+    scene->setStartOfPlate(Dot3D(0, 0, 0));
+
     QGraphicsScene *outScene = new QGraphicsScene;
     outScene->setSceneRect(rect); // To define
 
