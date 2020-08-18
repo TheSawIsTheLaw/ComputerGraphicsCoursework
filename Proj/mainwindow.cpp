@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include <QErrorMessage>
+#include "QDebug"
 
 #include "sizechanger.hpp"
 #include "sizechooser.hpp"
@@ -59,6 +60,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     QListWidgetItem *flashlightIMG =
     new QListWidgetItem(QIcon("../Proj/imgs/flashlight.png"), "Источник света");
     ui->listWidget->addItem(flashlightIMG);
+
+    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -72,8 +76,10 @@ void MainWindow::on_pushButton_4_clicked()
     if (!chooserWindow.getWidth() || !chooserWindow.getLength())
         return;
 
+    qDebug() << ui->graphicsView->rect();
+
     facade->setCellScene(chooserWindow.getWidth(), chooserWindow.getLength());
-    QGraphicsScene *setScene = facade->drawScene();
+    QGraphicsScene *setScene = facade->drawScene(ui->graphicsView->rect());
 
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();

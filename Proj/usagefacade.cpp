@@ -25,22 +25,22 @@ void UsageFacade::changeCellScene(size_t newWidth, size_t newLength)
 
 bool UsageFacade::isSceneSet() { return scene->getLength() && scene->getWidth(); }
 
-QGraphicsScene *UsageFacade::drawScene()
+QGraphicsScene *UsageFacade::drawScene(QRectF rect)
 {
     QGraphicsScene *retScene = nullptr;
     if (isSceneSet())
-        retScene = drawer->drawScene(scene);
+        retScene = drawer->drawScene(scene, rect);
 
     return retScene;
 }
 
-QGraphicsScene *Drawer::drawScene(CellScene *scene)
+QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
 {
     size_t width = scene->getWidth() * 60;
     size_t length = scene->getLength() * 60;
 
     QGraphicsScene *outScene = new QGraphicsScene;
-    outScene->setSceneRect(0, 0, 1568, 1035); // To define
+    outScene->setSceneRect(rect); // To define
 
     outScene->addLine(0, 0, 1568, 1035, QPen(Qt::black));
 
