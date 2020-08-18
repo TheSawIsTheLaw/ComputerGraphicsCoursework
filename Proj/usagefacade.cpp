@@ -1,6 +1,7 @@
 #include "usagefacade.hpp"
 
 #include "QDebug"
+#include "QPen"
 
 UsageFacade::UsageFacade()
 {
@@ -24,10 +25,24 @@ void UsageFacade::changeCellScene(size_t newWidth, size_t newLength)
 
 bool UsageFacade::isSceneSet() { return scene->getLength() && scene->getWidth(); }
 
-void UsageFacade::drawScene()
+QGraphicsScene *UsageFacade::drawScene()
 {
+    QGraphicsScene *retScene = nullptr;
     if (isSceneSet())
-        drawer->drawScene(scene);
+        retScene = drawer->drawScene(scene);
+
+    return retScene;
 }
 
-QGraphicsScene &Drawer::drawScene(CellScene *scene) {}
+QGraphicsScene *Drawer::drawScene(CellScene *scene)
+{
+    size_t width = scene->getWidth() * 60;
+    size_t length = scene->getLength() * 60;
+
+    QGraphicsScene *outScene = new QGraphicsScene;
+    outScene->setSceneRect(0, 0, 1568, 1035); // To define
+
+    outScene->addLine(0, 0, 1568, 1035, QPen(Qt::black));
+
+    return outScene;
+}

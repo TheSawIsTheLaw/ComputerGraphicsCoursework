@@ -7,7 +7,7 @@
 class Drawer
 {
 public:
-    QGraphicsScene &drawScene(CellScene *scene);
+    QGraphicsScene *drawScene(CellScene *scene);
 
 private:
     std::vector<PolModel> models;
@@ -22,7 +22,7 @@ public:
     void changeCellScene(size_t newWidth, size_t newLength);
     bool isSceneSet();
 
-    void drawScene();
+    QGraphicsScene *drawScene();
 
 private:
     CellScene *scene;

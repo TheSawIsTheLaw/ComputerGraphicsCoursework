@@ -59,14 +59,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     QListWidgetItem *flashlightIMG =
     new QListWidgetItem(QIcon("../Proj/imgs/flashlight.png"), "Источник света");
     ui->listWidget->addItem(flashlightIMG);
-
-    /**************************************************************
-    ui->graphicsView->setScene(new QGraphicsScene);
-    ui->graphicsView->scene()->addLine(100, 100, 400, 400, QPen());
-    delete ui->graphicsView->scene();
-    ui->graphicsView->setScene(new QGraphicsScene);
-    ui->graphicsView->scene()->addLine(400, 100, 400, 400, QPen());
-    **************************************************************/
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -77,7 +69,15 @@ void MainWindow::on_pushButton_4_clicked()
     chooserWindow.setModal(true);
     chooserWindow.exec();
 
+    if (!chooserWindow.getWidth() || !chooserWindow.getLength())
+        return;
+
     facade->setCellScene(chooserWindow.getWidth(), chooserWindow.getLength());
+    QGraphicsScene *setScene = facade->drawScene();
+
+    if (ui->graphicsView->scene())
+        delete ui->graphicsView->scene();
+    ui->graphicsView->setScene(setScene);
 }
 
 void MainWindow::on_pushButton_5_clicked()
