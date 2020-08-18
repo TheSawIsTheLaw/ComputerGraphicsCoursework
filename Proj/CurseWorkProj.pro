@@ -19,7 +19,6 @@ SOURCES += \
     additivemathelements.cpp \
     main.cpp \
     mainwindow.cpp \
-    managers.cpp \
     objects.cpp \
     sizechanger.cpp \
     sizechooser.cpp \
@@ -28,7 +27,6 @@ SOURCES += \
 HEADERS += \
     additivemathelements.hpp \
     mainwindow.h \
-    managers.hpp \
     objects.hpp \
     sizechanger.hpp \
     sizechooser.hpp \

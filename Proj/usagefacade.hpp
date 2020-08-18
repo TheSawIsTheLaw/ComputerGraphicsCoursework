@@ -1,8 +1,8 @@
 #ifndef USAGEFACADE_HPP
 #define USAGEFACADE_HPP
 
-#include "managers.hpp"
 #include "objects.hpp"
+#include <QGraphicsScene>
 
 class UsageFacade
 {
@@ -17,6 +17,15 @@ public:
 
 private:
     CellScene *scene;
+};
+
+class Drawer
+{
+public:
+    QGraphicsScene &drawScene(CellScene *scene);
+
+private:
+    std::vector<PolModel> models;
 };
 
 #endif // USAGEFACADE_HPP
