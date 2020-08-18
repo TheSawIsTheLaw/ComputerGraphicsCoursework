@@ -1,6 +1,7 @@
 #ifndef USAGEFACADE_HPP
 #define USAGEFACADE_HPP
 
+#include "managers.hpp"
 #include "objects.hpp"
 
 class UsageFacade
