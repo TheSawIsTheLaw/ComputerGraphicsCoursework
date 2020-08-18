@@ -2,6 +2,11 @@
 
 #include "QDebug"
 
+UsageFacade::UsageFacade()
+{
+    scene = new CellScene;
+}
+
 void UsageFacade::setCellScene(size_t width_, size_t length_)
 {
     if (scene)
