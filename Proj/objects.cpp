@@ -21,6 +21,14 @@ const std::vector<Facet> PolModel::getFacets() { return facets; }
 
 void PolModel::setFacets(std::vector<Facet> facets_) { facets = facets_; }
 
+const Dot3D &Illuminant::getPosition() { return position; }
+
+void Illuminant::setPosition(Dot3D &position_) { position = position_; }
+
+const MathVec &Illuminant::getVector() { return vector; }
+
+void Illuminant::setVector(MathVec &vector_) { vector = vector_; }
+
 CellScene::CellScene() {}
 
 CellScene::CellScene(size_t width_, size_t length_)

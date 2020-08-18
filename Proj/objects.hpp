@@ -44,7 +44,11 @@ private:
 class Illuminant
 {
 public:
+    const Dot3D &getPosition();
+    void setPosition(Dot3D &position_);
 
+    const MathVec &getVector();
+    void setVector(MathVec &vector_);
 
 private:
     Dot3D position;
