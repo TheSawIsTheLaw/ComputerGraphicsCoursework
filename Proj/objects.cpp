@@ -9,15 +9,15 @@ const std::vector<size_t> Vertex::getUsedFacets() { return usedFacets; } // Chan
 
 void Vertex::setUsedFacets(std::vector<size_t> usedFacets_) { usedFacets = usedFacets_; }
 
-std::vector<size_t> Facet::getUsedDots() { return usedDots; }
+const std::vector<size_t> Facet::getUsedDots() { return usedDots; }
 
 void Facet::setUsedDots(std::vector<size_t> usedDots_) { usedDots = usedDots_; }
 
-std::vector<Vertex> PolModel::getVertices() { return vertices; }
+const std::vector<Vertex> PolModel::getVertices() { return vertices; }
 
 void PolModel::setVertices(std::vector<Vertex> vertices_) { vertices = vertices_; }
 
-std::vector<Facet> PolModel::getFacets() { return facets; }
+const std::vector<Facet> PolModel::getFacets() { return facets; }
 
 void PolModel::setFacets(std::vector<Facet> facets_) { facets = facets_; }
 

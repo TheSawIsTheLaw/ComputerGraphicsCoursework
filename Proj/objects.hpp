@@ -21,7 +21,7 @@ private:
 class Facet
 {
 public:
-    std::vector<size_t> getUsedDots();
+    const std::vector<size_t> getUsedDots();
     void setUsedDots(std::vector<size_t> usedDots_);
 
 private:
@@ -31,9 +31,9 @@ private:
 class PolModel
 {
 public:
-    std::vector<Vertex> getVertices();
+    const std::vector<Vertex> getVertices();
     void setVertices(std::vector<Vertex> vertices_);
-    std::vector<Facet> getFacets();
+    const std::vector<Facet> getFacets();
     void setFacets(std::vector<Facet> facets_);
 
 private:
@@ -43,6 +43,9 @@ private:
 
 class Illuminant
 {
+public:
+
+
 private:
     Dot3D position;
     MathVec vector;
