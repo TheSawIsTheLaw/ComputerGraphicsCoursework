@@ -1,6 +1,26 @@
 #include "objects.hpp"
 #include <QDebug>
 
+const Dot3D &Vertex::getPosition() { return position; }
+
+void Vertex::setPosition(Dot3D &position_) { position = position_; }
+
+const std::vector<size_t> Vertex::getUsedFacets() { return usedFacets; } // Changeable?
+
+void Vertex::setUsedFacets(std::vector<size_t> usedFacets_) { usedFacets = usedFacets_; }
+
+std::vector<size_t> Facet::getUsedDots() { return usedDots; }
+
+void Facet::setUsedDots(std::vector<size_t> usedDots_) { usedDots = usedDots_; }
+
+std::vector<Vertex> PolModel::getVertices() { return vertices; }
+
+void PolModel::setVertices(std::vector<Vertex> vertices_) { vertices = vertices_; }
+
+std::vector<Facet> PolModel::getFacets() { return facets; }
+
+void PolModel::setFacets(std::vector<Facet> facets_) { facets = facets_; }
+
 CellScene::CellScene() {}
 
 CellScene::CellScene(size_t width_, size_t length_)

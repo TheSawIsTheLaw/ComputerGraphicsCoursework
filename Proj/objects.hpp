@@ -7,6 +7,12 @@
 
 class Vertex
 {
+public:
+    const Dot3D &getPosition();
+    void setPosition(Dot3D &position_);
+    const std::vector<size_t> getUsedFacets();
+    void setUsedFacets(std::vector<size_t> usedFacets_);
+
 private:
     Dot3D position;
     std::vector<size_t> usedFacets;
@@ -14,12 +20,22 @@ private:
 
 class Facet
 {
+public:
+    std::vector<size_t> getUsedDots();
+    void setUsedDots(std::vector<size_t> usedDots_);
+
 private:
     std::vector<size_t> usedDots;
 };
 
 class PolModel
 {
+public:
+    std::vector<Vertex> getVertices();
+    void setVertices(std::vector<Vertex> vertices_);
+    std::vector<Facet> getFacets();
+    void setFacets(std::vector<Facet> facets_);
+
 private:
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
