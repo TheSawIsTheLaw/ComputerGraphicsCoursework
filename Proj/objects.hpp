@@ -19,7 +19,6 @@ public:
     const std::vector<size_t> getUsedFacets();
     void setUsedFacets(std::vector<size_t> usedFacets_);
 
-
 private:
     Dot3D position;
     std::vector<size_t> usedFacets;

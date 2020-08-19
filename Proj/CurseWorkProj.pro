@@ -26,6 +26,7 @@ SOURCES += \
 
 HEADERS += \
     additivemathelements.hpp \
+    config.hpp \
     mainwindow.h \
     objects.hpp \
     sizechanger.hpp \

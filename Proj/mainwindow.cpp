@@ -1,8 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include <QErrorMessage>
 #include "QDebug"
+#include <QErrorMessage>
 
 #include "sizechanger.hpp"
 #include "sizechooser.hpp"

@@ -3,6 +3,8 @@
 #include "QDebug"
 #include "QPen"
 
+#include "config.hpp"
+
 UsageFacade::UsageFacade()
 {
     scene = new CellScene;
@@ -36,10 +38,10 @@ QGraphicsScene *UsageFacade::drawScene(QRectF rect)
 
 QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
 {
-    size_t width = scene->getWidth() * 60;
-    size_t length = scene->getLength() * 60;
+    size_t width = scene->getWidth() * SCALE_FACTOR;
+    size_t length = scene->getLength() * SCALE_FACTOR;
 
-    scene->buildPlateModel(Dot3D(0, 0, 10), Dot3D(length, width, 10));
+    scene->buildPlateModel(Dot3D(PLATE_START), Dot3D(length, width, PLATE_Z));
 
     QGraphicsScene *outScene = new QGraphicsScene;
     outScene->setSceneRect(rect);
