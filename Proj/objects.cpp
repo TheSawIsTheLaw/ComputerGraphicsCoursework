@@ -64,8 +64,6 @@ void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
     Dot3D newDiagDot(startOfPlate_.getXCoordinate(), endOfPlate_.getYCoordinate(),
     startOfPlate_.getZCoordinate());
 
-    qDebug() << newDiagDot << "Пошёл нахуй!";
-
     std::vector<Vertex> vertices;
     vertices.push_back(Vertex(startOfPlate_, std::vector<size_t>{0}));
     vertices.push_back(Vertex(newDiagDot, std::vector<size_t>{0, 1}));
