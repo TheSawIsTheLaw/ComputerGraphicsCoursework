@@ -39,10 +39,10 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     size_t width = scene->getWidth() * 60;
     size_t length = scene->getLength() * 60;
 
-    scene->setStartOfPlate(Dot3D(0, 0, 0));
+    scene->buildPlateModel(Dot3D(0, 0, 10), Dot3D(length, width, 10));
 
     QGraphicsScene *outScene = new QGraphicsScene;
-    outScene->setSceneRect(rect); // To define
+    outScene->setSceneRect(rect);
 
     outScene->addLine(0, 0, 1568, 1035, QPen(Qt::black));
 

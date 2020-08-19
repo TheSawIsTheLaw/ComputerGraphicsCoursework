@@ -8,10 +8,17 @@
 class Vertex
 {
 public:
+    Vertex() {}
+    Vertex(Dot3D &position_, std::vector<size_t> usedFacets_)
+    : position(position_), usedFacets(usedFacets_)
+    {
+    }
+
     const Dot3D &getPosition();
     void setPosition(Dot3D &position_);
     const std::vector<size_t> getUsedFacets();
     void setUsedFacets(std::vector<size_t> usedFacets_);
+
 
 private:
     Dot3D position;
@@ -21,6 +28,9 @@ private:
 class Facet
 {
 public:
+    Facet() {}
+    Facet(std::vector<size_t> usedDots_) : usedDots(usedDots_) {}
+
     const std::vector<size_t> getUsedDots();
     void setUsedDots(std::vector<size_t> usedDots_);
 
@@ -31,6 +41,12 @@ private:
 class PolModel
 {
 public:
+    PolModel() {}
+    PolModel(std::vector<Vertex> vertices_, std::vector<Facet> facets_)
+    : vertices(vertices_), facets(facets_)
+    {
+    }
+
     const std::vector<Vertex> getVertices();
     void setVertices(std::vector<Vertex> vertices_);
     const std::vector<Facet> getFacets();
@@ -70,12 +86,15 @@ public:
     const Dot3D getEndOfPlate();
     void setEndOfPlate(Dot3D dot_);
 
+    void buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_);
+
     void changeSize(size_t newWidth, size_t newLength);
 
 private:
     size_t width, length;
 
     Dot3D startOfPlate, endOfPlate;
+    PolModel *plateModel;
 
     size_t modelsNum;
     std::vector<PolModel> models;

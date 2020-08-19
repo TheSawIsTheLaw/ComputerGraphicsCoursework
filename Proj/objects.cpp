@@ -56,6 +56,26 @@ void CellScene::setStartOfPlate(Dot3D dot_) { startOfPlate = dot_; }
 
 const Dot3D CellScene::getEndOfPlate() { return endOfPlate; }
 
+void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
+{
+    setStartOfPlate(startOfPlate_);
+    setEndOfPlate(endOfPlate_);
+
+    Dot3D newDiagDot(startOfPlate_.getXCoordinate(), endOfPlate_.getYCoordinate(),
+    startOfPlate_.getZCoordinate());
+
+    qDebug() << newDiagDot << "Пошёл нахуй!";
+
+    std::vector<Vertex> vertices;
+    vertices.push_back(Vertex(startOfPlate_, std::vector<size_t>{0}));
+    vertices.push_back(Vertex(newDiagDot, std::vector<size_t>{0, 1}));
+    vertices.push_back(Vertex(endOfPlate_, std::vector<size_t>{1}));
+
+    newDiagDot.setXCoordinate(endOfPlate_.getXCoordinate());
+    newDiagDot.setYCoordinate(startOfPlate_.getYCoordinate());
+    newDiagDot.setZCoordinate(startOfPlate_.getZCoordinate());
+}
+
 void CellScene::setEndOfPlate(Dot3D dot_) { endOfPlate = dot_; }
 
 void CellScene::changeSize(size_t newWidth, size_t newLength)

@@ -2,6 +2,9 @@
 #define ADDITIVEMATHELEMENTS_HPP
 
 #include <vector>
+#include <iostream>
+
+#include "QDebug"
 
 class Dot2D
 {
@@ -25,14 +28,17 @@ public:
     Dot3D() {};
     Dot3D(double xCoord_, double yCoord_, double zCoord_) : xCoordinate(xCoord_), yCoordinate(yCoord_), zCoordinate(zCoord_) {}
 
-    double getXCoordinate();
+    double getXCoordinate() const;
     void setXCoordinate(double value);
 
-    double getYCoordinate();
+    double getYCoordinate() const;
     void setYCoordinate(double value);
 
-    double getZCoordinate();
+    double getZCoordinate() const;
     void setZCoordinate(double value);
+
+    friend std::ostream &operator<<(std::ostream &os, const Dot3D &dot);
+    friend QDebug operator<<(QDebug deb, const Dot3D &dot);
 };
 
 class MathVec
