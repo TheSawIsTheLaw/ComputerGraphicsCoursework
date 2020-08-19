@@ -1,7 +1,7 @@
 #include "objects.hpp"
 #include <QDebug>
 
-const Dot3D &Vertex::getPosition() { return position; }
+const Dot3D &Vertex::getPosition() const { return position; }
 
 void Vertex::setPosition(Dot3D &position_) { position = position_; }
 
@@ -72,6 +72,19 @@ void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
     newDiagDot.setXCoordinate(endOfPlate_.getXCoordinate());
     newDiagDot.setYCoordinate(startOfPlate_.getYCoordinate());
     newDiagDot.setZCoordinate(startOfPlate_.getZCoordinate());
+    vertices.push_back(Vertex(newDiagDot, std::vector<size_t>{0, 1}));
+
+    std::vector<Facet> facets;
+    facets.push_back(std::vector<size_t>{0, 1, 2});
+    facets.push_back(std::vector<size_t>{1, 2, 3});
+
+    if (plateModel)
+        delete plateModel;
+    plateModel = new PolModel(vertices, facets);
+
+    // Debug
+    for (size_t i = 0; i < plateModel->getVertices().size(); i++)
+        qDebug() << plateModel->getVertices().at(i).getPosition();
 }
 
 void CellScene::setEndOfPlate(Dot3D dot_) { endOfPlate = dot_; }

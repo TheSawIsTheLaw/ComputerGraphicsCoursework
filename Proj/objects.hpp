@@ -14,7 +14,7 @@ public:
     {
     }
 
-    const Dot3D &getPosition();
+    const Dot3D &getPosition() const;
     void setPosition(Dot3D &position_);
     const std::vector<size_t> getUsedFacets();
     void setUsedFacets(std::vector<size_t> usedFacets_);
@@ -94,7 +94,7 @@ private:
     size_t width, length;
 
     Dot3D startOfPlate, endOfPlate;
-    PolModel *plateModel;
+    PolModel *plateModel = nullptr;
 
     size_t modelsNum;
     std::vector<PolModel> models;
