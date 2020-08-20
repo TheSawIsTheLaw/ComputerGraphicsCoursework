@@ -50,15 +50,30 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
     PolModel plate = scene->getPlateModel();
     std::vector<Facet> facets = plate.getFacets();
     std::vector<Vertex> vertices = plate.getVertices();
-    Dot3D dotA, dotB, dotC;
+    std::array<Dot3D, 3> dotsArr;
 
     for (std::vector<Facet>::iterator iter = facets.begin(); iter != facets.end() ; iter++)
     {
-        dotA = vertices.at(iter->getUsedDots().at(0)).getPosition();
-        dotB = vertices.at(iter->getUsedDots().at(1)).getPosition();
-        dotC = vertices.at(iter->getUsedDots().at(2)).getPosition();
+        dotsArr[0] = vertices.at(iter->getUsedDots().at(0)).getPosition();
+        dotsArr[1] = vertices.at(iter->getUsedDots().at(1)).getPosition();
+        dotsArr[2] = vertices.at(iter->getUsedDots().at(2)).getPosition();
 
-        qDebug() << "CURRENT DOTS ARE:" << dotA << dotB << dotC;
+        qDebug() << "CURRENT DOTS ARE:" << dotsArr[0] << dotsArr[1] << dotsArr[2];
+
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                if (dotsArr[j].getYCoordinate() > dotsArr[j + 1].getYCoordinate())
+                {
+                    Dot3D sw = dotsArr[j];
+                    dotsArr[j] = dotsArr[j + 1];
+                    dotsArr[j + 1] = sw;
+                }
+            }
+        }
+
+        qDebug() << "SORTED DOTS ARE:" << dotsArr[0] << dotsArr[1] << dotsArr[2];
     }
 
 }
