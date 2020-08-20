@@ -43,10 +43,13 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
 
     scene->buildPlateModel(Dot3D(PLATE_START), Dot3D(length, width, PLATE_Z));
 
+    // z-buf, возвращающий... Битмап?.. С значением ргб там на каждый пиксел, например.
+
     QGraphicsScene *outScene = new QGraphicsScene;
     outScene->setSceneRect(rect);
 
     outScene->addLine(0, 0, 1568, 1035, QPen(Qt::black));
+    outScene->addLine(0, 0, 0, 0, QPen(Qt::blue)); // Ого, пиксел!
 
     return outScene;
 }
