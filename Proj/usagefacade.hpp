@@ -7,6 +7,7 @@
 class Drawer
 {
 public:
+    void zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth);
     QGraphicsScene *drawScene(CellScene *scene, QRectF rect);
 
 private:

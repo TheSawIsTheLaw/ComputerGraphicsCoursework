@@ -36,6 +36,11 @@ QGraphicsScene *UsageFacade::drawScene(QRectF rect)
     return retScene;
 }
 
+void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
+{
+
+}
+
 QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
 {
     size_t width = scene->getWidth() * SCALE_FACTOR;
@@ -43,7 +48,7 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
 
     scene->buildPlateModel(Dot3D(PLATE_START), Dot3D(length, width, PLATE_Z));
 
-    // z-buf, возвращающий... Битмап?.. С значением ргб там на каждый пиксел, например.
+    zBufferAlg(scene, rect.size().width(), rect.size().height());
 
     QGraphicsScene *outScene = new QGraphicsScene;
     outScene->setSceneRect(rect);
