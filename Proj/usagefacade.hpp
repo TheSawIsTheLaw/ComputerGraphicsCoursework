@@ -10,8 +10,8 @@ public:
     QGraphicsScene *drawScene(CellScene *scene, QRectF rect);
 
 private:
-    std::vector<size_t> depthBuffer;
-    std::vector<size_t> frameBuffer;
+    std::vector<std::vector<size_t>> depthBuffer;
+    std::vector<std::vector<size_t>> frameBuffer;
 };
 
 class UsageFacade
