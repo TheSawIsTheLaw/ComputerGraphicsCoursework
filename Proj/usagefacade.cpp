@@ -38,7 +38,14 @@ QGraphicsScene *UsageFacade::drawScene(QRectF rect)
 
 void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
 {
+    depthBuffer.erase(depthBuffer.begin(), depthBuffer.end());
+    frameBuffer.erase(frameBuffer.begin(), frameBuffer.end());
 
+    for (size_t i = 0; i < bufLength; i++)
+    {
+        depthBuffer.push_back(std::vector<size_t>(bufWidth));
+        frameBuffer.push_back(std::vector<size_t>(bufWidth));
+    }
 }
 
 QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
