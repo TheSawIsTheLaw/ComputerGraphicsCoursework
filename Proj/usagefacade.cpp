@@ -50,7 +50,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
         frameBuffer.push_back(std::vector<size_t>(bufWidth, 0));
     }
 
-    qDebug() << "Frame Vec: " << frameBuffer;
+//    qDebug() << "Frame Vec: " << frameBuffer;
 
     PolModel plate = scene->getPlateModel();
     std::vector<Facet> facets = plate.getFacets();
@@ -101,13 +101,16 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
             double zA = z1 + (z2 - z1) * aInc;
             double zB = z1 + (z3 - z1) * bInc;
 
+            if (xA >= xB)
+                qDebug() << "Хихихихихиххихи";
+
             for (double curX = xA; curX < xB; curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
                 if (curZ < depthBuffer[round(curX)][round(curY)])
                 {
                     depthBuffer[round(curX)][round(curY)] = curZ;
-                    frameBuffer[round(curX)][round(curY)] = 0;
+                    frameBuffer[round(curX)][round(curY)] = 1;
                 }
             }
         }
@@ -126,8 +129,10 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     QGraphicsScene *outScene = new QGraphicsScene;
     outScene->setSceneRect(rect);
 
-    outScene->addLine(0, 0, 1568, 1035, QPen(Qt::black));
-    outScene->addLine(0, 0, 0, 0, QPen(Qt::blue)); // Ого, пиксел!
+    for (size_t i = 0; i < rect.size().width(); i++)
+        for (size_t j = 0; j < rect.size().height(); j++)
+            if (frameBuffer.at(i).at(j))
+                outScene->addLine(i, j, i, j, QPen(Qt::red));
 
     return outScene;
 }
