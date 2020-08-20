@@ -10,7 +10,8 @@ public:
     QGraphicsScene *drawScene(CellScene *scene, QRectF rect);
 
 private:
-    std::vector<PolModel> models;
+    std::vector<size_t> depthBuffer;
+    std::vector<size_t> frameBuffer;
 };
 
 class UsageFacade
