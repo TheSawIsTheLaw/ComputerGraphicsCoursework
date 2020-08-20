@@ -50,6 +50,8 @@ size_t CellScene::getWidth() { return width; }
 
 size_t CellScene::getLength() { return length; }
 
+const PolModel &CellScene::getPlateModel() { return *plateModel; }
+
 const Dot3D CellScene::getStartOfPlate() { return startOfPlate; }
 
 void CellScene::setStartOfPlate(Dot3D dot_) { startOfPlate = dot_; }

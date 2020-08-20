@@ -86,6 +86,7 @@ public:
     void setEndOfPlate(Dot3D dot_);
 
     void buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_);
+    const PolModel &getPlateModel();
 
     void changeSize(size_t newWidth, size_t newLength);
 

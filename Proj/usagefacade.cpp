@@ -46,6 +46,21 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
         depthBuffer.push_back(std::vector<size_t>(bufWidth));
         frameBuffer.push_back(std::vector<size_t>(bufWidth));
     }
+
+    PolModel plate = scene->getPlateModel();
+    std::vector<Facet> facets = plate.getFacets();
+    std::vector<Vertex> vertices = plate.getVertices();
+    Dot3D dotA, dotB, dotC;
+
+    for (std::vector<Facet>::iterator iter = facets.begin(); iter != facets.end() ; iter++)
+    {
+        dotA = vertices.at(iter->getUsedDots().at(0)).getPosition();
+        dotB = vertices.at(iter->getUsedDots().at(1)).getPosition();
+        dotC = vertices.at(iter->getUsedDots().at(2)).getPosition();
+
+        qDebug() << "CURRENT DOTS ARE:" << dotA << dotB << dotC;
+    }
+
 }
 
 QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
