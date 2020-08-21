@@ -78,7 +78,7 @@ void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
 
     std::vector<Facet> facets;
     facets.push_back(std::vector<size_t>{0, 1, 2});
-    facets.push_back(std::vector<size_t>{1, 2, 3});
+    facets.push_back(std::vector<size_t>{0, 2, 3});
 
     if (plateModel)
         delete plateModel;

@@ -50,7 +50,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
         frameBuffer.push_back(std::vector<size_t>(bufWidth, 0));
     }
 
-//    qDebug() << "Frame Vec: " << frameBuffer;
+    //    qDebug() << "Frame Vec: " << frameBuffer;
 
     PolModel plate = scene->getPlateModel();
     std::vector<Facet> facets = plate.getFacets();
@@ -78,21 +78,32 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
             }
         }
 
+        if (dotsArr[0].getYCoordinate() == dotsArr[1].getYCoordinate() &&
+            dotsArr[0].getXCoordinate() < dotsArr[1].getXCoordinate())
+        {
+            Dot3D sw = dotsArr[0];
+            dotsArr[0] = dotsArr[1];
+            dotsArr[1] = sw;
+        }
+
         qDebug() << "SORTED DOTS ARE:" << dotsArr[0] << dotsArr[1] << dotsArr[2];
+
+        double x1 = dotsArr[0].getXCoordinate();
+        double x2 = dotsArr[1].getXCoordinate();
+        double x3 = dotsArr[2].getXCoordinate();
+
+        double z1 = dotsArr[0].getZCoordinate();
+        double z2 = dotsArr[1].getZCoordinate();
+        double z3 = dotsArr[2].getZCoordinate();
 
         for (double curY = dotsArr[0].getYCoordinate();
              curY < dotsArr[2].getYCoordinate(); curY++)
         {
-            double x1 = dotsArr[0].getXCoordinate();
-            double x2 = dotsArr[1].getXCoordinate();
-            double x3 = dotsArr[2].getXCoordinate();
+            double aInc = 1;
+            if (dotsArr[1].getYCoordinate() - dotsArr[0].getYCoordinate() != 0)
+                aInc = (curY - dotsArr[0].getYCoordinate()) /
+                       (dotsArr[1].getYCoordinate() - dotsArr[0].getYCoordinate());
 
-            double z1 = dotsArr[0].getZCoordinate();
-            double z2 = dotsArr[1].getZCoordinate();
-            double z3 = dotsArr[2].getZCoordinate();
-
-            double aInc = (curY - dotsArr[0].getYCoordinate()) /
-                          (dotsArr[1].getYCoordinate() - dotsArr[0].getYCoordinate());
             double bInc = (curY - dotsArr[0].getYCoordinate()) /
                           (dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate());
 
@@ -101,8 +112,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
             double zA = z1 + (z2 - z1) * aInc;
             double zB = z1 + (z3 - z1) * bInc;
 
-            if (xA >= xB)
-                qDebug() << "Хихихихихиххихи";
+            qDebug() << "xA xB zA zB aInc bInc: " << xA << xB << zA << zB << aInc << bInc;
 
             for (double curX = xA; curX < xB; curX++)
             {
