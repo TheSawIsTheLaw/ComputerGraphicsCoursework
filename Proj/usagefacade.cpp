@@ -96,8 +96,8 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
         double z2 = dotsArr[1].getZCoordinate();
         double z3 = dotsArr[2].getZCoordinate();
 
-        for (double curY = dotsArr[0].getYCoordinate();
-             curY < dotsArr[2].getYCoordinate(); curY++)
+        for (int curY = round(dotsArr[0].getYCoordinate());
+             curY < round(dotsArr[2].getYCoordinate()); curY++)
         {
             double aInc = 1;
             if (dotsArr[1].getYCoordinate() - dotsArr[0].getYCoordinate() != 0)
@@ -114,13 +114,13 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
 
             qDebug() << "xA xB zA zB aInc bInc: " << xA << xB << zA << zB << aInc << bInc;
 
-            for (double curX = xA; curX < xB; curX++)
+            for (double curX = round(xA); curX < round(xB); curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
-                if (curZ < depthBuffer[round(curX)][round(curY)])
+                if (curZ < depthBuffer[curX][curY])
                 {
-                    depthBuffer[round(curX)][round(curY)] = curZ;
-                    frameBuffer[round(curX)][round(curY)] = 1;
+                    depthBuffer[curX][curY] = curZ;
+                    frameBuffer[curX][curY] = 1;
                 }
             }
         }
@@ -139,10 +139,15 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     QGraphicsScene *outScene = new QGraphicsScene;
     outScene->setSceneRect(rect);
 
+    QPen blackPen(Qt::black);
+    QPen redPen(Qt::red);
+
     for (size_t i = 0; i < rect.size().width(); i++)
         for (size_t j = 0; j < rect.size().height(); j++)
-            if (frameBuffer.at(i).at(j))
-                outScene->addLine(i, j, i, j, QPen(Qt::red));
+            if (frameBuffer.at(i).at(j) == 1)
+                outScene->addLine(i, j, i, j, redPen);
+            else if (frameBuffer.at(i).at(j) == 2)
+                outScene->addLine(i, j, i, j, blackPen);
 
     return outScene;
 }
