@@ -65,26 +65,16 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
 
         qDebug() << "CURRENT DOTS ARE:" << dotsArr[0] << dotsArr[1] << dotsArr[2];
 
-        for (int i = 0; i < 2; i++)
-        {
-            for (int j = 0; j < 2; j++)
-            {
-                if (dotsArr[j].getYCoordinate() > dotsArr[j + 1].getYCoordinate())
-                {
-                    Dot3D sw = dotsArr[j];
-                    dotsArr[j] = dotsArr[j + 1];
-                    dotsArr[j + 1] = sw;
-                }
-            }
-        }
+        if (dotsArr[0].getYCoordinate() > dotsArr[1].getYCoordinate())
+            std::swap(dotsArr[0], dotsArr[1]);
+        if (dotsArr[0].getYCoordinate() > dotsArr[2].getYCoordinate())
+            std::swap(dotsArr[0], dotsArr[2]);
+        if (dotsArr[1].getYCoordinate() > dotsArr[2].getYCoordinate())
+            std::swap(dotsArr[1], dotsArr[2]);
 
         if (dotsArr[0].getYCoordinate() == dotsArr[1].getYCoordinate() &&
             dotsArr[0].getXCoordinate() < dotsArr[1].getXCoordinate())
-        {
-            Dot3D sw = dotsArr[0];
-            dotsArr[0] = dotsArr[1];
-            dotsArr[1] = sw;
-        }
+            std::swap(dotsArr[0], dotsArr[1]);
 
         qDebug() << "SORTED DOTS ARE:" << dotsArr[0] << dotsArr[1] << dotsArr[2];
 
