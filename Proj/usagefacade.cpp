@@ -72,9 +72,13 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
         if (dotsArr[1].getYCoordinate() > dotsArr[2].getYCoordinate())
             std::swap(dotsArr[1], dotsArr[2]);
 
-        if (dotsArr[0].getYCoordinate() == dotsArr[1].getYCoordinate() &&
-            dotsArr[0].getXCoordinate() < dotsArr[1].getXCoordinate())
-            std::swap(dotsArr[0], dotsArr[1]);
+//        if (dotsArr[0].getYCoordinate() == dotsArr[1].getYCoordinate() &&
+//            dotsArr[0].getXCoordinate() < dotsArr[1].getXCoordinate())
+//            std::swap(dotsArr[0], dotsArr[1]);
+
+//        if (dotsArr[1].getYCoordinate() == dotsArr[2].getYCoordinate() &&
+//            dotsArr[1].getXCoordinate() > dotsArr[2].getXCoordinate())
+//            std::swap(dotsArr[1], dotsArr[2]);
 
         qDebug() << "SORTED DOTS ARE:" << dotsArr[0] << dotsArr[1] << dotsArr[2];
 
@@ -102,6 +106,13 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
             double zA = z1 + (z2 - z1) * aInc;
             double zB = z1 + (z3 - z1) * bInc;
 
+            if (xA > xB)
+            {
+                std::swap(xA, xB);
+                std::swap(zA, zB);
+                std::swap(aInc, bInc);
+            }
+
             qDebug() << "xA xB zA zB aInc bInc: " << xA << xB << zA << zB << aInc << bInc;
 
             if (zA > depthBuffer[round(xA)][curY])
@@ -110,9 +121,9 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
                 frameBuffer[round(xA)][curY] = 2;
             }
             int curCol = 1;
-            if (curY == round(dotsArr[0].getYCoordinate()) ||
-                curY == round(dotsArr[2].getYCoordinate()))
+            if (curY == round(dotsArr[0].getYCoordinate()))
                 curCol = 2;
+
             for (int curX = round(xA) + 1; curX < round(xB); curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
@@ -146,6 +157,13 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
             double zA = z2 + (z3 - z2) * aInc;
             double zB = z1 + (z3 - z1) * bInc;
 
+            if (xA > xB)
+            {
+                std::swap(xA, xB);
+                std::swap(zA, zB);
+                std::swap(aInc, bInc);
+            }
+
             qDebug() << "xA xB zA zB aInc bInc: " << xA << xB << zA << zB << aInc << bInc;
 
             if (zA > depthBuffer[round(xA)][curY])
@@ -154,8 +172,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
                 frameBuffer[round(xA)][curY] = 2;
             }
             int curCol = 1;
-            if (curY == round(dotsArr[0].getYCoordinate()) ||
-                curY == round(dotsArr[2].getYCoordinate()))
+            if (curY == round(dotsArr[2].getYCoordinate()))
                 curCol = 2;
             for (int curX = round(xA) + 1; curX < round(xB); curX++)
             {
