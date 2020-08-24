@@ -87,7 +87,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
         double z3 = dotsArr[2].getZCoordinate();
 
         for (int curY = round(dotsArr[0].getYCoordinate());
-             curY <= round(dotsArr[2].getYCoordinate()); curY++)
+             curY <= round(dotsArr[1].getYCoordinate()); curY++)
         {
             double aInc = 1;
             if (dotsArr[1].getYCoordinate() - dotsArr[0].getYCoordinate() != 0)
@@ -100,6 +100,50 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
             double xA = x1 + (x2 - x1) * aInc;
             double xB = x1 + (x3 - x1) * bInc;
             double zA = z1 + (z2 - z1) * aInc;
+            double zB = z1 + (z3 - z1) * bInc;
+
+            qDebug() << "xA xB zA zB aInc bInc: " << xA << xB << zA << zB << aInc << bInc;
+
+            if (zA > depthBuffer[round(xA)][curY])
+            {
+                depthBuffer[round(xA)][curY] = zA;
+                frameBuffer[round(xA)][curY] = 2;
+            }
+            int curCol = 1;
+            if (curY == round(dotsArr[0].getYCoordinate()) ||
+                curY == round(dotsArr[2].getYCoordinate()))
+                curCol = 2;
+            for (int curX = round(xA) + 1; curX < round(xB); curX++)
+            {
+                double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
+                if (curZ > depthBuffer[curX][curY])
+                {
+                    depthBuffer[curX][curY] = curZ;
+                    frameBuffer[curX][curY] = curCol;
+                }
+            }
+            double curZ = zA + (zB - zA) * (round(xB) - xA) / (xB - xA);
+            if (curZ > depthBuffer[round(xB)][curY])
+            {
+                depthBuffer[round(xB)][curY] = curZ;
+                frameBuffer[round(xB)][curY] = 2;
+            }
+        }
+
+        for (int curY = round(dotsArr[1].getYCoordinate());
+             curY <= round(dotsArr[2].getYCoordinate()); curY++)
+        {
+            double aInc = 1;
+            if (dotsArr[2].getYCoordinate() - dotsArr[1].getYCoordinate() != 0)
+                aInc = (curY - dotsArr[1].getYCoordinate()) /
+                       (dotsArr[2].getYCoordinate() - dotsArr[1].getYCoordinate());
+
+            double bInc = (curY - dotsArr[0].getYCoordinate()) /
+                          (dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate());
+
+            double xA = x2 + (x3 - x2) * aInc;
+            double xB = x1 + (x3 - x1) * bInc;
+            double zA = z2 + (z3 - z2) * aInc;
             double zB = z1 + (z3 - z1) * bInc;
 
             qDebug() << "xA xB zA zB aInc bInc: " << xA << xB << zA << zB << aInc << bInc;

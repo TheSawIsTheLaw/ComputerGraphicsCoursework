@@ -84,9 +84,9 @@ void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
 
     std::vector<Facet> facets;
     facets.push_back(std::vector<size_t>{0, 1, 3});
-    facets.push_back(std::vector<size_t>{0, 1, 4});
-    facets.push_back(std::vector<size_t>{1, 2, 4});
-    facets.push_back(std::vector<size_t>{1, 2, 3});
+//    facets.push_back(std::vector<size_t>{0, 1, 4});
+//    facets.push_back(std::vector<size_t>{1, 2, 4});
+//    facets.push_back(std::vector<size_t>{1, 2, 3});
 
 
     //    Dot3D newDiagDot(startOfPlate_.getXCoordinate(), endOfPlate_.getYCoordinate(),
