@@ -63,22 +63,48 @@ void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
     setStartOfPlate(startOfPlate_);
     setEndOfPlate(endOfPlate_);
 
-    Dot3D newDiagDot(startOfPlate_.getXCoordinate(), endOfPlate_.getYCoordinate(),
+    Dot3D exDot(startOfPlate_.getXCoordinate() + (endOfPlate_.getXCoordinate() -
+                                                  startOfPlate_.getXCoordinate()) / 2,
+    endOfPlate_.getYCoordinate() - (endOfPlate_.getYCoordinate() -
+                                                startOfPlate_.getYCoordinate()) / 2,
     startOfPlate_.getZCoordinate());
 
     std::vector<Vertex> vertices;
-    vertices.push_back(Vertex(startOfPlate_, std::vector<size_t>{0}));
-    vertices.push_back(Vertex(newDiagDot, std::vector<size_t>{0, 1}));
-    vertices.push_back(Vertex(endOfPlate_, std::vector<size_t>{1}));
+    vertices.push_back(Vertex(startOfPlate_, std::vector<size_t>{0, 1}));
+    vertices.push_back(Vertex(exDot, std::vector<size_t>{0, 1, 2, 3}));
+    vertices.push_back(Vertex(endOfPlate_, std::vector<size_t>{2, 3}));
 
-    newDiagDot.setXCoordinate(endOfPlate_.getXCoordinate());
-    newDiagDot.setYCoordinate(startOfPlate_.getYCoordinate());
-    newDiagDot.setZCoordinate(startOfPlate_.getZCoordinate());
-    vertices.push_back(Vertex(newDiagDot, std::vector<size_t>{0, 1}));
+    exDot.setXCoordinate(startOfPlate_.getXCoordinate());
+    exDot.setYCoordinate(endOfPlate_.getYCoordinate());
+    vertices.push_back(Vertex(exDot, std::vector<size_t>{0, 3}));
+
+    exDot.setXCoordinate(endOfPlate_.getXCoordinate());
+    exDot.setYCoordinate(startOfPlate_.getYCoordinate());
+    vertices.push_back(Vertex(exDot, std::vector<size_t>{1, 2}));
 
     std::vector<Facet> facets;
-    facets.push_back(std::vector<size_t>{0, 1, 2});
-    facets.push_back(std::vector<size_t>{0, 2, 3});
+    facets.push_back(std::vector<size_t>{0, 1, 3});
+    facets.push_back(std::vector<size_t>{0, 1, 4});
+    facets.push_back(std::vector<size_t>{1, 2, 4});
+    facets.push_back(std::vector<size_t>{1, 2, 3});
+
+
+    //    Dot3D newDiagDot(startOfPlate_.getXCoordinate(), endOfPlate_.getYCoordinate(),
+    //    startOfPlate_.getZCoordinate());
+
+    //    std::vector<Vertex> vertices;
+    //    vertices.push_back(Vertex(startOfPlate_, std::vector<size_t>{0}));
+    //    vertices.push_back(Vertex(newDiagDot, std::vector<size_t>{0, 1}));
+    //    vertices.push_back(Vertex(endOfPlate_, std::vector<size_t>{1}));
+
+    //    newDiagDot.setXCoordinate(endOfPlate_.getXCoordinate());
+    //    newDiagDot.setYCoordinate(startOfPlate_.getYCoordinate());
+    //    newDiagDot.setZCoordinate(startOfPlate_.getZCoordinate());
+    //    vertices.push_back(Vertex(newDiagDot, std::vector<size_t>{0, 1}));
+
+    //    std::vector<Facet> facets;
+    //    facets.push_back(std::vector<size_t>{0, 1, 2});
+    //    facets.push_back(std::vector<size_t>{0, 2, 3});
 
     if (plateModel)
         delete plateModel;
