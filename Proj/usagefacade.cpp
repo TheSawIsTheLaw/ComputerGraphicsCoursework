@@ -46,7 +46,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
     for (size_t i = 0; i < bufLength; i++)
     {
         depthBuffer.push_back(
-        std::vector<size_t>(bufWidth, std::numeric_limits<size_t>::max()));
+        std::vector<size_t>(bufWidth, 0));
         frameBuffer.push_back(std::vector<size_t>(bufWidth, 0));
     }
 
@@ -104,25 +104,26 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
 
             qDebug() << "xA xB zA zB aInc bInc: " << xA << xB << zA << zB << aInc << bInc;
 
-            if (zA < depthBuffer[round(xA)][curY])
+            if (zA > depthBuffer[round(xA)][curY])
             {
                 depthBuffer[round(xA)][curY] = zA;
                 frameBuffer[round(xA)][curY] = 2;
             }
             int curCol = 1;
-            if (curY == round(dotsArr[0].getYCoordinate()) || curY == round(dotsArr[2].getYCoordinate()))
+            if (curY == round(dotsArr[0].getYCoordinate()) ||
+                curY == round(dotsArr[2].getYCoordinate()))
                 curCol = 2;
             for (int curX = round(xA) + 1; curX < round(xB); curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
-                if (curZ < depthBuffer[curX][curY])
+                if (curZ > depthBuffer[curX][curY])
                 {
                     depthBuffer[curX][curY] = curZ;
                     frameBuffer[curX][curY] = curCol;
                 }
             }
             double curZ = zA + (zB - zA) * (round(xB) - xA) / (xB - xA);
-            if (curZ < depthBuffer[round(xB)][curY])
+            if (curZ > depthBuffer[round(xB)][curY])
             {
                 depthBuffer[round(xB)][curY] = curZ;
                 frameBuffer[round(xB)][curY] = 2;
