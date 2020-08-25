@@ -140,9 +140,9 @@ void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
         delete plateModel;
     plateModel = new PolModel(vertices, facets);
 
-    // Debug
-    for (size_t i = 0; i < plateModel->getVertices().size(); i++)
-        qDebug() << plateModel->getVertices().at(i).getPosition();
+//    // Debug
+//    for (size_t i = 0; i < plateModel->getVertices().size(); i++)
+//        qDebug() << plateModel->getVertices().at(i).getPosition();
 }
 
 void CellScene::setEndOfPlate(Dot3D dot_) { endOfPlate = dot_; }

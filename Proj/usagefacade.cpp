@@ -63,7 +63,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
         dotsArr[1] = vertices.at(iter->getUsedDots().at(1)).getPosition();
         dotsArr[2] = vertices.at(iter->getUsedDots().at(2)).getPosition();
 
-        qDebug() << "CURRENT DOTS ARE:" << dotsArr[0] << dotsArr[1] << dotsArr[2];
+//        qDebug() << "CURRENT DOTS ARE:" << dotsArr[0] << dotsArr[1] << dotsArr[2];
 
         if (dotsArr[0].getYCoordinate() > dotsArr[1].getYCoordinate())
             std::swap(dotsArr[0], dotsArr[1]);
@@ -80,7 +80,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
 //            dotsArr[1].getXCoordinate() > dotsArr[2].getXCoordinate())
 //            std::swap(dotsArr[1], dotsArr[2]);
 
-        qDebug() << "SORTED DOTS ARE:" << dotsArr[0] << dotsArr[1] << dotsArr[2];
+//        qDebug() << "SORTED DOTS ARE:" << dotsArr[0] << dotsArr[1] << dotsArr[2];
 
         double x1 = dotsArr[0].getXCoordinate();
         double x2 = dotsArr[1].getXCoordinate();
@@ -113,7 +113,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
                 std::swap(aInc, bInc);
             }
 
-            qDebug() << "xA xB zA zB aInc bInc: " << xA << xB << zA << zB << aInc << bInc;
+//            qDebug() << "xA xB zA zB aInc bInc: " << xA << xB << zA << zB << aInc << bInc;
 
             if (zA > depthBuffer[round(xA)][curY])
             {
@@ -122,7 +122,9 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
             }
             int curCol = 1;
             if (curY == round(dotsArr[0].getYCoordinate()))
+            {
                 curCol = 2;
+            }
 
             for (int curX = round(xA) + 1; curX < round(xB); curX++)
             {
@@ -130,8 +132,10 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
                 if (curZ > depthBuffer[curX][curY])
                 {
                     depthBuffer[curX][curY] = curZ;
-                    frameBuffer[curX][curY] = curCol;
+                    if (frameBuffer[curX][curY] != 2)
+                        frameBuffer[curX][curY] = curCol;
                 }
+                // А КАКОГО ХРЕНА ЭТО РАБОТАЕТ? КАКИМ ОБРАЗОМ ОДНО ГОВНО ЗАЛЕЗАЕТ НА ДРУГОЕ? ПОЧЕМУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУ
             }
             double curZ = zA + (zB - zA) * (round(xB) - xA) / (xB - xA);
             if (curZ > depthBuffer[round(xB)][curY])
@@ -144,7 +148,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
         for (int curY = round(dotsArr[1].getYCoordinate());
              curY <= round(dotsArr[2].getYCoordinate()); curY++)
         {
-            double aInc = 1;
+            double aInc = 0;
             if (dotsArr[2].getYCoordinate() - dotsArr[1].getYCoordinate() != 0)
                 aInc = (curY - dotsArr[1].getYCoordinate()) /
                        (dotsArr[2].getYCoordinate() - dotsArr[1].getYCoordinate());
@@ -164,7 +168,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
                 std::swap(aInc, bInc);
             }
 
-            qDebug() << "xA xB zA zB aInc bInc: " << xA << xB << zA << zB << aInc << bInc;
+//            qDebug() << "xA xB zA zB aInc bInc: " << xA << xB << zA << zB << aInc << bInc;
 
             if (zA > depthBuffer[round(xA)][curY])
             {
@@ -177,10 +181,11 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
             for (int curX = round(xA) + 1; curX < round(xB); curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
-                if (curZ > depthBuffer[curX][curY])
+                if (curZ >= depthBuffer[curX][curY])
                 {
                     depthBuffer[curX][curY] = curZ;
-                    frameBuffer[curX][curY] = curCol;
+                    if (frameBuffer[curX][curY] != 2)
+                        frameBuffer[curX][curY] = curCol;
                 }
             }
             double curZ = zA + (zB - zA) * (round(xB) - xA) / (xB - xA);
