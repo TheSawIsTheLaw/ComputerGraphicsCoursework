@@ -71,22 +71,20 @@ void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
     size_t facetNum = 0;
     size_t vertexNum = 0;
 
-    qDebug() << "shit:" << startOfPlate_ << endOfPlate_;
-
     for (size_t y = startOfPlate_.getYCoordinate(); y < endOfPlate_.getYCoordinate(); y += SCALE_FACTOR)
     {
         for (size_t x = startOfPlate_.getXCoordinate(); x < endOfPlate_.getXCoordinate(); x += SCALE_FACTOR, facetNum += 4, vertexNum += 5)
         {
             Dot3D start(x, y, PLATE_Z);
-            vertices.push_back(Vertex(start, std::vector<size_t>{facetNum, facetNum + 1}));
+            vertices.push_back(Vertex(start));//std::vector<size_t>{facetNum, facetNum + 1}));
             Dot3D middleDot(x + SCALE_FACTOR / 2, y + SCALE_FACTOR / 2, PLATE_Z);
-            vertices.push_back(Vertex(middleDot, std::vector<size_t>{facetNum + 0, facetNum + 1, facetNum + 2, facetNum + 3}));
+            vertices.push_back(Vertex(middleDot));//std::vector<size_t>{facetNum + 0, facetNum + 1, facetNum + 2, facetNum + 3}));
             Dot3D end(x + SCALE_FACTOR, y + SCALE_FACTOR, PLATE_Z);
-            vertices.push_back(Vertex(end, std::vector<size_t>{facetNum + 2, facetNum + 3}));
+            vertices.push_back(Vertex(end));//std::vector<size_t>{facetNum + 2, facetNum + 3}));
             Dot3D leftBot(x, y + SCALE_FACTOR, PLATE_Z);
-            vertices.push_back(Vertex(leftBot, std::vector<size_t>{facetNum + 0, facetNum + 3}));
+            vertices.push_back(Vertex(leftBot));//std::vector<size_t>{facetNum + 0, facetNum + 3}));
             Dot3D rightTop(x + SCALE_FACTOR, y, PLATE_Z);
-            vertices.push_back(Vertex(rightTop, std::vector<size_t>{facetNum + 1, facetNum + 2}));
+            vertices.push_back(Vertex(rightTop));//std::vector<size_t>{facetNum + 1, facetNum + 2}));
 
             facets.push_back(std::vector<size_t>{vertexNum, vertexNum + 1, vertexNum + 3});
             facets.push_back(std::vector<size_t>{vertexNum, vertexNum + 1, vertexNum + 4});

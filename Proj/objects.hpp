@@ -14,6 +14,8 @@ public:
     {
     }
 
+    Vertex(Dot3D &position_) : position(position_) {}
+
     const Dot3D &getPosition() const;
     void setPosition(Dot3D &position_);
     const std::vector<size_t> getUsedFacets();
