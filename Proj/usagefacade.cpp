@@ -239,6 +239,6 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     //    QPixmap("C:/Users/dobri/Desktop/FirstCurseWork/Proj/imgs/smert.jpg");
     ///! Если в один момент мне станет очень грустно, я соберусь с силами и буду собирать
     ///свой личный png файл, который потом буду ставить сюда.
-    /// Не то чтобы мне это надо, я просто чётко знаю, что я, *****, должен.
+    /// И дело тут не в том, что мне это надо, я просто чётко чую, что я, ***, должен.
     return outScene;
 }
