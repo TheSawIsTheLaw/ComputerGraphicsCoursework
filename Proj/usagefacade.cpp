@@ -45,8 +45,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
 
     for (size_t i = 0; i < bufLength; i++)
     {
-        depthBuffer.push_back(
-        std::vector<size_t>(bufWidth, 0));
+        depthBuffer.push_back(std::vector<size_t>(bufWidth, 0));
         frameBuffer.push_back(std::vector<size_t>(bufWidth, 0));
     }
 
@@ -63,7 +62,8 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
         dotsArr[1] = vertices.at(iter->getUsedDots().at(1)).getPosition();
         dotsArr[2] = vertices.at(iter->getUsedDots().at(2)).getPosition();
 
-//        qDebug() << "CURRENT DOTS ARE:" << dotsArr[0] << dotsArr[1] << dotsArr[2];
+        //        qDebug() << "CURRENT DOTS ARE:" << dotsArr[0] << dotsArr[1] <<
+        //        dotsArr[2];
 
         if (dotsArr[0].getYCoordinate() > dotsArr[1].getYCoordinate())
             std::swap(dotsArr[0], dotsArr[1]);
@@ -72,15 +72,16 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
         if (dotsArr[1].getYCoordinate() > dotsArr[2].getYCoordinate())
             std::swap(dotsArr[1], dotsArr[2]);
 
-//        if (dotsArr[0].getYCoordinate() == dotsArr[1].getYCoordinate() &&
-//            dotsArr[0].getXCoordinate() < dotsArr[1].getXCoordinate())
-//            std::swap(dotsArr[0], dotsArr[1]);
+        //        if (dotsArr[0].getYCoordinate() == dotsArr[1].getYCoordinate() &&
+        //            dotsArr[0].getXCoordinate() < dotsArr[1].getXCoordinate())
+        //            std::swap(dotsArr[0], dotsArr[1]);
 
-//        if (dotsArr[1].getYCoordinate() == dotsArr[2].getYCoordinate() &&
-//            dotsArr[1].getXCoordinate() > dotsArr[2].getXCoordinate())
-//            std::swap(dotsArr[1], dotsArr[2]);
+        //        if (dotsArr[1].getYCoordinate() == dotsArr[2].getYCoordinate() &&
+        //            dotsArr[1].getXCoordinate() > dotsArr[2].getXCoordinate())
+        //            std::swap(dotsArr[1], dotsArr[2]);
 
-//        qDebug() << "SORTED DOTS ARE:" << dotsArr[0] << dotsArr[1] << dotsArr[2];
+        //        qDebug() << "SORTED DOTS ARE:" << dotsArr[0] << dotsArr[1] <<
+        //        dotsArr[2];
 
         double x1 = dotsArr[0].getXCoordinate();
         double x2 = dotsArr[1].getXCoordinate();
@@ -113,7 +114,8 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
                 std::swap(aInc, bInc);
             }
 
-//            qDebug() << "xA xB zA zB aInc bInc: " << xA << xB << zA << zB << aInc << bInc;
+            //            qDebug() << "xA xB zA zB aInc bInc: " << xA << xB << zA << zB <<
+            //            aInc << bInc;
 
             if (zA > depthBuffer[round(xA)][curY])
             {
@@ -135,7 +137,9 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
                     if (frameBuffer[curX][curY] != 2)
                         frameBuffer[curX][curY] = curCol;
                 }
-                // А КАКОГО ХРЕНА ЭТО РАБОТАЕТ? КАКИМ ОБРАЗОМ ОДНО ГОВНО ЗАЛЕЗАЕТ НА ДРУГОЕ? ПОЧЕМУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУ
+                // А КАКОГО ХРЕНА ЭТО РАБОТАЕТ? КАКИМ ОБРАЗОМ ОДНО ГОВНО ЗАЛЕЗАЕТ НА
+                // ДРУГОЕ?
+                // ПОЧЕМУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУ
             }
             double curZ = zA + (zB - zA) * (round(xB) - xA) / (xB - xA);
             if (curZ > depthBuffer[round(xB)][curY])
@@ -168,7 +172,8 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
                 std::swap(aInc, bInc);
             }
 
-//            qDebug() << "xA xB zA zB aInc bInc: " << xA << xB << zA << zB << aInc << bInc;
+            //            qDebug() << "xA xB zA zB aInc bInc: " << xA << xB << zA << zB <<
+            //            aInc << bInc;
 
             if (zA > depthBuffer[round(xA)][curY])
             {
@@ -205,7 +210,14 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
 
     scene->buildPlateModel(Dot3D(PLATE_START), Dot3D(length, width, PLATE_Z));
 
+    using namespace std::chrono;
+    milliseconds start =
+    duration_cast<milliseconds>(system_clock::now().time_since_epoch());
     zBufferAlg(scene, rect.size().width(), rect.size().height());
+    milliseconds end =
+    duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+
+    qDebug() << "Time for zBuf" << (end - start).count();
 
     QGraphicsScene *outScene = new QGraphicsScene;
     outScene->setSceneRect(rect);
@@ -213,12 +225,20 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     QPen blackPen(Qt::black);
     QPen redPen(Qt::red);
 
+    start = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
     for (size_t i = 0; i < rect.size().width(); i++)
         for (size_t j = 0; j < rect.size().height(); j++)
             if (frameBuffer.at(i).at(j) == 1)
                 outScene->addLine(i, j, i, j, redPen);
             else if (frameBuffer.at(i).at(j) == 2)
                 outScene->addLine(i, j, i, j, blackPen);
-
+    end = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+    qDebug() << "Time for drawing" << (end - start).count();
+    //    outScene->addPixmap(QPixmap("C:/Users/dobri/Desktop/FirstCurseWork/Proj/imgs/smert.jpg"));
+    //    qDebug() <<
+    //    QPixmap("C:/Users/dobri/Desktop/FirstCurseWork/Proj/imgs/smert.jpg");
+    ///! Если в один момент мне станет очень грустно, я соберусь с силами и буду собирать
+    ///свой личный png файл, который потом буду ставить сюда.
+    /// Не то чтобы мне это надо, я просто чётко знаю, что я, *****, должен.
     return outScene;
 }
