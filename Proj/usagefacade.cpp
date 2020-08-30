@@ -245,7 +245,7 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
         {
             x = i;
             y = (h - 1) - j;
-            if (frameBuffer.at(i).at(j) == 1 || frameBuffer.at(i).at(j) == 0)
+            if (frameBuffer.at(i).at(h - 1 - j) == 1 || frameBuffer.at(i).at(h - 1 - j) == 0)
             {
                 img[(x + y * w) * 3 + 2] = (unsigned char) (255);
                 img[(x + y * w) * 3 + 1] = (unsigned char) (255);
