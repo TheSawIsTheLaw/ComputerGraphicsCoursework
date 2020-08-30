@@ -226,15 +226,77 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     QPen redPen(Qt::red);
 
     start = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-    for (size_t i = 0; i < rect.size().width(); i++)
-        for (size_t j = 0; j < rect.size().height(); j++)
-            if (frameBuffer.at(i).at(j) == 1)
-                outScene->addLine(i, j, i, j, redPen);
-            else if (frameBuffer.at(i).at(j) == 2)
-                outScene->addLine(i, j, i, j, blackPen);
+
+    int w = rect.size().width();  /* Put here what ever width you want */
+    int h = rect.size().height(); /* Put here what ever height you want */
+
+    FILE *f;
+    unsigned char *img = NULL;
+    int filesize = 54 + 3 * w * h; // w is your image width, h is image height, both int
+    if (img)
+        free(img);
+    img = (unsigned char *) malloc(3 * w * h);
+    int x;
+    int y;
+
+    for (int i = 0; i < w; i++)
+    {
+        for (int j = 0; j < h; j++)
+        {
+            x = i;
+            y = (h - 1) - j;
+            if (frameBuffer.at(i).at(j) == 1 || frameBuffer.at(i).at(j) == 0)
+            {
+                img[(x + y * w) * 3 + 2] = (unsigned char) (255);
+                img[(x + y * w) * 3 + 1] = (unsigned char) (255);
+                img[(x + y * w) * 3 + 0] = (unsigned char) (255);
+            }
+            else
+            {
+                img[(x + y * w) * 3 + 2] = (unsigned char) (0);
+                img[(x + y * w) * 3 + 1] = (unsigned char) (0);
+                img[(x + y * w) * 3 + 0] = (unsigned char) (0);
+            }
+        }
+    }
+
+    unsigned char bmpfileheader[14] = {'B', 'M', 0, 0, 0, 0, 0, 0, 0, 0, 54, 0, 0, 0};
+    unsigned char bmpinfoheader[40] = {40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 24, 0};
+    unsigned char bmppad[3] = {0, 0, 0};
+
+    bmpfileheader[2] = (unsigned char) (filesize);
+    bmpfileheader[3] = (unsigned char) (filesize >> 8);
+    bmpfileheader[4] = (unsigned char) (filesize >> 16);
+    bmpfileheader[5] = (unsigned char) (filesize >> 24);
+
+    bmpinfoheader[4] = (unsigned char) (w);
+    bmpinfoheader[5] = (unsigned char) (w >> 8);
+    bmpinfoheader[6] = (unsigned char) (w >> 16);
+    bmpinfoheader[7] = (unsigned char) (w >> 24);
+    bmpinfoheader[8] = (unsigned char) (h);
+    bmpinfoheader[9] = (unsigned char) (h >> 8);
+    bmpinfoheader[10] = (unsigned char) (h >> 16);
+    bmpinfoheader[11] = (unsigned char) (h >> 24);
+
+    f = fopen("img.bmp", "wb");
+    fwrite(bmpfileheader, 1, 14, f);
+    fwrite(bmpinfoheader, 1, 40, f);
+    for (int i = 0; i < h; i++)
+    {
+        fwrite(img + (w * (h - i - 1) * 3), 3, w, f);
+        fwrite(bmppad, 1, (4 - (w * 3) % 4) % 4, f);
+    }
+    fclose(f);
+
+    //    for (size_t i = 0; i < rect.size().width(); i++)
+    //        for (size_t j = 0; j < rect.size().height(); j++)
+    //            if (frameBuffer.at(i).at(j) == 1)
+    //                outScene->addLine(i, j, i, j, redPen);
+    //            else if (frameBuffer.at(i).at(j) == 2)
+    //                outScene->addLine(i, j, i, j, blackPen);
     end = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+    outScene->addPixmap(QPixmap("img.bmp"));
     qDebug() << "Time for drawing" << (end - start).count();
-    //    outScene->addPixmap(QPixmap("C:/Users/dobri/Desktop/FirstCurseWork/Proj/imgs/smert.jpg"));
     //    qDebug() <<
     //    QPixmap("C:/Users/dobri/Desktop/FirstCurseWork/Proj/imgs/smert.jpg");
     ///! Если в один момент мне станет очень грустно, я соберусь с силами и буду собирать
