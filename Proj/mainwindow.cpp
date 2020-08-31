@@ -6,6 +6,7 @@
 
 #include "sizechanger.hpp"
 #include "sizechooser.hpp"
+#include "specialgraphicsview.hpp"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -63,9 +64,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    QWidget::connect(ui->graphicsView, SIGNAL(sendMouse(size_t, size_t)), this, SLOT(getMouseEvent(size_t, size_t)));
 }
 
 MainWindow::~MainWindow() { delete ui; }
+
+void MainWindow::getMouseEvent(size_t x_, size_t y_)
+{
+    qDebug() << "Приняли ивент:" << x_ << y_ << '\n';
+}
 
 void MainWindow::on_pushButton_4_clicked()
 {

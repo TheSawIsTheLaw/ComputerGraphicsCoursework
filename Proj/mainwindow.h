@@ -27,8 +27,11 @@ private slots:
 
     void on_pushButton_5_clicked();
 
+    void getMouseEvent(size_t x_, size_t y_);
+
 private:
     Ui::MainWindow *ui;
     UsageFacade *facade;
 };
+
 #endif // MAINWINDOW_H
