@@ -4,6 +4,9 @@
 #include "QDebug"
 #include <QErrorMessage>
 #include <QShortcut>
+#include <QTimer>
+
+#include "config.hpp"
 
 #include "sizechanger.hpp"
 #include "sizechooser.hpp"
@@ -91,21 +94,33 @@ void MainWindow::getMouseEvent(size_t x_, size_t y_)
 void MainWindow::pictureDown()
 {
     qDebug() << "Крутим вниз";
+    QGraphicsScene *setScene = facade->moveDownScene(MOVE_UNIT, ui->graphicsView->rect());
+
+    ui->graphicsView->setScene(setScene);
 }
 
 void MainWindow::pictureUp()
 {
     qDebug() << "Крутим вверх";
+    QGraphicsScene *setScene = facade->moveUpScene(MOVE_UNIT, ui->graphicsView->rect());
+
+    ui->graphicsView->setScene(setScene);
 }
 
 void MainWindow::pictureLeft()
 {
     qDebug() << "Крутим влево";
+    QGraphicsScene *setScene = facade->moveLeftScene(MOVE_UNIT, ui->graphicsView->rect());
+
+    ui->graphicsView->setScene(setScene);
 }
 
 void MainWindow::pictureRight()
 {
     qDebug() << "Крутим вправо";
+    QGraphicsScene *setScene = facade->moveRightScene(MOVE_UNIT, ui->graphicsView->rect());
+
+    ui->graphicsView->setScene(setScene);
 }
 
 void MainWindow::on_pushButton_4_clicked()

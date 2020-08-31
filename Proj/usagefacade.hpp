@@ -26,6 +26,11 @@ public:
 
     QGraphicsScene *drawScene(QRectF rect);
 
+    QGraphicsScene *moveUpScene(double value, QRectF rect);
+    QGraphicsScene *moveDownScene(double value, QRectF rect);
+    QGraphicsScene *moveLeftScene(double value, QRectF rect);
+    QGraphicsScene *moveRightScene(double value, QRectF rect);
+
 private:
     CellScene *scene;
 

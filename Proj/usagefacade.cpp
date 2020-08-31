@@ -38,6 +38,46 @@ QGraphicsScene *UsageFacade::drawScene(QRectF rect)
     return retScene;
 }
 
+QGraphicsScene *UsageFacade::moveUpScene(double value, QRectF rect)
+{
+    scene->moveUp(value);
+    QGraphicsScene *retScene = nullptr;
+    if (isSceneSet())
+        retScene = drawer->drawScene(scene, rect);
+
+    return retScene;
+}
+
+QGraphicsScene *UsageFacade::moveDownScene(double value, QRectF rect)
+{
+    scene->moveDown(value);
+    QGraphicsScene *retScene = nullptr;
+    if (isSceneSet())
+        retScene = drawer->drawScene(scene, rect);
+
+    return retScene;
+}
+
+QGraphicsScene *UsageFacade::moveRightScene(double value, QRectF rect)
+{
+    scene->moveRight(value);
+    QGraphicsScene *retScene = nullptr;
+    if (isSceneSet())
+        retScene = drawer->drawScene(scene, rect);
+
+    return retScene;
+}
+
+QGraphicsScene *UsageFacade::moveLeftScene(double value, QRectF rect)
+{
+    scene->moveLeft(value);
+    QGraphicsScene *retScene = nullptr;
+    if (isSceneSet())
+        retScene = drawer->drawScene(scene, rect);
+
+    return retScene;
+}
+
 void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
 {
     depthBuffer.erase(depthBuffer.begin(), depthBuffer.end());
@@ -294,8 +334,8 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     //                outScene->addLine(i, j, i, j, redPen);
     //            else if (frameBuffer.at(i).at(j) == 2)
     //                outScene->addLine(i, j, i, j, blackPen);
-    end = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
     outScene->addPixmap(QPixmap("img.bmp"));
+    end = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
     qDebug() << "Time for drawing" << (end - start).count();
     //    qDebug() <<
     //    QPixmap("C:/Users/dobri/Desktop/FirstCurseWork/Proj/imgs/smert.jpg");

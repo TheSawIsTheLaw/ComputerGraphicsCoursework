@@ -52,6 +52,69 @@ size_t CellScene::getWidth() { return width; }
 
 size_t CellScene::getLength() { return length; }
 
+CellScene::operator bool() const
+{
+    return this->plateModel;
+}
+
+void CellScene::moveUp(double value)
+{
+    Dot3D curDot;
+    std::vector<Vertex> vertices = plateModel->getVertices();
+    for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end(); iter++)
+    {
+        curDot = iter->getPosition();
+        curDot.move(0, -value, 0);
+        iter->setPosition(curDot);
+    }
+    plateModel->setVertices(vertices);
+}
+
+void CellScene::moveDown(double value)
+{
+    Dot3D curDot;
+    std::vector<Vertex> vertices = plateModel->getVertices();
+    for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end(); iter++)
+    {
+        curDot = iter->getPosition();
+        curDot.move(0, value, 0);
+        iter->setPosition(curDot);
+    }
+    plateModel->setVertices(vertices);
+}
+
+void CellScene::moveLeft(double value)
+{
+    Dot3D curDot;
+    std::vector<Vertex> vertices = plateModel->getVertices();
+    for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end(); iter++)
+    {
+        curDot = iter->getPosition();
+        curDot.move(-value, 0, 0);
+        iter->setPosition(curDot);
+    }
+    plateModel->setVertices(vertices);
+}
+
+void CellScene::moveRight(double value)
+{
+    Dot3D curDot;
+    std::vector<Vertex> vertices = plateModel->getVertices();
+    qDebug() << "До";
+    for (int i = 0; i < (int)vertices.size(); i++)
+        qDebug() << vertices.at(i).getPosition();
+    for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end(); iter++)
+    {
+        curDot = iter->getPosition();
+        curDot.move(value, 0, 0);
+        iter->setPosition(curDot);
+    }
+    qDebug() << "После";
+    for (int i = 0; i < (int)vertices.size(); i++)
+        qDebug() << vertices.at(i).getPosition();
+    plateModel->setVertices(vertices);
+}
+
 const PolModel &CellScene::getPlateModel() { return *plateModel; }
 
 const Dot3D CellScene::getStartOfPlate() { return startOfPlate; }
@@ -62,6 +125,8 @@ const Dot3D CellScene::getEndOfPlate() { return endOfPlate; }
 
 void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
 {
+    if (plateModel)
+        return;
     setStartOfPlate(startOfPlate_);
     setEndOfPlate(endOfPlate_);
 
