@@ -29,6 +29,11 @@ private slots:
 
     void getMouseEvent(size_t x_, size_t y_);
 
+    void pictureDown();
+    void pictureUp();
+    void pictureLeft();
+    void pictureRight();
+
 private:
     Ui::MainWindow *ui;
     UsageFacade *facade;

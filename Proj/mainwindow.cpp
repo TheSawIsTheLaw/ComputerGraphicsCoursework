@@ -3,6 +3,7 @@
 
 #include "QDebug"
 #include <QErrorMessage>
+#include <QShortcut>
 
 #include "sizechanger.hpp"
 #include "sizechooser.hpp"
@@ -66,6 +67,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     QWidget::connect(ui->graphicsView, SIGNAL(sendMouse(size_t, size_t)), this, SLOT(getMouseEvent(size_t, size_t)));
+
+    QShortcut *shortcutDown = new QShortcut(QKeySequence("down"), this);
+    QObject::connect(shortcutDown, SIGNAL(activated()), this, SLOT(pictureDown()));
+
+    QShortcut *shortcutUp = new QShortcut(QKeySequence("up"), this);
+    QObject::connect(shortcutUp, SIGNAL(activated()), this, SLOT(pictureUp()));
+
+    QShortcut *shortcutLeft = new QShortcut(QKeySequence("left"), this);
+    QObject::connect(shortcutLeft, SIGNAL(activated()), this, SLOT(pictureLeft()));
+
+    QShortcut *shortcutRight = new QShortcut(QKeySequence("right"), this);
+    QObject::connect(shortcutRight, SIGNAL(activated()), this, SLOT(pictureRight()));
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -73,6 +86,26 @@ MainWindow::~MainWindow() { delete ui; }
 void MainWindow::getMouseEvent(size_t x_, size_t y_)
 {
     qDebug() << "Приняли ивент:" << x_ << y_ << '\n';
+}
+
+void MainWindow::pictureDown()
+{
+    qDebug() << "Крутим вниз";
+}
+
+void MainWindow::pictureUp()
+{
+    qDebug() << "Крутим вверх";
+}
+
+void MainWindow::pictureLeft()
+{
+    qDebug() << "Крутим влево";
+}
+
+void MainWindow::pictureRight()
+{
+    qDebug() << "Крутим вправо";
 }
 
 void MainWindow::on_pushButton_4_clicked()
