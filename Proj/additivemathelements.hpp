@@ -6,6 +6,7 @@
 
 #include "QDebug"
 #include <eigen3/Eigen/Dense>
+#include "math.h"
 
 class Dot2D
 {
@@ -41,15 +42,11 @@ public:
     double getZCoordinate() const;
     void setZCoordinate(double value);
 
-    void scaleDot(double coef, double xCenter, double yCenter, double zCenter);
-    void moveDot(double xDif, double yDif, double zDif);
-    enum rotationAxis
-    {
-        X,
-        Y,
-        Z
-    };
-    void rotateDot(rotationAxis axis, double angle);
+    void scale(double coef, double xCenter, double yCenter, double zCenter);
+    void move(double xDif, double yDif, double zDif);
+    void rotateX(double angle, double xCenter, double yCenter, double zCenter);
+    void rotateY(double angle, double xCenter, double yCenter, double zCenter);
+    void rotateZ(double angle, double xCenter, double yCenter, double zCenter);
 
     friend std::ostream &operator<<(std::ostream &os, const Dot3D &dot);
     friend QDebug operator<<(QDebug deb, const Dot3D &dot);
