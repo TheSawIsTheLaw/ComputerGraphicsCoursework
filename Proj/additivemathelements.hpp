@@ -42,7 +42,7 @@ public:
     void setZCoordinate(double value);
 
     void scaleDot(double coef, double xCenter, double yCenter, double zCenter);
-    void moveDot(double xDif, double yDif);
+    void moveDot(double xDif, double yDif, double zDif);
     enum rotationAxis
     {
         X,

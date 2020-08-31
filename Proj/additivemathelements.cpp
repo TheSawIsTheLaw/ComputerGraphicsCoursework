@@ -13,6 +13,13 @@ double Dot3D::getZCoordinate() const { return zCoordinate; }
 
 void Dot3D::setZCoordinate(double value) { zCoordinate = value; }
 
+void Dot3D::moveDot(double xDif, double yDif, double zDif)
+{
+    xCoordinate += xDif;
+    yCoordinate += yDif;
+    zCoordinate += zDif;
+}
+
 std::ostream &operator<<(std::ostream &os, const Dot3D &dot)
 {
     os << "Dot3D: (" << dot.xCoordinate << "; " << dot.yCoordinate << "; "
