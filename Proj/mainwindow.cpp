@@ -84,6 +84,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     QObject::connect(shortcutRight, SIGNAL(activated()), this, SLOT(pictureRight()));
 }
 
+//void MainWindow::updateScene()
+//{
+//    ui->graphicsView->scene()->clear();
+//    ui->graphicsView->scene()->addPixmap(QPixmap("img.bmp"));
+//    ui->graphicsView->show();
+//    qDebug("UPD");
+//    QTimer::singleShot(26, this, SLOT(updateScene()));
+//}
+
 MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::getMouseEvent(size_t x_, size_t y_)
@@ -140,6 +149,7 @@ void MainWindow::on_pushButton_4_clicked()
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
     ui->graphicsView->setScene(setScene);
+//    QTimer::singleShot(26, this, SLOT(updateScene()));
 }
 
 void MainWindow::on_pushButton_5_clicked()

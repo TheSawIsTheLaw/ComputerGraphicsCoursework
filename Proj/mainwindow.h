@@ -29,6 +29,8 @@ private slots:
 
     void getMouseEvent(size_t x_, size_t y_);
 
+//    void updateScene();
+
     void pictureDown();
     void pictureUp();
     void pictureLeft();
@@ -37,8 +39,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     UsageFacade *facade;
-
-    QTimer *timer;
 };
 
 #endif // MAINWINDOW_H
