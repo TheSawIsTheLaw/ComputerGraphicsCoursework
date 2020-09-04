@@ -334,25 +334,33 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
 
     qDebug() << rect.size().height() << rect.size().width();
 
+    QImage *image = new QImage(rect.size().height(), rect.size().width(), QImage::Format_RGB32);
+    image->fill(Qt::white);
+    uint whiteCol = qRgb(255, 255, 255);
+    uint blackCol = qRgb(0, 0, 0);
+
     for (size_t i = 0; i < rect.size().height(); i++)
         for (size_t j = 0; j < rect.size().width(); j++)
-            /*if (frameBuffer.at(i).at(j) == 1)
+            if (frameBuffer.at(i).at(j) == 1)
             {
-                int z = 0;
-                for (; z < rect.size().width() && frameBuffer.at(i).at(j + z) == 1; z++) {}
-                outScene->addLine(i, j, i, j + z - 1, redPen);
-                j += z - 1;
+                image->setPixel(i, j, whiteCol);
+//                int z = 0;
+//                for (; z < rect.size().width() && frameBuffer.at(i).at(j + z) == 1; z++) {}
+//                outScene->addLine(i, j, i, j + z - 1, redPen);
+//                j += z - 1;
             }
-            else*/
-            if (frameBuffer.at(i).at(j) == 2)
+            else if (frameBuffer.at(i).at(j) == 2)
             {
-                int z = 0;
-                for (; z < rect.size().width() && frameBuffer.at(i).at(j + z) == 2; z++) {}
-                outScene->addLine(i, j, i, j + z - 1, blackPen);
-                j += z - 1;
+                image->setPixel(i, j, blackCol);
+//                int z = 0;
+//                for (; z < rect.size().width() && frameBuffer.at(i).at(j + z) == 2; z++) {}
+//                outScene->addLine(i, j, i, j + z - 1, blackPen);
+//                j += z - 1;
             }
     end = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
     qDebug() << "Time for drawing" << (end - start).count();
+    outScene->addPixmap(QPixmap::fromImage(*image));
+    delete image;
     //    qDebug() <<
     //    QPixmap("C:/Users/dobri/Desktop/FirstCurseWork/Proj/imgs/smert.jpg");
     return outScene;
