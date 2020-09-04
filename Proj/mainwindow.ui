@@ -42,7 +42,7 @@
      <string>Установить выбранный объект</string>
     </property>
    </widget>
-   <widget class="QGraphicsView" name="graphicsView">
+   <widget class="SpecialGraphicsView" name="graphicsView">
     <property name="geometry">
      <rect>
       <x>290</x>
@@ -263,6 +263,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SpecialGraphicsView</class>
+   <extends>QGraphicsView</extends>
+   <header>specialgraphicsview.hpp</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -22,6 +22,7 @@ SOURCES += \
     objects.cpp \
     sizechanger.cpp \
     sizechooser.cpp \
+    specialgraphicsview.cpp \
     usagefacade.cpp
 
 HEADERS += \
@@ -31,6 +32,7 @@ HEADERS += \
     objects.hpp \
     sizechanger.hpp \
     sizechooser.hpp \
+    specialgraphicsview.hpp \
     usagefacade.hpp
 
 FORMS += \

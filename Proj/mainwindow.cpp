@@ -3,9 +3,14 @@
 
 #include "QDebug"
 #include <QErrorMessage>
+#include <QShortcut>
+#include <QTimer>
+
+#include "config.hpp"
 
 #include "sizechanger.hpp"
 #include "sizechooser.hpp"
+#include "specialgraphicsview.hpp"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -63,9 +68,69 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    QWidget::connect(ui->graphicsView, SIGNAL(sendMouse(size_t, size_t)), this, SLOT(getMouseEvent(size_t, size_t)));
+
+    QShortcut *shortcutDown = new QShortcut(QKeySequence("down"), this);
+    QObject::connect(shortcutDown, SIGNAL(activated()), this, SLOT(pictureDown()));
+
+    QShortcut *shortcutUp = new QShortcut(QKeySequence("up"), this);
+    QObject::connect(shortcutUp, SIGNAL(activated()), this, SLOT(pictureUp()));
+
+    QShortcut *shortcutLeft = new QShortcut(QKeySequence("left"), this);
+    QObject::connect(shortcutLeft, SIGNAL(activated()), this, SLOT(pictureLeft()));
+
+    QShortcut *shortcutRight = new QShortcut(QKeySequence("right"), this);
+    QObject::connect(shortcutRight, SIGNAL(activated()), this, SLOT(pictureRight()));
 }
 
+//void MainWindow::updateScene()
+//{
+//    ui->graphicsView->scene()->clear();
+//    ui->graphicsView->scene()->addPixmap(QPixmap("img.bmp"));
+//    ui->graphicsView->show();
+//    qDebug("UPD");
+//    QTimer::singleShot(26, this, SLOT(updateScene()));
+//}
+
 MainWindow::~MainWindow() { delete ui; }
+
+void MainWindow::getMouseEvent(size_t x_, size_t y_)
+{
+    qDebug() << "Приняли ивент:" << x_ << y_ << '\n';
+}
+
+void MainWindow::pictureDown()
+{
+    qDebug() << "Крутим вниз";
+    QGraphicsScene *setScene = facade->moveDownScene(MOVE_UNIT, ui->graphicsView->rect());
+
+    ui->graphicsView->setScene(setScene);
+}
+
+void MainWindow::pictureUp()
+{
+    qDebug() << "Крутим вверх";
+    QGraphicsScene *setScene = facade->moveUpScene(MOVE_UNIT, ui->graphicsView->rect());
+
+    ui->graphicsView->setScene(setScene);
+}
+
+void MainWindow::pictureLeft()
+{
+    qDebug() << "Крутим влево";
+    QGraphicsScene *setScene = facade->moveLeftScene(MOVE_UNIT, ui->graphicsView->rect());
+
+    ui->graphicsView->setScene(setScene);
+}
+
+void MainWindow::pictureRight()
+{
+    qDebug() << "Крутим вправо";
+    QGraphicsScene *setScene = facade->moveRightScene(MOVE_UNIT, ui->graphicsView->rect());
+
+    ui->graphicsView->setScene(setScene);
+}
 
 void MainWindow::on_pushButton_4_clicked()
 {
@@ -84,6 +149,7 @@ void MainWindow::on_pushButton_4_clicked()
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
     ui->graphicsView->setScene(setScene);
+//    QTimer::singleShot(26, this, SLOT(updateScene()));
 }
 
 void MainWindow::on_pushButton_5_clicked()

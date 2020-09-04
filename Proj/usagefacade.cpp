@@ -38,6 +38,46 @@ QGraphicsScene *UsageFacade::drawScene(QRectF rect)
     return retScene;
 }
 
+QGraphicsScene *UsageFacade::moveUpScene(double value, QRectF rect)
+{
+    scene->moveUp(value);
+    QGraphicsScene *retScene = nullptr;
+    if (isSceneSet())
+        retScene = drawer->drawScene(scene, rect);
+
+    return retScene;
+}
+
+QGraphicsScene *UsageFacade::moveDownScene(double value, QRectF rect)
+{
+    scene->moveDown(value);
+    QGraphicsScene *retScene = nullptr;
+    if (isSceneSet())
+        retScene = drawer->drawScene(scene, rect);
+
+    return retScene;
+}
+
+QGraphicsScene *UsageFacade::moveRightScene(double value, QRectF rect)
+{
+    scene->moveRight(value);
+    QGraphicsScene *retScene = nullptr;
+    if (isSceneSet())
+        retScene = drawer->drawScene(scene, rect);
+
+    return retScene;
+}
+
+QGraphicsScene *UsageFacade::moveLeftScene(double value, QRectF rect)
+{
+    scene->moveLeft(value);
+    QGraphicsScene *retScene = nullptr;
+    if (isSceneSet())
+        retScene = drawer->drawScene(scene, rect);
+
+    return retScene;
+}
+
 void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
 {
     depthBuffer.erase(depthBuffer.begin(), depthBuffer.end());
@@ -213,7 +253,7 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     using namespace std::chrono;
     milliseconds start =
     duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-    zBufferAlg(scene, rect.size().width(), rect.size().height());
+    zBufferAlg(scene, rect.size().height(), rect.size().width());
     milliseconds end =
     duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 
@@ -223,84 +263,105 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     outScene->setSceneRect(rect);
 
     QPen blackPen(Qt::black);
-    QPen redPen(Qt::red);
+//    QPen redPen(Qt::red);
 
     start = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 
-    int w = rect.size().width();  /* Put here what ever width you want */
-    int h = rect.size().height(); /* Put here what ever height you want */
+//    int w = rect.size().width();  /* Put here what ever width you want */
+//    int h = rect.size().height(); /* Put here what ever height you want */
 
-    FILE *f;
-    unsigned char *img = NULL;
-    int filesize = 54 + 3 * w * h; // w is your image width, h is image height, both int
-    if (img)
-        free(img);
-    img = (unsigned char *) malloc(3 * w * h);
-    int x;
-    int y;
+//    FILE *f;
+//    unsigned char *img = NULL;
+//    int filesize = 54 + 3 * w * h; // w is your image width, h is image height, both int
+//    if (img)
+//        free(img);
+//    img = (unsigned char *) malloc(3 * w * h);
+//    int x;
+//    int y;
 
-    for (int i = 0; i < w; i++)
-    {
-        for (int j = 0; j < h; j++)
-        {
-            x = i;
-            y = (h - 1) - j;
-            if (frameBuffer.at(i).at(h - 1 - j) == 1 || frameBuffer.at(i).at(h - 1 - j) == 0)
+//    for (int i = 0; i < w; i++)
+//    {
+//        for (int j = 0; j < h; j++)
+//        {
+//            x = i;
+//            y = (h - 1) - j;
+//            if (frameBuffer.at(i).at(h - 1 - j) == 1 || frameBuffer.at(i).at(h - 1 - j) == 0)
+//            {
+//                img[(x + y * w) * 3 + 2] = (unsigned char) (255);
+//                img[(x + y * w) * 3 + 1] = (unsigned char) (255);
+//                img[(x + y * w) * 3 + 0] = (unsigned char) (255);
+//            }
+//            else
+//            {
+//                img[(x + y * w) * 3 + 2] = (unsigned char) (0);
+//                img[(x + y * w) * 3 + 1] = (unsigned char) (0);
+//                img[(x + y * w) * 3 + 0] = (unsigned char) (0);
+//            }
+//        }
+//    }
+
+//    unsigned char bmpfileheader[14] = {'B', 'M', 0, 0, 0, 0, 0, 0, 0, 0, 54, 0, 0, 0};
+//    unsigned char bmpinfoheader[40] = {40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 24, 0};
+//    unsigned char bmppad[3] = {0, 0, 0};
+
+//    bmpfileheader[2] = (unsigned char) (filesize);
+//    bmpfileheader[3] = (unsigned char) (filesize >> 8);
+//    bmpfileheader[4] = (unsigned char) (filesize >> 16);
+//    bmpfileheader[5] = (unsigned char) (filesize >> 24);
+
+//    bmpinfoheader[4] = (unsigned char) (w);
+//    bmpinfoheader[5] = (unsigned char) (w >> 8);
+//    bmpinfoheader[6] = (unsigned char) (w >> 16);
+//    bmpinfoheader[7] = (unsigned char) (w >> 24);
+//    bmpinfoheader[8] = (unsigned char) (h);
+//    bmpinfoheader[9] = (unsigned char) (h >> 8);
+//    bmpinfoheader[10] = (unsigned char) (h >> 16);
+//    bmpinfoheader[11] = (unsigned char) (h >> 24);
+
+//    f = fopen("img.bmp", "wt");
+//    if (f)
+//        qDebug() << "ОНО ОТКРЫЛОСЬ";
+//    fwrite(bmpfileheader, 1, 14, f);
+//    fwrite(bmpinfoheader, 1, 40, f);
+//    for (int i = 0; i < h; i++)
+//    {
+//        fwrite(img + (w * (h - i - 1) * 3), 3, w, f);
+//        fwrite(bmppad, 1, (4 - (w * 3) % 4) % 4, f);
+//    }
+
+//    fclose(f);
+//    outScene->addPixmap(QPixmap("img.bmp"));
+
+    qDebug() << rect.size().height() << rect.size().width();
+
+    QImage *image = new QImage(rect.size().height(), rect.size().width(), QImage::Format_RGB32);
+    image->fill(Qt::white);
+    uint whiteCol = qRgb(255, 255, 255);
+    uint blackCol = qRgb(0, 0, 0);
+
+    for (size_t i = 0; i < rect.size().height(); i++)
+        for (size_t j = 0; j < rect.size().width(); j++)
+            if (frameBuffer.at(i).at(j) == 1)
             {
-                img[(x + y * w) * 3 + 2] = (unsigned char) (255);
-                img[(x + y * w) * 3 + 1] = (unsigned char) (255);
-                img[(x + y * w) * 3 + 0] = (unsigned char) (255);
+                image->setPixel(i, j, whiteCol);
+//                int z = 0;
+//                for (; z < rect.size().width() && frameBuffer.at(i).at(j + z) == 1; z++) {}
+//                outScene->addLine(i, j, i, j + z - 1, redPen);
+//                j += z - 1;
             }
-            else
+            else if (frameBuffer.at(i).at(j) == 2)
             {
-                img[(x + y * w) * 3 + 2] = (unsigned char) (0);
-                img[(x + y * w) * 3 + 1] = (unsigned char) (0);
-                img[(x + y * w) * 3 + 0] = (unsigned char) (0);
+                image->setPixel(i, j, blackCol);
+//                int z = 0;
+//                for (; z < rect.size().width() && frameBuffer.at(i).at(j + z) == 2; z++) {}
+//                outScene->addLine(i, j, i, j + z - 1, blackPen);
+//                j += z - 1;
             }
-        }
-    }
-
-    unsigned char bmpfileheader[14] = {'B', 'M', 0, 0, 0, 0, 0, 0, 0, 0, 54, 0, 0, 0};
-    unsigned char bmpinfoheader[40] = {40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 24, 0};
-    unsigned char bmppad[3] = {0, 0, 0};
-
-    bmpfileheader[2] = (unsigned char) (filesize);
-    bmpfileheader[3] = (unsigned char) (filesize >> 8);
-    bmpfileheader[4] = (unsigned char) (filesize >> 16);
-    bmpfileheader[5] = (unsigned char) (filesize >> 24);
-
-    bmpinfoheader[4] = (unsigned char) (w);
-    bmpinfoheader[5] = (unsigned char) (w >> 8);
-    bmpinfoheader[6] = (unsigned char) (w >> 16);
-    bmpinfoheader[7] = (unsigned char) (w >> 24);
-    bmpinfoheader[8] = (unsigned char) (h);
-    bmpinfoheader[9] = (unsigned char) (h >> 8);
-    bmpinfoheader[10] = (unsigned char) (h >> 16);
-    bmpinfoheader[11] = (unsigned char) (h >> 24);
-
-    f = fopen("img.bmp", "wb");
-    fwrite(bmpfileheader, 1, 14, f);
-    fwrite(bmpinfoheader, 1, 40, f);
-    for (int i = 0; i < h; i++)
-    {
-        fwrite(img + (w * (h - i - 1) * 3), 3, w, f);
-        fwrite(bmppad, 1, (4 - (w * 3) % 4) % 4, f);
-    }
-    fclose(f);
-
-    //    for (size_t i = 0; i < rect.size().width(); i++)
-    //        for (size_t j = 0; j < rect.size().height(); j++)
-    //            if (frameBuffer.at(i).at(j) == 1)
-    //                outScene->addLine(i, j, i, j, redPen);
-    //            else if (frameBuffer.at(i).at(j) == 2)
-    //                outScene->addLine(i, j, i, j, blackPen);
     end = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-    outScene->addPixmap(QPixmap("img.bmp"));
     qDebug() << "Time for drawing" << (end - start).count();
+    outScene->addPixmap(QPixmap::fromImage(*image));
+    delete image;
     //    qDebug() <<
     //    QPixmap("C:/Users/dobri/Desktop/FirstCurseWork/Proj/imgs/smert.jpg");
-    ///! Если в один момент мне станет очень грустно, я соберусь с силами и буду собирать
-    ///свой личный png файл, который потом буду ставить сюда.
-    /// И дело тут не в том, что мне это надо, я просто чётко чую, что я, ***, должен.
     return outScene;
 }

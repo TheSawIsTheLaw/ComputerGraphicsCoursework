@@ -78,6 +78,8 @@ public:
     CellScene();
     CellScene(size_t width_, size_t length_);
 
+    operator bool() const;
+
     size_t getWidth();
     size_t getLength();
 
@@ -91,6 +93,11 @@ public:
     const PolModel &getPlateModel();
 
     void changeSize(size_t newWidth, size_t newLength);
+
+    void moveUp(double value);
+    void moveDown(double value);
+    void moveLeft(double value);
+    void moveRight(double value);
 
 private:
     size_t width, length;
