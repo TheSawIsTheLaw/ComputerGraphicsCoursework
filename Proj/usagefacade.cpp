@@ -334,7 +334,7 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
 
     qDebug() << rect.size().height() << rect.size().width();
 
-    QImage *image = new QImage(rect.size().height(), rect.size().width(), QImage::Format_RGB32);
+    QImage *image = new QImage(rect.size().width(), rect.size().height(), QImage::Format_RGB32);
     image->fill(Qt::white);
     uint whiteCol = qRgb(255, 255, 255);
     uint blackCol = qRgb(0, 0, 0);
