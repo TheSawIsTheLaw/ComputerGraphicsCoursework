@@ -2,9 +2,10 @@
 #define CONFIG_HPP
 
 #define SCALE_FACTOR 100
-#define PLATE_START 10, 10, 10
-#define PLATE_Z 10
+#define PLATE_START 10, 10, 800
+#define PLATE_Z 800
 
 #define MOVE_UNIT 50
+#define ROTATE_UNIT 3.14159265358979323846 / 18
 
 #endif // CONFIG_HPP

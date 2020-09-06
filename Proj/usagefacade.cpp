@@ -78,6 +78,16 @@ QGraphicsScene *UsageFacade::moveLeftScene(double value, QRectF rect)
     return retScene;
 }
 
+QGraphicsScene *UsageFacade::rotateXScene(double angle, QRectF rect)
+{
+    scene->rotateX(angle);
+    QGraphicsScene *retScene = nullptr;
+    if (isSceneSet())
+        retScene = drawer->drawScene(scene, rect);
+
+    return retScene;
+}
+
 void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
 {
     depthBuffer.erase(depthBuffer.begin(), depthBuffer.end());

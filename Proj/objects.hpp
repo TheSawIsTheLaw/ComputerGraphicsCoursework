@@ -99,6 +99,8 @@ public:
     void moveLeft(double value);
     void moveRight(double value);
 
+    void rotateX(double angle);
+
 private:
     size_t width, length;
 

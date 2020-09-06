@@ -36,6 +36,9 @@ private slots:
     void pictureLeft();
     void pictureRight();
 
+    void pictureRotateXRight();
+    void pictureRotateXLeft();
+
 private:
     Ui::MainWindow *ui;
     UsageFacade *facade;

@@ -82,6 +82,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     QShortcut *shortcutRight = new QShortcut(QKeySequence("right"), this);
     QObject::connect(shortcutRight, SIGNAL(activated()), this, SLOT(pictureRight()));
+
+    QShortcut *shortcutRotateRight = new QShortcut(QKeySequence("s"), this);
+    QObject::connect(shortcutRotateRight, SIGNAL(activated()), this, SLOT(pictureRotateXRight()));
+
+    QShortcut *shortcutRotateLeft = new QShortcut(QKeySequence("w"), this);
+    QObject::connect(shortcutRotateLeft, SIGNAL(activated()), this, SLOT(pictureRotateXLeft()));
 }
 
 //void MainWindow::updateScene()
@@ -128,6 +134,22 @@ void MainWindow::pictureRight()
 {
     qDebug() << "Крутим вправо";
     QGraphicsScene *setScene = facade->moveRightScene(MOVE_UNIT, ui->graphicsView->rect());
+
+    ui->graphicsView->setScene(setScene);
+}
+
+void MainWindow::pictureRotateXRight()
+{
+    qDebug() << "Вертим по Х";
+    QGraphicsScene * setScene = facade->rotateXScene(ROTATE_UNIT, ui->graphicsView->rect());
+
+    ui->graphicsView->setScene(setScene);
+}
+
+void MainWindow::pictureRotateXLeft()
+{
+    qDebug() << "Вертим по Х";
+    QGraphicsScene *setScene = facade->rotateXScene(-ROTATE_UNIT, ui->graphicsView->rect());
 
     ui->graphicsView->setScene(setScene);
 }
