@@ -127,7 +127,7 @@ void CellScene::rotateX(double angle)
          iter++)
     {
         curDot = iter->getPosition();
-        curDot.rotateX(angle, length / 2, width / 2, PLATE_Z);
+        curDot.rotateX(angle, 785, 520, PLATE_Z);
         iter->setPosition(curDot);
     }
     qDebug() << "После";
@@ -145,7 +145,7 @@ void CellScene::rotateY(double angle)
          iter++)
     {
         curDot = iter->getPosition();
-        curDot.rotateY(angle, length / 2, width / 2, PLATE_Z);
+        curDot.rotateY(angle, 785, 520, PLATE_Z);
         iter->setPosition(curDot);
     }
 
