@@ -137,6 +137,21 @@ void CellScene::rotateX(double angle)
     plateModel->setVertices(vertices);
 }
 
+void CellScene::rotateY(double angle)
+{
+    Dot3D curDot;
+    std::vector<Vertex> vertices = plateModel->getVertices();
+    for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
+         iter++)
+    {
+        curDot = iter->getPosition();
+        curDot.rotateY(angle, length / 2, width / 2, PLATE_Z);
+        iter->setPosition(curDot);
+    }
+
+    plateModel->setVertices(vertices);
+}
+
 const PolModel &CellScene::getPlateModel() { return *plateModel; }
 
 const Dot3D CellScene::getStartOfPlate() { return startOfPlate; }

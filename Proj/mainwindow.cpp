@@ -83,11 +83,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     QShortcut *shortcutRight = new QShortcut(QKeySequence("right"), this);
     QObject::connect(shortcutRight, SIGNAL(activated()), this, SLOT(pictureRight()));
 
-    QShortcut *shortcutRotateRight = new QShortcut(QKeySequence("s"), this);
-    QObject::connect(shortcutRotateRight, SIGNAL(activated()), this, SLOT(pictureRotateXRight()));
+    QShortcut *shortcutRotateXRight = new QShortcut(QKeySequence("s"), this);
+    QObject::connect(shortcutRotateXRight, SIGNAL(activated()), this, SLOT(pictureRotateXRight()));
 
-    QShortcut *shortcutRotateLeft = new QShortcut(QKeySequence("w"), this);
-    QObject::connect(shortcutRotateLeft, SIGNAL(activated()), this, SLOT(pictureRotateXLeft()));
+    QShortcut *shortcutRotateXLeft = new QShortcut(QKeySequence("w"), this);
+    QObject::connect(shortcutRotateXLeft, SIGNAL(activated()), this, SLOT(pictureRotateXLeft()));
+
+    QShortcut *shortcutRotateYRight = new QShortcut(QKeySequence("d"), this);
+    QObject::connect(shortcutRotateYRight, SIGNAL(activated()), this, SLOT(pictureRotateYRight()));
+
+    QShortcut *shortcutRotateYLeft = new QShortcut(QKeySequence("a"), this);
+    QObject::connect(shortcutRotateYLeft, SIGNAL(activated()), this, SLOT(pictureRotateYLeft()));
 }
 
 //void MainWindow::updateScene()
@@ -150,6 +156,22 @@ void MainWindow::pictureRotateXLeft()
 {
     qDebug() << "Вертим по Х";
     QGraphicsScene *setScene = facade->rotateXScene(-ROTATE_UNIT, ui->graphicsView->rect());
+
+    ui->graphicsView->setScene(setScene);
+}
+
+void MainWindow::pictureRotateYRight()
+{
+    qDebug() << "Вертим по Y";
+    QGraphicsScene *setScene = facade->rotateYScene(ROTATE_UNIT, ui->graphicsView->rect());
+
+    ui->graphicsView->setScene(setScene);
+}
+
+void MainWindow::pictureRotateYLeft()
+{
+    qDebug() << "Вертим по Y";
+    QGraphicsScene *setScene = facade->rotateYScene(-ROTATE_UNIT, ui->graphicsView->rect());
 
     ui->graphicsView->setScene(setScene);
 }

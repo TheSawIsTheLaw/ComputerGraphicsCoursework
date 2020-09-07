@@ -32,6 +32,7 @@ public:
     QGraphicsScene *moveRightScene(double value, QRectF rect);
 
     QGraphicsScene *rotateXScene(double angle, QRectF rect);
+    QGraphicsScene *rotateYScene(double angle, QRectF rect);
 
 private:
     CellScene *scene;

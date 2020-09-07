@@ -38,6 +38,8 @@ private slots:
 
     void pictureRotateXRight();
     void pictureRotateXLeft();
+    void pictureRotateYRight();
+    void pictureRotateYLeft();
 
 private:
     Ui::MainWindow *ui;
