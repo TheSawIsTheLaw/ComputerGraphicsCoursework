@@ -152,7 +152,7 @@ void CellScene::rotateY(double angle)
     plateModel->setVertices(vertices);
 }
 
-const PolModel &CellScene::getPlateModel() { return *plateModel; }
+PolModel &CellScene::getPlateModel() { return *plateModel; }
 
 const Dot3D CellScene::getStartOfPlate() { return startOfPlate; }
 

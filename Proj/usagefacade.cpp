@@ -202,7 +202,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
                 // ПОЧЕМУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУ
             }
             double curZ = zA + (zB - zA) * (round(xB) - xA) / (xB - xA);
-            if (curZ > depthBuffer[round(xB)][curY])
+            if (curZ >= depthBuffer[round(xB)][curY])
             {
                 depthBuffer[round(xB)][curY] = curZ;
                 frameBuffer[round(xB)][curY] = 2;
@@ -254,7 +254,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
                 }
             }
             double curZ = zA + (zB - zA) * (round(xB) - xA) / (xB - xA);
-            if (curZ > depthBuffer[round(xB)][curY])
+            if (curZ >= depthBuffer[round(xB)][curY])
             {
                 depthBuffer[round(xB)][curY] = curZ;
                 frameBuffer[round(xB)][curY] = 2;
@@ -356,7 +356,7 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
 
     QImage *image = new QImage(rect.size().width(), rect.size().height(), QImage::Format_RGB32);
     image->fill(Qt::white);
-    uint whiteCol = qRgb(255, 255, 255);
+    uint whiteCol = qRgb(255, 150, 255);
     uint blackCol = qRgb(0, 0, 0);
 
     for (size_t i = 0; i < rect.size().height(); i++)
