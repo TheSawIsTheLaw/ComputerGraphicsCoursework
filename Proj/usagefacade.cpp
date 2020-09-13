@@ -98,7 +98,160 @@ QGraphicsScene *UsageFacade::rotateYScene(double angle, QRectF rect)
     return retScene;
 }
 
-void Drawer::zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices)
+void UsageFacade::addTable()
+{
+    std::vector<Vertex> vertices;
+    std::vector<Facet> facets;
+
+    // Нижняя площадка
+    Dot3D dot(50, 50, 801);
+    std::vector<size_t> vec = {0};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot.setYCoordinate(90);
+    vec = {0, 1};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot.setXCoordinate(90);
+    vec = {0};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot.setYCoordinate(50);
+    vec = {0, 1};
+    vertices.push_back(Vertex(dot, vec));
+
+    // *Стержень*
+    // Верх
+    dot.setXCoordinate(60);
+    dot.setYCoordinate(60);
+    vec = {2, 3};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot.setXCoordinate(80);
+    vec = {2};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot.setZCoordinate(750);
+    vec = {2, 3};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot.setXCoordinate(60);
+    vec = {3};
+    vertices.push_back(Vertex(dot, vec));
+
+    // Лево
+    dot.setZCoordinate(801);
+    vec = {4, 5};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot.setYCoordinate(80);
+    vec = {4};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot.setZCoordinate(750);
+    vec = {4, 5};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot.setYCoordinate(60);
+    vec = {5};
+    vertices.push_back(Vertex(dot, vec));
+
+    // Низ
+    dot.setZCoordinate(801);
+    dot.setYCoordinate(80);
+    vec = {6, 7};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot.setXCoordinate(80);
+    vec = {6};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot.setZCoordinate(750);
+    vec = {6, 7};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot.setXCoordinate(60);
+    vec = {7};
+    vertices.push_back(Vertex(dot, vec));
+
+    // Право
+    dot.setZCoordinate(801);
+    dot.setXCoordinate(80);
+    vec = {8, 9};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot.setYCoordinate(60);
+    vec = {8};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot.setZCoordinate(750);
+    vec = {8, 9};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot.setYCoordinate(80);
+    vec = {9};
+    vertices.push_back(Vertex(dot, vec));
+
+    // Столешница
+    dot.setXCoordinate(20);
+    dot.setYCoordinate(90);
+    vec = {10, 11};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot.setXCoordinate(90);
+    vec = {10};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot.setYCoordinate(20);
+    vec = {10, 11};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot.setXCoordinate(20);
+    vec = {11};
+    vertices.push_back(Vertex(dot, vec));
+
+    vec = {0, 1, 2}; // 0
+    facets.push_back(vec);
+
+    vec = {1, 2, 3}; // 1
+    facets.push_back(vec);
+
+    vec = {4, 5, 6}; // 2
+    facets.push_back(vec);
+
+    vec = {4, 6, 7}; // 3
+    facets.push_back(vec);
+
+    vec = {8, 9, 10}; // 4
+    facets.push_back(vec);
+
+    vec = {8, 10, 11}; // 5
+    facets.push_back(vec);
+
+    vec = {12, 13, 14}; // 6
+    facets.push_back(vec);
+
+    vec = {12, 14, 15}; // 7
+    facets.push_back(vec);
+
+    vec = {16, 17, 18}; // 8
+    facets.push_back(vec);
+
+    vec = {16, 18, 19}; // 9
+    facets.push_back(vec);
+
+    vec = {20, 21, 22}; // 10
+    facets.push_back(vec);
+
+    vec = {20, 22, 23}; // 11
+    facets.push_back(vec);
+
+    PolModel tableModel(vertices, facets);
+    qDebug() << "Прошли через создание стола";
+    scene->addModel(tableModel);
+}
+
+void Drawer::zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices, size_t color)
 {
     std::array<Dot3D, 3> dotsArr;
     for (std::vector<Facet>::iterator iter = facets.begin(); iter != facets.end(); iter++)
@@ -150,7 +303,7 @@ void Drawer::zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &verti
                 depthBuffer[round(xA)][curY] = zA;
                 frameBuffer[round(xA)][curY] = 2;
             }
-            int curCol = 1;
+            int curCol = color;
             if (curY == round(dotsArr[0].getYCoordinate()))
             {
                 curCol = 2;
@@ -202,7 +355,7 @@ void Drawer::zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &verti
                 depthBuffer[round(xA)][curY] = zA;
                 frameBuffer[round(xA)][curY] = 2;
             }
-            int curCol = 1;
+            int curCol = color;
             if (curY == round(dotsArr[2].getYCoordinate()))
                 curCol = 2;
             for (int curX = round(xA) + 1; curX < round(xB); curX++)
@@ -241,14 +394,16 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
     PolModel model = scene->getPlateModel();
     std::vector<Facet> facets = model.getFacets();
     std::vector<Vertex> vertices = model.getVertices();
-    zBufForModel(facets, vertices);
+    zBufForModel(facets, vertices, 1);
 
+    qDebug() << "Моделей на сцене:" << scene->getModelsNum();
     for (size_t i = 0; i < scene->getModelsNum(); i++)
     {
+        qDebug() << "Нашли дополнитульную модель";
         model = scene->getModel(i);
         facets = model.getFacets();
         vertices = model.getVertices();
-        zBufForModel(facets, vertices);
+        zBufForModel(facets, vertices, 3);
     }
 }
 
@@ -272,99 +427,106 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     outScene->setSceneRect(rect);
 
     QPen blackPen(Qt::black);
-//    QPen redPen(Qt::red);
+    //    QPen redPen(Qt::red);
 
     start = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 
-//    int w = rect.size().width();  /* Put here what ever width you want */
-//    int h = rect.size().height(); /* Put here what ever height you want */
+    //    int w = rect.size().width();  /* Put here what ever width you want */
+    //    int h = rect.size().height(); /* Put here what ever height you want */
 
-//    FILE *f;
-//    unsigned char *img = NULL;
-//    int filesize = 54 + 3 * w * h; // w is your image width, h is image height, both int
-//    if (img)
-//        free(img);
-//    img = (unsigned char *) malloc(3 * w * h);
-//    int x;
-//    int y;
+    //    FILE *f;
+    //    unsigned char *img = NULL;
+    //    int filesize = 54 + 3 * w * h; // w is your image width, h is image height, both
+    //    int if (img)
+    //        free(img);
+    //    img = (unsigned char *) malloc(3 * w * h);
+    //    int x;
+    //    int y;
 
-//    for (int i = 0; i < w; i++)
-//    {
-//        for (int j = 0; j < h; j++)
-//        {
-//            x = i;
-//            y = (h - 1) - j;
-//            if (frameBuffer.at(i).at(h - 1 - j) == 1 || frameBuffer.at(i).at(h - 1 - j) == 0)
-//            {
-//                img[(x + y * w) * 3 + 2] = (unsigned char) (255);
-//                img[(x + y * w) * 3 + 1] = (unsigned char) (255);
-//                img[(x + y * w) * 3 + 0] = (unsigned char) (255);
-//            }
-//            else
-//            {
-//                img[(x + y * w) * 3 + 2] = (unsigned char) (0);
-//                img[(x + y * w) * 3 + 1] = (unsigned char) (0);
-//                img[(x + y * w) * 3 + 0] = (unsigned char) (0);
-//            }
-//        }
-//    }
+    //    for (int i = 0; i < w; i++)
+    //    {
+    //        for (int j = 0; j < h; j++)
+    //        {
+    //            x = i;
+    //            y = (h - 1) - j;
+    //            if (frameBuffer.at(i).at(h - 1 - j) == 1 || frameBuffer.at(i).at(h - 1 -
+    //            j) == 0)
+    //            {
+    //                img[(x + y * w) * 3 + 2] = (unsigned char) (255);
+    //                img[(x + y * w) * 3 + 1] = (unsigned char) (255);
+    //                img[(x + y * w) * 3 + 0] = (unsigned char) (255);
+    //            }
+    //            else
+    //            {
+    //                img[(x + y * w) * 3 + 2] = (unsigned char) (0);
+    //                img[(x + y * w) * 3 + 1] = (unsigned char) (0);
+    //                img[(x + y * w) * 3 + 0] = (unsigned char) (0);
+    //            }
+    //        }
+    //    }
 
-//    unsigned char bmpfileheader[14] = {'B', 'M', 0, 0, 0, 0, 0, 0, 0, 0, 54, 0, 0, 0};
-//    unsigned char bmpinfoheader[40] = {40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 24, 0};
-//    unsigned char bmppad[3] = {0, 0, 0};
+    //    unsigned char bmpfileheader[14] = {'B', 'M', 0, 0, 0, 0, 0, 0, 0, 0, 54, 0, 0,
+    //    0}; unsigned char bmpinfoheader[40] = {40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    //    0, 24, 0}; unsigned char bmppad[3] = {0, 0, 0};
 
-//    bmpfileheader[2] = (unsigned char) (filesize);
-//    bmpfileheader[3] = (unsigned char) (filesize >> 8);
-//    bmpfileheader[4] = (unsigned char) (filesize >> 16);
-//    bmpfileheader[5] = (unsigned char) (filesize >> 24);
+    //    bmpfileheader[2] = (unsigned char) (filesize);
+    //    bmpfileheader[3] = (unsigned char) (filesize >> 8);
+    //    bmpfileheader[4] = (unsigned char) (filesize >> 16);
+    //    bmpfileheader[5] = (unsigned char) (filesize >> 24);
 
-//    bmpinfoheader[4] = (unsigned char) (w);
-//    bmpinfoheader[5] = (unsigned char) (w >> 8);
-//    bmpinfoheader[6] = (unsigned char) (w >> 16);
-//    bmpinfoheader[7] = (unsigned char) (w >> 24);
-//    bmpinfoheader[8] = (unsigned char) (h);
-//    bmpinfoheader[9] = (unsigned char) (h >> 8);
-//    bmpinfoheader[10] = (unsigned char) (h >> 16);
-//    bmpinfoheader[11] = (unsigned char) (h >> 24);
+    //    bmpinfoheader[4] = (unsigned char) (w);
+    //    bmpinfoheader[5] = (unsigned char) (w >> 8);
+    //    bmpinfoheader[6] = (unsigned char) (w >> 16);
+    //    bmpinfoheader[7] = (unsigned char) (w >> 24);
+    //    bmpinfoheader[8] = (unsigned char) (h);
+    //    bmpinfoheader[9] = (unsigned char) (h >> 8);
+    //    bmpinfoheader[10] = (unsigned char) (h >> 16);
+    //    bmpinfoheader[11] = (unsigned char) (h >> 24);
 
-//    f = fopen("img.bmp", "wt");
-//    if (f)
-//        qDebug() << "ОНО ОТКРЫЛОСЬ";
-//    fwrite(bmpfileheader, 1, 14, f);
-//    fwrite(bmpinfoheader, 1, 40, f);
-//    for (int i = 0; i < h; i++)
-//    {
-//        fwrite(img + (w * (h - i - 1) * 3), 3, w, f);
-//        fwrite(bmppad, 1, (4 - (w * 3) % 4) % 4, f);
-//    }
+    //    f = fopen("img.bmp", "wt");
+    //    if (f)
+    //        qDebug() << "ОНО ОТКРЫЛОСЬ";
+    //    fwrite(bmpfileheader, 1, 14, f);
+    //    fwrite(bmpinfoheader, 1, 40, f);
+    //    for (int i = 0; i < h; i++)
+    //    {
+    //        fwrite(img + (w * (h - i - 1) * 3), 3, w, f);
+    //        fwrite(bmppad, 1, (4 - (w * 3) % 4) % 4, f);
+    //    }
 
-//    fclose(f);
-//    outScene->addPixmap(QPixmap("img.bmp"));
+    //    fclose(f);
+    //    outScene->addPixmap(QPixmap("img.bmp"));
 
     qDebug() << rect.size().height() << rect.size().width();
 
-    QImage *image = new QImage(rect.size().width(), rect.size().height(), QImage::Format_RGB32);
+    QImage *image =
+    new QImage(rect.size().width(), rect.size().height(), QImage::Format_RGB32);
     image->fill(Qt::white);
     uint whiteCol = qRgb(255, 150, 255);
     uint blackCol = qRgb(0, 0, 0);
+    uint goldCol = qRgb(255, 215, 0);
 
     for (size_t i = 0; i < rect.size().height(); i++)
         for (size_t j = 0; j < rect.size().width(); j++)
             if (frameBuffer.at(i).at(j) == 1)
             {
                 image->setPixel(i, j, whiteCol);
-//                int z = 0;
-//                for (; z < rect.size().width() && frameBuffer.at(i).at(j + z) == 1; z++) {}
-//                outScene->addLine(i, j, i, j + z - 1, redPen);
-//                j += z - 1;
+                //                int z = 0;
+                //                for (; z < rect.size().width() && frameBuffer.at(i).at(j
+                //                + z) == 1; z++) {} outScene->addLine(i, j, i, j + z - 1,
+                //                redPen); j += z - 1;
             }
             else if (frameBuffer.at(i).at(j) == 2)
             {
                 image->setPixel(i, j, blackCol);
-//                int z = 0;
-//                for (; z < rect.size().width() && frameBuffer.at(i).at(j + z) == 2; z++) {}
-//                outScene->addLine(i, j, i, j + z - 1, blackPen);
-//                j += z - 1;
+                //                int z = 0;
+                //                for (; z < rect.size().width() && frameBuffer.at(i).at(j
+                //                + z) == 2; z++) {} outScene->addLine(i, j, i, j + z - 1,
+                //                blackPen); j += z - 1;
+            }
+            else if (frameBuffer.at(i).at(j) == 3)
+            {
+                image->setPixel(i, j, goldCol);
             }
     end = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
     qDebug() << "Time for drawing" << (end - start).count();

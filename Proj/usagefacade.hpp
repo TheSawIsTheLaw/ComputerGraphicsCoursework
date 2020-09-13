@@ -8,7 +8,7 @@ class Drawer
 {
 public:
     void zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth);
-    void zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices);
+    void zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices, size_t color);
     QGraphicsScene *drawScene(CellScene *scene, QRectF rect);
 
 private:
@@ -26,6 +26,8 @@ public:
     bool isSceneSet();
 
     QGraphicsScene *drawScene(QRectF rect);
+
+    void addTable();
 
     QGraphicsScene *moveUpScene(double value, QRectF rect);
     QGraphicsScene *moveDownScene(double value, QRectF rect);

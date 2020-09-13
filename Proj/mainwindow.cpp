@@ -215,4 +215,15 @@ void MainWindow::on_pushButton_clicked()
     int curRow = this->ui->listWidget->currentRow();
     if (curRow < 0)
         return;
+
+    if (curRow == 0)
+        facade->addTable();
+
+    QGraphicsScene *setScene = facade->drawScene(ui->graphicsView->rect());
+
+    if (ui->graphicsView->scene())
+        delete ui->graphicsView->scene();
+    ui->graphicsView->setScene(setScene);
+
+    qDebug() << "Добавили стол...";
 }

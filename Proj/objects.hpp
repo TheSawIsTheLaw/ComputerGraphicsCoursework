@@ -9,7 +9,7 @@ class Vertex
 {
 public:
     Vertex() {}
-    Vertex(Dot3D &position_, std::vector<size_t> usedFacets_)
+    Vertex(Dot3D &position_, std::vector<size_t> &usedFacets_)
     : position(position_), usedFacets(usedFacets_)
     {
     }
@@ -49,7 +49,7 @@ public:
     }
 
     const std::vector<Vertex> getVertices();
-    void setVertices(std::vector<Vertex> vertices_);
+    void setVertices(std::vector<Vertex> &vertices_);
     const std::vector<Facet> getFacets();
     void setFacets(std::vector<Facet> facets_);
 
@@ -104,6 +104,7 @@ public:
 
     size_t getModelsNum();
     PolModel &getModel(size_t num);
+    void addModel(PolModel &model);
 
     size_t getIllumNum();
     Illuminant &getIlluminant(size_t num);
@@ -114,7 +115,7 @@ private:
     Dot3D startOfPlate, endOfPlate;
     PolModel *plateModel = nullptr;
 
-    size_t modelsNum;
+    size_t modelsNum = 0;
     std::vector<PolModel> models;
 
     size_t illumNum;

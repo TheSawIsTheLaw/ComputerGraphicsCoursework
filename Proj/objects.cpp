@@ -17,7 +17,7 @@ void Facet::setUsedDots(std::vector<size_t> usedDots_) { usedDots = usedDots_; }
 
 const std::vector<Vertex> PolModel::getVertices() { return vertices; }
 
-void PolModel::setVertices(std::vector<Vertex> vertices_) { vertices = vertices_; }
+void PolModel::setVertices(std::vector<Vertex> &vertices_) { vertices = vertices_; }
 
 const std::vector<Facet> PolModel::getFacets() { return facets; }
 
@@ -66,6 +66,20 @@ void CellScene::moveUp(double value)
         iter->setPosition(curDot);
     }
     plateModel->setVertices(vertices);
+
+    for (size_t i = 0; i < modelsNum; i++)
+    {
+        vertices = models.at(i).getVertices();
+        for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
+             iter++)
+        {
+            curDot = iter->getPosition();
+            curDot.move(0, -value, 0);
+            iter->setPosition(curDot);
+        }
+
+        models.at(i).setVertices(vertices);
+    }
 }
 
 void CellScene::moveDown(double value)
@@ -80,6 +94,20 @@ void CellScene::moveDown(double value)
         iter->setPosition(curDot);
     }
     plateModel->setVertices(vertices);
+
+    for (size_t i = 0; i < modelsNum; i++)
+    {
+        vertices = models.at(i).getVertices();
+        for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
+             iter++)
+        {
+            curDot = iter->getPosition();
+            curDot.move(0, value, 0);
+            iter->setPosition(curDot);
+        }
+
+        models.at(i).setVertices(vertices);
+    }
 }
 
 void CellScene::moveLeft(double value)
@@ -94,6 +122,20 @@ void CellScene::moveLeft(double value)
         iter->setPosition(curDot);
     }
     plateModel->setVertices(vertices);
+
+    for (size_t i = 0; i < modelsNum; i++)
+    {
+        vertices = models.at(i).getVertices();
+        for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
+             iter++)
+        {
+            curDot = iter->getPosition();
+            curDot.move(-value, 0, 0);
+            iter->setPosition(curDot);
+        }
+
+        models.at(i).setVertices(vertices);
+    }
 }
 
 void CellScene::moveRight(double value)
@@ -114,6 +156,20 @@ void CellScene::moveRight(double value)
     //    for (int i = 0; i < (int)vertices.size(); i++)
     //        qDebug() << vertices.at(i).getPosition();
     plateModel->setVertices(vertices);
+
+    for (size_t i = 0; i < modelsNum; i++)
+    {
+        vertices = models.at(i).getVertices();
+        for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
+             iter++)
+        {
+            curDot = iter->getPosition();
+            curDot.move(value, 0, 0);
+            iter->setPosition(curDot);
+        }
+
+        models.at(i).setVertices(vertices);
+    }
 }
 
 void CellScene::rotateX(double angle)
@@ -135,6 +191,20 @@ void CellScene::rotateX(double angle)
         qDebug() << vertices.at(i).getPosition();
 
     plateModel->setVertices(vertices);
+
+    for (size_t i = 0; i < modelsNum; i++)
+    {
+        vertices = models.at(i).getVertices();
+        for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
+             iter++)
+        {
+            curDot = iter->getPosition();
+            curDot.rotateX(angle, 785, 520, PLATE_Z);
+            iter->setPosition(curDot);
+        }
+
+        models.at(i).setVertices(vertices);
+    }
 }
 
 void CellScene::rotateY(double angle)
@@ -150,11 +220,31 @@ void CellScene::rotateY(double angle)
     }
 
     plateModel->setVertices(vertices);
+
+    for (size_t i = 0; i < modelsNum; i++)
+    {
+        vertices = models.at(i).getVertices();
+        for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
+             iter++)
+        {
+            curDot = iter->getPosition();
+            curDot.rotateY(angle, 785, 520, PLATE_Z);
+            iter->setPosition(curDot);
+        }
+
+        models.at(i).setVertices(vertices);
+    }
 }
 
 size_t CellScene::getModelsNum() { return modelsNum; }
 
 PolModel &CellScene::getModel(size_t num) { return models.at(num); }
+
+void CellScene::addModel(PolModel &model)
+{
+    modelsNum++;
+    models.push_back(model);
+}
 
 size_t CellScene::getIllumNum() { return illumNum; }
 
