@@ -124,6 +124,7 @@ void UsageFacade::addTable()
     // Верх
     dot.setXCoordinate(60);
     dot.setYCoordinate(60);
+    dot.setZCoordinate(801);
     vec = {2, 3};
     vertices.push_back(Vertex(dot, vec));
 
@@ -193,6 +194,7 @@ void UsageFacade::addTable()
     vertices.push_back(Vertex(dot, vec));
 
     // Столешница
+    dot.setZCoordinate(851);
     dot.setXCoordinate(20);
     dot.setYCoordinate(90);
     vec = {10, 11};

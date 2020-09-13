@@ -56,6 +56,8 @@ CellScene::operator bool() const { return this->plateModel; }
 
 void CellScene::moveUp(double value)
 {
+    centerDot.move(0, -value, 0);
+
     Dot3D curDot;
     std::vector<Vertex> vertices = plateModel->getVertices();
     for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
@@ -84,6 +86,8 @@ void CellScene::moveUp(double value)
 
 void CellScene::moveDown(double value)
 {
+    centerDot.move(0, value, 0);
+
     Dot3D curDot;
     std::vector<Vertex> vertices = plateModel->getVertices();
     for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
@@ -112,6 +116,8 @@ void CellScene::moveDown(double value)
 
 void CellScene::moveLeft(double value)
 {
+    centerDot.move(-value, 0, 0);
+
     Dot3D curDot;
     std::vector<Vertex> vertices = plateModel->getVertices();
     for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
@@ -140,6 +146,8 @@ void CellScene::moveLeft(double value)
 
 void CellScene::moveRight(double value)
 {
+    centerDot.move(value, 0, 0);
+
     Dot3D curDot;
     std::vector<Vertex> vertices = plateModel->getVertices();
     //    qDebug() << "До";
@@ -183,7 +191,7 @@ void CellScene::rotateX(double angle)
          iter++)
     {
         curDot = iter->getPosition();
-        curDot.rotateX(angle, 785, 520, PLATE_Z);
+        curDot.rotateX(angle, centerDot.getXCoordinate(), centerDot.getYCoordinate(), centerDot.getZCoordinate());
         iter->setPosition(curDot);
     }
     qDebug() << "После";
@@ -199,7 +207,7 @@ void CellScene::rotateX(double angle)
              iter++)
         {
             curDot = iter->getPosition();
-            curDot.rotateX(angle, 785, 520, PLATE_Z);
+            curDot.rotateX(angle, centerDot.getXCoordinate(), centerDot.getYCoordinate(), centerDot.getZCoordinate());
             iter->setPosition(curDot);
         }
 
@@ -215,7 +223,7 @@ void CellScene::rotateY(double angle)
          iter++)
     {
         curDot = iter->getPosition();
-        curDot.rotateY(angle, 785, 520, PLATE_Z);
+        curDot.rotateY(angle, centerDot.getXCoordinate(), centerDot.getYCoordinate(), centerDot.getZCoordinate());
         iter->setPosition(curDot);
     }
 
@@ -228,7 +236,7 @@ void CellScene::rotateY(double angle)
              iter++)
         {
             curDot = iter->getPosition();
-            curDot.rotateY(angle, 785, 520, PLATE_Z);
+            curDot.rotateY(angle, centerDot.getXCoordinate(), centerDot.getYCoordinate(), centerDot.getZCoordinate());
             iter->setPosition(curDot);
         }
 
@@ -270,6 +278,8 @@ void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
 
     size_t facetNum = 0;
     size_t vertexNum = 0;
+
+    centerDot = Dot3D(startOfPlate_.getXCoordinate() + endOfPlate_.getXCoordinate() / 2, startOfPlate_.getYCoordinate() + endOfPlate_.getYCoordinate() / 2, PLATE_Z);
 
     for (size_t y = startOfPlate_.getYCoordinate(); y < endOfPlate_.getYCoordinate();
          y += SCALE_FACTOR)

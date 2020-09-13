@@ -121,6 +121,8 @@ private:
     size_t illumNum;
     std::vector<Illuminant> illuminants;
 
+    Dot3D centerDot;
+
     std::vector<std::vector<bool>> cells;
 };
 
