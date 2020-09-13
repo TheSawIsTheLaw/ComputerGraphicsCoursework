@@ -104,7 +104,7 @@ void UsageFacade::addTable()
     std::vector<Facet> facets;
 
     // Нижняя площадка
-    Dot3D dot(50, 50, 801);
+    Dot3D dot(50, 50, 850);
     std::vector<size_t> vec = {0};
     vertices.push_back(Vertex(dot, vec));
 
@@ -131,7 +131,7 @@ void UsageFacade::addTable()
     vec = {2};
     vertices.push_back(Vertex(dot, vec));
 
-    dot.setZCoordinate(750);
+    dot.setZCoordinate(850);
     vec = {2, 3};
     vertices.push_back(Vertex(dot, vec));
 
@@ -148,7 +148,7 @@ void UsageFacade::addTable()
     vec = {4};
     vertices.push_back(Vertex(dot, vec));
 
-    dot.setZCoordinate(750);
+    dot.setZCoordinate(850);
     vec = {4, 5};
     vertices.push_back(Vertex(dot, vec));
 
@@ -166,7 +166,7 @@ void UsageFacade::addTable()
     vec = {6};
     vertices.push_back(Vertex(dot, vec));
 
-    dot.setZCoordinate(750);
+    dot.setZCoordinate(850);
     vec = {6, 7};
     vertices.push_back(Vertex(dot, vec));
 
@@ -184,7 +184,7 @@ void UsageFacade::addTable()
     vec = {8};
     vertices.push_back(Vertex(dot, vec));
 
-    dot.setZCoordinate(750);
+    dot.setZCoordinate(850);
     vec = {8, 9};
     vertices.push_back(Vertex(dot, vec));
 
@@ -251,7 +251,8 @@ void UsageFacade::addTable()
     scene->addModel(tableModel);
 }
 
-void Drawer::zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices, size_t color)
+void Drawer::zBufForModel(
+std::vector<Facet> &facets, std::vector<Vertex> &vertices, size_t color)
 {
     std::array<Dot3D, 3> dotsArr;
     for (std::vector<Facet>::iterator iter = facets.begin(); iter != facets.end(); iter++)
@@ -276,8 +277,9 @@ void Drawer::zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &verti
         double z3 = dotsArr[2].getZCoordinate();
 
         for (int curY = round(dotsArr[0].getYCoordinate());
-             curY <= round(dotsArr[1].getYCoordinate()); curY++)
+             curY <= round(dotsArr[1].getYCoordinate()); curY += 1)
         {
+            qDebug() << curY << dotsArr[0] << dotsArr[1] << dotsArr[2];
             double aInc = 1;
             if (dotsArr[1].getYCoordinate() - dotsArr[0].getYCoordinate() != 0)
                 aInc = (curY - dotsArr[0].getYCoordinate()) /
@@ -315,8 +317,7 @@ void Drawer::zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &verti
                 if (curZ > depthBuffer[curX][curY])
                 {
                     depthBuffer[curX][curY] = curZ;
-                    if (frameBuffer[curX][curY] != 2)
-                        frameBuffer[curX][curY] = curCol;
+                    frameBuffer[curX][curY] = curCol;
                 }
             }
             double curZ = zA + (zB - zA) * (round(xB) - xA) / (xB - xA);
@@ -330,6 +331,7 @@ void Drawer::zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &verti
         for (int curY = round(dotsArr[1].getYCoordinate());
              curY <= round(dotsArr[2].getYCoordinate()); curY++)
         {
+            qDebug() << curY << dotsArr[0] << dotsArr[1] << dotsArr[2];
             double aInc = 0;
             if (dotsArr[2].getYCoordinate() - dotsArr[1].getYCoordinate() != 0)
                 aInc = (curY - dotsArr[1].getYCoordinate()) /
@@ -356,7 +358,7 @@ void Drawer::zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &verti
                 frameBuffer[round(xA)][curY] = 2;
             }
             int curCol = color;
-            if (curY == round(dotsArr[2].getYCoordinate()))
+            if (curY == round(dotsArr[2].getYCoordinate()) || (curY == round(dotsArr[1].getYCoordinate()) && (curY == round(dotsArr[0].getYCoordinate()))))
                 curCol = 2;
             for (int curX = round(xA) + 1; curX < round(xB); curX++)
             {
@@ -364,8 +366,7 @@ void Drawer::zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &verti
                 if (curZ >= depthBuffer[curX][curY])
                 {
                     depthBuffer[curX][curY] = curZ;
-                    if (frameBuffer[curX][curY] != 2)
-                        frameBuffer[curX][curY] = curCol;
+                    frameBuffer[curX][curY] = curCol;
                 }
             }
             double curZ = zA + (zB - zA) * (round(xB) - xA) / (xB - xA);
