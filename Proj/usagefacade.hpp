@@ -8,6 +8,7 @@ class Drawer
 {
 public:
     void zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth);
+    void zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices);
     QGraphicsScene *drawScene(CellScene *scene, QRectF rect);
 
 private:

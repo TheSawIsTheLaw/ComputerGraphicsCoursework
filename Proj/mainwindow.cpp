@@ -209,3 +209,10 @@ void MainWindow::on_pushButton_5_clicked()
     changerWindow.setModal(true);
     changerWindow.exec();
 }
+
+void MainWindow::on_pushButton_clicked()
+{
+    int curRow = this->ui->listWidget->currentRow();
+    if (curRow < 0)
+        return;
+}

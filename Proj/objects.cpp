@@ -131,7 +131,7 @@ void CellScene::rotateX(double angle)
         iter->setPosition(curDot);
     }
     qDebug() << "После";
-    for (int i = 0; i < (int)vertices.size(); i++)
+    for (int i = 0; i < (int) vertices.size(); i++)
         qDebug() << vertices.at(i).getPosition();
 
     plateModel->setVertices(vertices);
@@ -151,6 +151,14 @@ void CellScene::rotateY(double angle)
 
     plateModel->setVertices(vertices);
 }
+
+size_t CellScene::getModelsNum() { return modelsNum; }
+
+PolModel &CellScene::getModel(size_t num) { return models.at(num); }
+
+size_t CellScene::getIllumNum() { return illumNum; }
+
+Illuminant &CellScene::getIlluminant(size_t num) { return illuminants.at(num); }
 
 PolModel &CellScene::getPlateModel() { return *plateModel; }
 

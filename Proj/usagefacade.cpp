@@ -98,32 +98,14 @@ QGraphicsScene *UsageFacade::rotateYScene(double angle, QRectF rect)
     return retScene;
 }
 
-void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
+void Drawer::zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices)
 {
-    depthBuffer.erase(depthBuffer.begin(), depthBuffer.end());
-    frameBuffer.erase(frameBuffer.begin(), frameBuffer.end());
-
-    for (size_t i = 0; i < bufLength; i++)
-    {
-        depthBuffer.push_back(std::vector<size_t>(bufWidth, 0));
-        frameBuffer.push_back(std::vector<size_t>(bufWidth, 0));
-    }
-
-    //    qDebug() << "Frame Vec: " << frameBuffer;
-
-    PolModel plate = scene->getPlateModel();
-    std::vector<Facet> facets = plate.getFacets();
-    std::vector<Vertex> vertices = plate.getVertices();
     std::array<Dot3D, 3> dotsArr;
-
     for (std::vector<Facet>::iterator iter = facets.begin(); iter != facets.end(); iter++)
     {
         dotsArr[0] = vertices.at(iter->getUsedDots().at(0)).getPosition();
         dotsArr[1] = vertices.at(iter->getUsedDots().at(1)).getPosition();
         dotsArr[2] = vertices.at(iter->getUsedDots().at(2)).getPosition();
-
-        //        qDebug() << "CURRENT DOTS ARE:" << dotsArr[0] << dotsArr[1] <<
-        //        dotsArr[2];
 
         if (dotsArr[0].getYCoordinate() > dotsArr[1].getYCoordinate())
             std::swap(dotsArr[0], dotsArr[1]);
@@ -131,17 +113,6 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
             std::swap(dotsArr[0], dotsArr[2]);
         if (dotsArr[1].getYCoordinate() > dotsArr[2].getYCoordinate())
             std::swap(dotsArr[1], dotsArr[2]);
-
-        //        if (dotsArr[0].getYCoordinate() == dotsArr[1].getYCoordinate() &&
-        //            dotsArr[0].getXCoordinate() < dotsArr[1].getXCoordinate())
-        //            std::swap(dotsArr[0], dotsArr[1]);
-
-        //        if (dotsArr[1].getYCoordinate() == dotsArr[2].getYCoordinate() &&
-        //            dotsArr[1].getXCoordinate() > dotsArr[2].getXCoordinate())
-        //            std::swap(dotsArr[1], dotsArr[2]);
-
-        //        qDebug() << "SORTED DOTS ARE:" << dotsArr[0] << dotsArr[1] <<
-        //        dotsArr[2];
 
         double x1 = dotsArr[0].getXCoordinate();
         double x2 = dotsArr[1].getXCoordinate();
@@ -174,9 +145,6 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
                 std::swap(aInc, bInc);
             }
 
-            //            qDebug() << "xA xB zA zB aInc bInc: " << xA << xB << zA << zB <<
-            //            aInc << bInc;
-
             if (zA > depthBuffer[round(xA)][curY])
             {
                 depthBuffer[round(xA)][curY] = zA;
@@ -197,9 +165,6 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
                     if (frameBuffer[curX][curY] != 2)
                         frameBuffer[curX][curY] = curCol;
                 }
-                // А КАКОГО ХРЕНА ЭТО РАБОТАЕТ? КАКИМ ОБРАЗОМ ОДНО ГОВНО ЗАЛЕЗАЕТ НА
-                // ДРУГОЕ?
-                // ПОЧЕМУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУ
             }
             double curZ = zA + (zB - zA) * (round(xB) - xA) / (xB - xA);
             if (curZ >= depthBuffer[round(xB)][curY])
@@ -232,9 +197,6 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
                 std::swap(aInc, bInc);
             }
 
-            //            qDebug() << "xA xB zA zB aInc bInc: " << xA << xB << zA << zB <<
-            //            aInc << bInc;
-
             if (zA > depthBuffer[round(xA)][curY])
             {
                 depthBuffer[round(xA)][curY] = zA;
@@ -260,6 +222,33 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
                 frameBuffer[round(xB)][curY] = 2;
             }
         }
+    }
+}
+
+void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
+{
+    depthBuffer.erase(depthBuffer.begin(), depthBuffer.end());
+    frameBuffer.erase(frameBuffer.begin(), frameBuffer.end());
+
+    for (size_t i = 0; i < bufLength; i++)
+    {
+        depthBuffer.push_back(std::vector<size_t>(bufWidth, 0));
+        frameBuffer.push_back(std::vector<size_t>(bufWidth, 0));
+    }
+
+    //    qDebug() << "Frame Vec: " << frameBuffer;
+
+    PolModel model = scene->getPlateModel();
+    std::vector<Facet> facets = model.getFacets();
+    std::vector<Vertex> vertices = model.getVertices();
+    zBufForModel(facets, vertices);
+
+    for (size_t i = 0; i < scene->getModelsNum(); i++)
+    {
+        model = scene->getModel(i);
+        facets = model.getFacets();
+        vertices = model.getVertices();
+        zBufForModel(facets, vertices);
     }
 }
 

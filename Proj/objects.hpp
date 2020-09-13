@@ -102,6 +102,12 @@ public:
     void rotateX(double angle);
     void rotateY(double angle);
 
+    size_t getModelsNum();
+    PolModel &getModel(size_t num);
+
+    size_t getIllumNum();
+    Illuminant &getIlluminant(size_t num);
+
 private:
     size_t width, length;
 

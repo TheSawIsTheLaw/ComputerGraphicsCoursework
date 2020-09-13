@@ -41,6 +41,8 @@ private slots:
     void pictureRotateYRight();
     void pictureRotateYLeft();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     UsageFacade *facade;
