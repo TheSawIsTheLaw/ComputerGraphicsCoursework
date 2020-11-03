@@ -13,16 +13,16 @@ SizeChooser::~SizeChooser() { delete ui; }
 void SizeChooser::on_buttonBox_accepted()
 {
     QString gotText = this->ui->lineEdit->text();
-    size_t lengthValue = gotText.toUInt();
-    qDebug("Length of cellPlate: %zu\n", lengthValue);
+    size_t heightValue = gotText.toUInt();
+    qDebug("height of cellPlate: %zu\n", heightValue);
 
     gotText = this->ui->lineEdit_2->text();
     size_t widthValue = gotText.toUInt();
     qDebug("Width of cellPlate: %zu\n", widthValue);
 
-    if (lengthValue && widthValue)
+    if (heightValue && widthValue)
     {
-        length = lengthValue;
+        height = heightValue;
         width = widthValue;
     }
     else
@@ -39,6 +39,6 @@ void SizeChooser::setWidth(size_t width_) { width = width_; }
 
 size_t SizeChooser::getWidth() { return width; }
 
-void SizeChooser::setLength(size_t length_) { length = length_; }
+void SizeChooser::setheight(size_t height_) { height = height_; }
 
-size_t SizeChooser::getLength() { return length; }
+size_t SizeChooser::getheight() { return height; }

@@ -12,17 +12,17 @@ SizeChanger::~SizeChanger() { delete ui; }
 
 void SizeChanger::on_buttonBox_accepted()
 {
-    size_t lengthValue = 0, widthValue = 0;
+    size_t heightValue = 0, widthValue = 0;
 
     size_t catchedErrors = 0;
 
     QString gotText = this->ui->lineEdit->text();
     if (gotText != "")
     {
-        lengthValue = gotText.toUInt();
-        qDebug("New length of cellPlate: %zu\n", lengthValue);
+        heightValue = gotText.toUInt();
+        qDebug("New height of cellPlate: %zu\n", heightValue);
 
-        if (!lengthValue)
+        if (!heightValue)
             catchedErrors++;
     }
 
@@ -39,7 +39,7 @@ void SizeChanger::on_buttonBox_accepted()
     if (!catchedErrors)
     {
         newWidth = widthValue;
-        newLength = lengthValue;
+        newheight = heightValue;
     }
     else
     {
@@ -53,4 +53,4 @@ void SizeChanger::on_buttonBox_accepted()
 
 size_t SizeChanger::getNewWidth() { return newWidth; }
 
-size_t SizeChanger::getNewLength() { return newLength; }
+size_t SizeChanger::getNewheight() { return newheight; }

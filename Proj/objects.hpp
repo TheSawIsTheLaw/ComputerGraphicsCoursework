@@ -76,12 +76,12 @@ class CellScene
 {
 public:
     CellScene();
-    CellScene(size_t width_, size_t length_);
+    CellScene(size_t width_, size_t height_);
 
     operator bool() const;
 
     size_t getWidth();
-    size_t getLength();
+    size_t getHeight();
 
     const Dot3D getStartOfPlate();
     void setStartOfPlate(Dot3D dot_);
@@ -92,7 +92,7 @@ public:
     void buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_);
     PolModel &getPlateModel();
 
-    void changeSize(size_t newWidth, size_t newLength);
+    void changeSize(size_t newWidth, size_t newheight);
 
     void moveUp(double value);
     void moveDown(double value);
@@ -110,7 +110,7 @@ public:
     Illuminant &getIlluminant(size_t num);
 
 private:
-    size_t width, length;
+    size_t width, height;
 
     Dot3D startOfPlate, endOfPlate;
     PolModel *plateModel = nullptr;

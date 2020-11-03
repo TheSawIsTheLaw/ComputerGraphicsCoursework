@@ -33,12 +33,12 @@ void Illuminant::setVector(MathVec &vector_) { vector = vector_; }
 
 CellScene::CellScene() {}
 
-CellScene::CellScene(size_t width_, size_t length_)
+CellScene::CellScene(size_t width_, size_t height_)
 {
     width = width_;
-    length = length_;
+    height = height_;
 
-    for (size_t i = 0; i < length_; i++)
+    for (size_t i = 0; i < height_; i++)
     {
         cells.push_back(std::vector<bool>(width_));
         for (size_t j = 0; j < width_; j++) cells[i][j] = true;
@@ -50,7 +50,7 @@ CellScene::CellScene(size_t width_, size_t length_)
 
 size_t CellScene::getWidth() { return width; }
 
-size_t CellScene::getLength() { return length; }
+size_t CellScene::getHeight() { return height; }
 
 CellScene::operator bool() const { return this->plateModel; }
 
@@ -184,9 +184,6 @@ void CellScene::rotateX(double angle)
 {
     Dot3D curDot;
     std::vector<Vertex> vertices = plateModel->getVertices();
-    qDebug() << "До";
-    for (int i = 0; i < (int) vertices.size(); i++)
-        qDebug() << vertices.at(i).getPosition();
     for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
          iter++)
     {
@@ -194,9 +191,6 @@ void CellScene::rotateX(double angle)
         curDot.rotateX(angle, centerDot.getXCoordinate(), centerDot.getYCoordinate(), centerDot.getZCoordinate());
         iter->setPosition(curDot);
     }
-    qDebug() << "После";
-    for (int i = 0; i < (int) vertices.size(); i++)
-        qDebug() << vertices.at(i).getPosition();
 
     plateModel->setVertices(vertices);
 
@@ -369,16 +363,16 @@ void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
 
 void CellScene::setEndOfPlate(Dot3D dot_) { endOfPlate = dot_; }
 
-void CellScene::changeSize(size_t newWidth, size_t newLength)
+void CellScene::changeSize(size_t newWidth, size_t newheight)
 {
     if (newWidth >= width)
         width = newWidth;
     //    else Вот тут потребуется анализ ситуации...
-    qDebug("%zu is new width\n", width);
+//    qDebug("%zu is new width\n", width);
 
-    if (newLength >= length)
-        length = newLength;
+    if (newheight >= height)
+        height = newheight;
     //    else Тоже самое
 
-    qDebug("%zu is new length\n", length);
+//    qDebug("%zu is new height\n", height);
 }

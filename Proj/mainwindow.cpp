@@ -115,6 +115,8 @@ void MainWindow::getMouseEvent(size_t x_, size_t y_)
 void MainWindow::pictureDown()
 {
     qDebug() << "Крутим вниз";
+    if (ui->graphicsView->scene())
+        delete ui->graphicsView->scene();
     QGraphicsScene *setScene = facade->moveDownScene(MOVE_UNIT, ui->graphicsView->rect());
 
     ui->graphicsView->setScene(setScene);
@@ -123,6 +125,8 @@ void MainWindow::pictureDown()
 void MainWindow::pictureUp()
 {
     qDebug() << "Крутим вверх";
+    if (ui->graphicsView->scene())
+        delete ui->graphicsView->scene();
     QGraphicsScene *setScene = facade->moveUpScene(MOVE_UNIT, ui->graphicsView->rect());
 
     ui->graphicsView->setScene(setScene);
@@ -131,6 +135,8 @@ void MainWindow::pictureUp()
 void MainWindow::pictureLeft()
 {
     qDebug() << "Крутим влево";
+    if (ui->graphicsView->scene())
+        delete ui->graphicsView->scene();
     QGraphicsScene *setScene = facade->moveLeftScene(MOVE_UNIT, ui->graphicsView->rect());
 
     ui->graphicsView->setScene(setScene);
@@ -139,14 +145,17 @@ void MainWindow::pictureLeft()
 void MainWindow::pictureRight()
 {
     qDebug() << "Крутим вправо";
+    if (ui->graphicsView->scene())
+        delete ui->graphicsView->scene();
     QGraphicsScene *setScene = facade->moveRightScene(MOVE_UNIT, ui->graphicsView->rect());
-
     ui->graphicsView->setScene(setScene);
 }
 
 void MainWindow::pictureRotateXRight()
 {
     qDebug() << "Вертим по Х";
+    if (ui->graphicsView->scene())
+        delete ui->graphicsView->scene();
     QGraphicsScene * setScene = facade->rotateXScene(ROTATE_UNIT, ui->graphicsView->rect());
 
     ui->graphicsView->setScene(setScene);
@@ -155,6 +164,8 @@ void MainWindow::pictureRotateXRight()
 void MainWindow::pictureRotateXLeft()
 {
     qDebug() << "Вертим по Х";
+    if (ui->graphicsView->scene())
+        delete ui->graphicsView->scene();
     QGraphicsScene *setScene = facade->rotateXScene(-ROTATE_UNIT, ui->graphicsView->rect());
 
     ui->graphicsView->setScene(setScene);
@@ -163,6 +174,8 @@ void MainWindow::pictureRotateXLeft()
 void MainWindow::pictureRotateYRight()
 {
     qDebug() << "Вертим по Y";
+    if (ui->graphicsView->scene())
+        delete ui->graphicsView->scene();
     QGraphicsScene *setScene = facade->rotateYScene(ROTATE_UNIT, ui->graphicsView->rect());
 
     ui->graphicsView->setScene(setScene);
@@ -171,6 +184,8 @@ void MainWindow::pictureRotateYRight()
 void MainWindow::pictureRotateYLeft()
 {
     qDebug() << "Вертим по Y";
+    if (ui->graphicsView->scene())
+        delete ui->graphicsView->scene();
     QGraphicsScene *setScene = facade->rotateYScene(-ROTATE_UNIT, ui->graphicsView->rect());
 
     ui->graphicsView->setScene(setScene);
@@ -182,12 +197,12 @@ void MainWindow::on_pushButton_4_clicked()
     chooserWindow.setModal(true);
     chooserWindow.exec();
 
-    if (!chooserWindow.getWidth() || !chooserWindow.getLength())
+    if (!chooserWindow.getWidth() || !chooserWindow.getheight())
         return;
 
     qDebug() << ui->graphicsView->rect();
 
-    facade->setCellScene(chooserWindow.getWidth(), chooserWindow.getLength());
+    facade->setCellScene(chooserWindow.getWidth(), chooserWindow.getheight());
     QGraphicsScene *setScene = facade->drawScene(ui->graphicsView->rect());
 
     if (ui->graphicsView->scene())

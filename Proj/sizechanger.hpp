@@ -17,7 +17,7 @@ public:
     ~SizeChanger();
 
     size_t getNewWidth();
-    size_t getNewLength();
+    size_t getNewheight();
 
 private slots:
     void on_buttonBox_accepted();
@@ -26,7 +26,7 @@ private:
     Ui::SizeChanger *ui;
 
     size_t newWidth = 0;
-    size_t newLength = 0;
+    size_t newheight = 0;
 };
 
 #endif // SIZECHANGER_HPP

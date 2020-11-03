@@ -14,20 +14,20 @@ UsageFacade::UsageFacade()
     drawer = new Drawer;
 }
 
-void UsageFacade::setCellScene(size_t width_, size_t length_)
+void UsageFacade::setCellScene(size_t width_, size_t height_)
 {
     if (scene)
         delete scene;
-    scene = new CellScene(width_, length_);
+    scene = new CellScene(width_, height_);
     qDebug("Set was done\n");
 }
 
-void UsageFacade::changeCellScene(size_t newWidth, size_t newLength)
+void UsageFacade::changeCellScene(size_t newWidth, size_t newheight)
 {
-    scene->changeSize(newWidth, newLength);
+    scene->changeSize(newWidth, newheight);
 }
 
-bool UsageFacade::isSceneSet() { return scene->getLength() && scene->getWidth(); }
+bool UsageFacade::isSceneSet() { return scene->getHeight() && scene->getWidth(); }
 
 QGraphicsScene *UsageFacade::drawScene(QRectF rect)
 {
@@ -281,7 +281,7 @@ std::vector<Facet> &facets, std::vector<Vertex> &vertices, size_t color)
         for (int curY = round(dotsArr[0].getYCoordinate());
              curY <= round(dotsArr[1].getYCoordinate()); curY += 1)
         {
-            qDebug() << curY << dotsArr[0] << dotsArr[1] << dotsArr[2];
+//            qDebug() << curY << dotsArr[0] << dotsArr[1] << dotsArr[2];
             double aInc = 1;
             if (dotsArr[1].getYCoordinate() - dotsArr[0].getYCoordinate() != 0)
                 aInc = (curY - dotsArr[0].getYCoordinate()) /
@@ -302,11 +302,14 @@ std::vector<Facet> &facets, std::vector<Vertex> &vertices, size_t color)
                 std::swap(aInc, bInc);
             }
 
-            if (zA > depthBuffer[round(xA)][curY])
-            {
-                depthBuffer[round(xA)][curY] = zA;
-                frameBuffer[round(xA)][curY] = 2;
-            }
+
+            try {
+                if (zA > depthBuffer.at(round(xA)).at(curY))
+                {
+                    depthBuffer.at(round(xA)).at(curY) = zA;
+                    frameBuffer.at(round(xA)).at(curY) = 2;
+                }
+            }  catch (std::exception &err) { }
             int curCol = color;
             if (curY == round(dotsArr[0].getYCoordinate()))
             {
@@ -316,24 +319,28 @@ std::vector<Facet> &facets, std::vector<Vertex> &vertices, size_t color)
             for (int curX = round(xA) + 1; curX < round(xB); curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
-                if (curZ > depthBuffer[curX][curY])
-                {
-                    depthBuffer[curX][curY] = curZ;
-                    frameBuffer[curX][curY] = curCol;
-                }
+                try {
+                    if (curZ > depthBuffer.at(curX).at(curY))
+                    {
+                        depthBuffer.at(curX).at(curY) = curZ;
+                        frameBuffer.at(curX).at(curY) = curCol;
+                    }
+                }  catch (std::exception &err) {}
             }
             double curZ = zA + (zB - zA) * (round(xB) - xA) / (xB - xA);
-            if (curZ >= depthBuffer[round(xB)][curY])
-            {
-                depthBuffer[round(xB)][curY] = curZ;
-                frameBuffer[round(xB)][curY] = 2;
-            }
+            try {
+                if (curZ >= depthBuffer.at(round(xB)).at(curY))
+                {
+                    depthBuffer.at(round(xB)).at(curY) = curZ;
+                    frameBuffer.at(round(xB)).at(curY) = 2;
+                }
+            }  catch (std::exception &err) {}
         }
 
         for (int curY = round(dotsArr[1].getYCoordinate());
              curY <= round(dotsArr[2].getYCoordinate()); curY++)
         {
-            qDebug() << curY << dotsArr[0] << dotsArr[1] << dotsArr[2];
+//            qDebug() << curY << dotsArr[0] << dotsArr[1] << dotsArr[2];
             double aInc = 0;
             if (dotsArr[2].getYCoordinate() - dotsArr[1].getYCoordinate() != 0)
                 aInc = (curY - dotsArr[1].getYCoordinate()) /
@@ -354,42 +361,50 @@ std::vector<Facet> &facets, std::vector<Vertex> &vertices, size_t color)
                 std::swap(aInc, bInc);
             }
 
-            if (zA > depthBuffer[round(xA)][curY])
-            {
-                depthBuffer[round(xA)][curY] = zA;
-                frameBuffer[round(xA)][curY] = 2;
-            }
+            try {
+                if (zA > depthBuffer.at(round(xA)).at(curY))
+                {
+                    depthBuffer.at(round(xA)).at(curY) = zA;
+                    frameBuffer.at(round(xA)).at(curY) = 2;
+                }
+            }  catch (std::exception &err) {}
             int curCol = color;
             if (curY == round(dotsArr[2].getYCoordinate()) || (curY == round(dotsArr[1].getYCoordinate()) && (curY == round(dotsArr[0].getYCoordinate()))))
                 curCol = 2;
             for (int curX = round(xA) + 1; curX < round(xB); curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
-                if (curZ >= depthBuffer[curX][curY])
-                {
-                    depthBuffer[curX][curY] = curZ;
-                    frameBuffer[curX][curY] = curCol;
-                }
+                try {
+                    if (curZ >= depthBuffer.at(curX).at(curY))
+                    {
+                        depthBuffer.at(curX).at(curY) = curZ;
+                        frameBuffer.at(curX).at(curY) = curCol;
+                    }
+                }  catch (std::exception &err) {}
+
             }
             double curZ = zA + (zB - zA) * (round(xB) - xA) / (xB - xA);
-            if (curZ >= depthBuffer[round(xB)][curY])
-            {
-                depthBuffer[round(xB)][curY] = curZ;
-                frameBuffer[round(xB)][curY] = 2;
-            }
+            try {
+                if (curZ >= depthBuffer.at(round(xB)).at(curY))
+                {
+                    depthBuffer.at(round(xB)).at(curY) = curZ;
+                    frameBuffer.at(round(xB)).at(curY) = 2;
+                }
+            }  catch (std::exception &err) {}
+
         }
     }
 }
 
-void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
+void Drawer::zBufferAlg(CellScene *scene, size_t bufHeight, size_t bufWidth)
 {
     depthBuffer.erase(depthBuffer.begin(), depthBuffer.end());
     frameBuffer.erase(frameBuffer.begin(), frameBuffer.end());
 
-    for (size_t i = 0; i < bufLength; i++)
+    for (size_t i = 0; i < bufWidth; i++)
     {
-        depthBuffer.push_back(std::vector<size_t>(bufWidth, 0));
-        frameBuffer.push_back(std::vector<size_t>(bufWidth, 0));
+        depthBuffer.push_back(std::vector<size_t>(bufHeight, 0));
+        frameBuffer.push_back(std::vector<size_t>(bufHeight, 0));
     }
 
     //    qDebug() << "Frame Vec: " << frameBuffer;
@@ -399,10 +414,10 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
     std::vector<Vertex> vertices = model.getVertices();
     zBufForModel(facets, vertices, 1);
 
-    qDebug() << "Моделей на сцене:" << scene->getModelsNum();
+//    qDebug() << "Моделей на сцене:" << scene->getModelsNum();
     for (size_t i = 0; i < scene->getModelsNum(); i++)
     {
-        qDebug() << "Нашли дополнитульную модель";
+//        qDebug() << "Нашли дополнитульную модель";
         model = scene->getModel(i);
         facets = model.getFacets();
         vertices = model.getVertices();
@@ -413,9 +428,9 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth)
 QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
 {
     size_t width = scene->getWidth() * SCALE_FACTOR;
-    size_t length = scene->getLength() * SCALE_FACTOR;
+    size_t height = scene->getHeight() * SCALE_FACTOR;
 
-    scene->buildPlateModel(Dot3D(PLATE_START), Dot3D(length, width, PLATE_Z));
+    scene->buildPlateModel(Dot3D(PLATE_START), Dot3D(width, height, PLATE_Z));
 
     using namespace std::chrono;
     milliseconds start =
@@ -500,7 +515,7 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     //    fclose(f);
     //    outScene->addPixmap(QPixmap("img.bmp"));
 
-    qDebug() << rect.size().height() << rect.size().width();
+//    qDebug() << rect.size().height() << rect.size().width();
 
     QImage *image =
     new QImage(rect.size().width(), rect.size().height(), QImage::Format_RGB32);
@@ -509,8 +524,8 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     uint blackCol = qRgb(0, 0, 0);
     uint goldCol = qRgb(255, 215, 0);
 
-    for (size_t i = 0; i < rect.size().height(); i++)
-        for (size_t j = 0; j < rect.size().width(); j++)
+    for (size_t i = 0; i < rect.size().width() - 1; i++)
+        for (size_t j = 0; j < rect.size().height() - 1; j++)
             if (frameBuffer.at(i).at(j) == 1)
             {
                 image->setPixel(i, j, whiteCol);

@@ -7,7 +7,7 @@
 class Drawer
 {
 public:
-    void zBufferAlg(CellScene *scene, size_t bufLength, size_t bufWidth);
+    void zBufferAlg(CellScene *scene, size_t bufheight, size_t bufWidth);
     void zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices, size_t color);
     QGraphicsScene *drawScene(CellScene *scene, QRectF rect);
 
@@ -21,8 +21,8 @@ class UsageFacade
 public:
     UsageFacade();
 
-    void setCellScene(size_t width_, size_t length_);
-    void changeCellScene(size_t newWidth, size_t newLength);
+    void setCellScene(size_t width_, size_t height_);
+    void changeCellScene(size_t newWidth, size_t newheight);
     bool isSceneSet();
 
     QGraphicsScene *drawScene(QRectF rect);

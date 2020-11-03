@@ -19,8 +19,8 @@ public:
     void setWidth(size_t width_);
     size_t getWidth();
 
-    size_t getLength();
-    void setLength(size_t length_);
+    size_t getheight();
+    void setheight(size_t height_);
 
 private slots:
     void on_buttonBox_accepted();
@@ -29,7 +29,7 @@ private:
     Ui::SizeChooser *ui;
 
     size_t width = 0;
-    size_t length = 0;
+    size_t height = 0;
 };
 
 #endif // SIZECHOOSER_HPP

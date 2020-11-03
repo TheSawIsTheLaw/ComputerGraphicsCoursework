@@ -62,7 +62,6 @@ void Dot3D::rotateX(double angle, double xCenter, double yCenter, double zCenter
 
     Eigen::MatrixXf coordinatesVec(1, 4);
     coordinatesVec << xCoordinate, yCoordinate, zCoordinate, 1;
-
     coordinatesVec = coordinatesVec * rotateMatrix;
     xCoordinate = coordinatesVec(0, 0) + xCenter;
     yCoordinate = coordinatesVec(0, 1) + yCenter;
