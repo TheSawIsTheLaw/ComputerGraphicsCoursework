@@ -109,11 +109,16 @@ public:
     size_t getIllumNum();
     Illuminant &getIlluminant(size_t num);
 
+    Eigen::Matrix4f &getTransMatrix();
+    void multToTrans(Eigen::Matrix4f &newTrans);
+
 private:
     size_t width, height;
 
     Dot3D startOfPlate, endOfPlate;
     PolModel *plateModel = nullptr;
+
+    Eigen::Matrix4f transMatrix;
 
     size_t modelsNum = 0;
     std::vector<PolModel> models;

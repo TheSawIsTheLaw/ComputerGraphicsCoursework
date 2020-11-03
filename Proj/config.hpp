@@ -8,4 +8,6 @@
 #define MOVE_UNIT 50
 #define ROTATE_UNIT 3.14159265358979323846 / 18
 
+#define EPS 1e-2
+
 #endif // CONFIG_HPP

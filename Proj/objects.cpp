@@ -46,6 +46,11 @@ CellScene::CellScene(size_t width_, size_t height_)
 
     modelsNum = 0;
     illumNum = 0;
+
+    transMatrix << 1, 0, 0, 0,
+                   0, 1, 0, 0,
+                   0, 0, 1, 0,
+                   0, 0, 0, 1;
 }
 
 size_t CellScene::getWidth() { return width; }
@@ -56,186 +61,232 @@ CellScene::operator bool() const { return this->plateModel; }
 
 void CellScene::moveUp(double value)
 {
-    centerDot.move(0, -value, 0);
+    Eigen::Matrix4f moveMat;
+    moveMat << 1, 0, 0, 0,
+               0, 1, 0, -value,
+               0, 0, 1, 0,
+               0, 0, 0, 1;
 
-    Dot3D curDot;
-    std::vector<Vertex> vertices = plateModel->getVertices();
-    for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
-         iter++)
-    {
-        curDot = iter->getPosition();
-        curDot.move(0, -value, 0);
-        iter->setPosition(curDot);
-    }
-    plateModel->setVertices(vertices);
+    transMatrix *= moveMat;
+//    centerDot.move(0, -value, 0);
 
-    for (size_t i = 0; i < modelsNum; i++)
-    {
-        vertices = models.at(i).getVertices();
-        for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
-             iter++)
-        {
-            curDot = iter->getPosition();
-            curDot.move(0, -value, 0);
-            iter->setPosition(curDot);
-        }
+//    Dot3D curDot;
+//    std::vector<Vertex> vertices = plateModel->getVertices();
+//    for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
+//         iter++)
+//    {
+//        curDot = iter->getPosition();
+//        curDot.move(0, -value, 0);
+//        iter->setPosition(curDot);
+//    }
+//    plateModel->setVertices(vertices);
 
-        models.at(i).setVertices(vertices);
-    }
+//    for (size_t i = 0; i < modelsNum; i++)
+//    {
+//        vertices = models.at(i).getVertices();
+//        for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
+//             iter++)
+//        {
+//            curDot = iter->getPosition();
+//            curDot.move(0, -value, 0);
+//            iter->setPosition(curDot);
+//        }
+
+//        models.at(i).setVertices(vertices);
+//    }
 }
 
 void CellScene::moveDown(double value)
 {
-    centerDot.move(0, value, 0);
+    Eigen::Matrix4f moveMat;
+    moveMat << 1, 0, 0, 0,
+        0, 1, 0, value,
+        0, 0, 1, 0,
+        0, 0, 0, 1;
 
-    Dot3D curDot;
-    std::vector<Vertex> vertices = plateModel->getVertices();
-    for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
-         iter++)
-    {
-        curDot = iter->getPosition();
-        curDot.move(0, value, 0);
-        iter->setPosition(curDot);
-    }
-    plateModel->setVertices(vertices);
+    transMatrix *= moveMat;
+//    centerDot.move(0, value, 0);
 
-    for (size_t i = 0; i < modelsNum; i++)
-    {
-        vertices = models.at(i).getVertices();
-        for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
-             iter++)
-        {
-            curDot = iter->getPosition();
-            curDot.move(0, value, 0);
-            iter->setPosition(curDot);
-        }
+//    Dot3D curDot;
+//    std::vector<Vertex> vertices = plateModel->getVertices();
+//    for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
+//         iter++)
+//    {
+//        curDot = iter->getPosition();
+//        curDot.move(0, value, 0);
+//        iter->setPosition(curDot);
+//    }
+//    plateModel->setVertices(vertices);
 
-        models.at(i).setVertices(vertices);
-    }
+//    for (size_t i = 0; i < modelsNum; i++)
+//    {
+//        vertices = models.at(i).getVertices();
+//        for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
+//             iter++)
+//        {
+//            curDot = iter->getPosition();
+//            curDot.move(0, value, 0);
+//            iter->setPosition(curDot);
+//        }
+
+//        models.at(i).setVertices(vertices);
+//    }
 }
 
 void CellScene::moveLeft(double value)
 {
-    centerDot.move(-value, 0, 0);
+    Eigen::Matrix4f moveMat;
+    moveMat << 1, 0, 0, -value,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1;
 
-    Dot3D curDot;
-    std::vector<Vertex> vertices = plateModel->getVertices();
-    for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
-         iter++)
-    {
-        curDot = iter->getPosition();
-        curDot.move(-value, 0, 0);
-        iter->setPosition(curDot);
-    }
-    plateModel->setVertices(vertices);
+    transMatrix *= moveMat;
+//    centerDot.move(-value, 0, 0);
 
-    for (size_t i = 0; i < modelsNum; i++)
-    {
-        vertices = models.at(i).getVertices();
-        for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
-             iter++)
-        {
-            curDot = iter->getPosition();
-            curDot.move(-value, 0, 0);
-            iter->setPosition(curDot);
-        }
+//    Dot3D curDot;
+//    std::vector<Vertex> vertices = plateModel->getVertices();
+//    for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
+//         iter++)
+//    {
+//        curDot = iter->getPosition();
+//        curDot.move(-value, 0, 0);
+//        iter->setPosition(curDot);
+//    }
+//    plateModel->setVertices(vertices);
 
-        models.at(i).setVertices(vertices);
-    }
+//    for (size_t i = 0; i < modelsNum; i++)
+//    {
+//        vertices = models.at(i).getVertices();
+//        for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
+//             iter++)
+//        {
+//            curDot = iter->getPosition();
+//            curDot.move(-value, 0, 0);
+//            iter->setPosition(curDot);
+//        }
+
+//        models.at(i).setVertices(vertices);
+//    }
 }
 
 void CellScene::moveRight(double value)
 {
-    centerDot.move(value, 0, 0);
+    Eigen::Matrix4f moveMat;
+    moveMat << 1, 0, 0, value,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1;
 
-    Dot3D curDot;
-    std::vector<Vertex> vertices = plateModel->getVertices();
-    //    qDebug() << "До";
-    //    for (int i = 0; i < (int)vertices.size(); i++)
-    //        qDebug() << vertices.at(i).getPosition();
-    for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
-         iter++)
-    {
-        curDot = iter->getPosition();
-        curDot.move(value, 0, 0);
-        iter->setPosition(curDot);
-    }
-    //    qDebug() << "После";
-    //    for (int i = 0; i < (int)vertices.size(); i++)
-    //        qDebug() << vertices.at(i).getPosition();
-    plateModel->setVertices(vertices);
+    transMatrix *= moveMat;
+//    centerDot.move(value, 0, 0);
 
-    for (size_t i = 0; i < modelsNum; i++)
-    {
-        vertices = models.at(i).getVertices();
-        for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
-             iter++)
-        {
-            curDot = iter->getPosition();
-            curDot.move(value, 0, 0);
-            iter->setPosition(curDot);
-        }
+//    Dot3D curDot;
+//    std::vector<Vertex> vertices = plateModel->getVertices();
+//    //    qDebug() << "До";
+//    //    for (int i = 0; i < (int)vertices.size(); i++)
+//    //        qDebug() << vertices.at(i).getPosition();
+//    for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
+//         iter++)
+//    {
+//        curDot = iter->getPosition();
+//        curDot.move(value, 0, 0);
+//        iter->setPosition(curDot);
+//    }
+//    //    qDebug() << "После";
+//    //    for (int i = 0; i < (int)vertices.size(); i++)
+//    //        qDebug() << vertices.at(i).getPosition();
+//    plateModel->setVertices(vertices);
 
-        models.at(i).setVertices(vertices);
-    }
+//    for (size_t i = 0; i < modelsNum; i++)
+//    {
+//        vertices = models.at(i).getVertices();
+//        for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
+//             iter++)
+//        {
+//            curDot = iter->getPosition();
+//            curDot.move(value, 0, 0);
+//            iter->setPosition(curDot);
+//        }
+
+//        models.at(i).setVertices(vertices);
+//    }
 }
 
 void CellScene::rotateX(double angle)
 {
-    Dot3D curDot;
-    std::vector<Vertex> vertices = plateModel->getVertices();
-    for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
-         iter++)
-    {
-        curDot = iter->getPosition();
-        curDot.rotateX(angle, centerDot.getXCoordinate(), centerDot.getYCoordinate(), centerDot.getZCoordinate());
-        iter->setPosition(curDot);
-    }
+    Eigen::Matrix4f rotateMatrix;
+    // clang-format off
+    rotateMatrix << 1,           0,          0, 0,
+                    0, cos(angle), -sin(angle), 0,
+                    0, sin(angle),  cos(angle), 0,
+                    0,           0,          0, 1;
+    // clang-format on
 
-    plateModel->setVertices(vertices);
+    transMatrix *= rotateMatrix;
+//    Dot3D curDot;
+//    std::vector<Vertex> vertices = plateModel->getVertices();
+//    for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
+//         iter++)
+//    {
+//        curDot = iter->getPosition();
+//        curDot.rotateX(angle, centerDot.getXCoordinate(), centerDot.getYCoordinate(), centerDot.getZCoordinate());
+//        iter->setPosition(curDot);
+//    }
 
-    for (size_t i = 0; i < modelsNum; i++)
-    {
-        vertices = models.at(i).getVertices();
-        for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
-             iter++)
-        {
-            curDot = iter->getPosition();
-            curDot.rotateX(angle, centerDot.getXCoordinate(), centerDot.getYCoordinate(), centerDot.getZCoordinate());
-            iter->setPosition(curDot);
-        }
+//    plateModel->setVertices(vertices);
 
-        models.at(i).setVertices(vertices);
-    }
+//    for (size_t i = 0; i < modelsNum; i++)
+//    {
+//        vertices = models.at(i).getVertices();
+//        for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
+//             iter++)
+//        {
+//            curDot = iter->getPosition();
+//            curDot.rotateX(angle, centerDot.getXCoordinate(), centerDot.getYCoordinate(), centerDot.getZCoordinate());
+//            iter->setPosition(curDot);
+//        }
+
+//        models.at(i).setVertices(vertices);
+//    }
 }
 
 void CellScene::rotateY(double angle)
 {
-    Dot3D curDot;
-    std::vector<Vertex> vertices = plateModel->getVertices();
-    for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
-         iter++)
-    {
-        curDot = iter->getPosition();
-        curDot.rotateY(angle, centerDot.getXCoordinate(), centerDot.getYCoordinate(), centerDot.getZCoordinate());
-        iter->setPosition(curDot);
-    }
+    Eigen::Matrix4f rotateMatrix;
+    // clang-format off
+    rotateMatrix << cos(angle),  0, sin(angle), 0,
+                    0,           1,          0, 0,
+                    -sin(angle), 0, cos(angle), 0,
+                    0,           0,          0, 1;
+    // clang-format on
 
-    plateModel->setVertices(vertices);
+    transMatrix *= rotateMatrix;
+//    Dot3D curDot;
+//    std::vector<Vertex> vertices = plateModel->getVertices();
+//    for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
+//         iter++)
+//    {
+//        curDot = iter->getPosition();
+//        curDot.rotateY(angle, centerDot.getXCoordinate(), centerDot.getYCoordinate(), centerDot.getZCoordinate());
+//        iter->setPosition(curDot);
+//    }
 
-    for (size_t i = 0; i < modelsNum; i++)
-    {
-        vertices = models.at(i).getVertices();
-        for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
-             iter++)
-        {
-            curDot = iter->getPosition();
-            curDot.rotateY(angle, centerDot.getXCoordinate(), centerDot.getYCoordinate(), centerDot.getZCoordinate());
-            iter->setPosition(curDot);
-        }
+//    plateModel->setVertices(vertices);
 
-        models.at(i).setVertices(vertices);
-    }
+//    for (size_t i = 0; i < modelsNum; i++)
+//    {
+//        vertices = models.at(i).getVertices();
+//        for (std::vector<Vertex>::iterator iter = vertices.begin(); iter != vertices.end();
+//             iter++)
+//        {
+//            curDot = iter->getPosition();
+//            curDot.rotateY(angle, centerDot.getXCoordinate(), centerDot.getYCoordinate(), centerDot.getZCoordinate());
+//            iter->setPosition(curDot);
+//        }
+
+//        models.at(i).setVertices(vertices);
+//    }
 }
 
 size_t CellScene::getModelsNum() { return modelsNum; }

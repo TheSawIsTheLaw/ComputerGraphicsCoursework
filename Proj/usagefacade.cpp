@@ -3,6 +3,8 @@
 #include "QDebug"
 #include "QPen"
 
+#include <limits>
+
 #include "math.h"
 
 #include "config.hpp"
@@ -279,16 +281,18 @@ std::vector<Facet> &facets, std::vector<Vertex> &vertices, size_t color)
         double z3 = dotsArr[2].getZCoordinate();
 
         for (int curY = round(dotsArr[0].getYCoordinate());
-             curY <= round(dotsArr[1].getYCoordinate()); curY += 1)
+             curY < round(dotsArr[1].getYCoordinate()); curY++)
         {
 //            qDebug() << curY << dotsArr[0] << dotsArr[1] << dotsArr[2];
-            double aInc = 1;
-            if (dotsArr[1].getYCoordinate() - dotsArr[0].getYCoordinate() != 0)
+            double aInc = 0;
+            if (std::fabs(dotsArr[1].getYCoordinate() - dotsArr[0].getYCoordinate()) > EPS)
                 aInc = (curY - dotsArr[0].getYCoordinate()) /
                        (dotsArr[1].getYCoordinate() - dotsArr[0].getYCoordinate());
 
-            double bInc = (curY - dotsArr[0].getYCoordinate()) /
-                          (dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate());
+            double bInc = 0;
+            if (std::fabs(dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate()) > EPS)
+                bInc = (curY - dotsArr[0].getYCoordinate()) /
+                       (dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate());
 
             double xA = x1 + (x2 - x1) * aInc;
             double xB = x1 + (x3 - x1) * bInc;
@@ -299,7 +303,6 @@ std::vector<Facet> &facets, std::vector<Vertex> &vertices, size_t color)
             {
                 std::swap(xA, xB);
                 std::swap(zA, zB);
-                std::swap(aInc, bInc);
             }
 
 
@@ -315,7 +318,6 @@ std::vector<Facet> &facets, std::vector<Vertex> &vertices, size_t color)
             {
                 curCol = 2;
             }
-
             for (int curX = round(xA) + 1; curX < round(xB); curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
@@ -342,12 +344,14 @@ std::vector<Facet> &facets, std::vector<Vertex> &vertices, size_t color)
         {
 //            qDebug() << curY << dotsArr[0] << dotsArr[1] << dotsArr[2];
             double aInc = 0;
-            if (dotsArr[2].getYCoordinate() - dotsArr[1].getYCoordinate() != 0)
+            if (std::fabs(dotsArr[2].getYCoordinate() - dotsArr[1].getYCoordinate()) > EPS)
                 aInc = (curY - dotsArr[1].getYCoordinate()) /
                        (dotsArr[2].getYCoordinate() - dotsArr[1].getYCoordinate());
 
-            double bInc = (curY - dotsArr[0].getYCoordinate()) /
-                          (dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate());
+            double bInc = 0;
+            if (std::abs(dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate()) > EPS)
+                bInc = (curY - dotsArr[0].getYCoordinate()) /
+                       (dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate());
 
             double xA = x2 + (x3 - x2) * aInc;
             double xB = x1 + (x3 - x1) * bInc;
@@ -358,8 +362,8 @@ std::vector<Facet> &facets, std::vector<Vertex> &vertices, size_t color)
             {
                 std::swap(xA, xB);
                 std::swap(zA, zB);
-                std::swap(aInc, bInc);
             }
+
 
             try {
                 if (zA > depthBuffer.at(round(xA)).at(curY))
