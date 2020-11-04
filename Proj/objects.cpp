@@ -63,9 +63,9 @@ void CellScene::moveUp(double value)
 {
     Eigen::Matrix4f moveMat;
     moveMat << 1, 0, 0, 0,
-               0, 1, 0, -value,
+               0, 1, 0, 0,
                0, 0, 1, 0,
-               0, 0, 0, 1;
+               0, -value, 0, 1;
 
     transMatrix *= moveMat;
 //    centerDot.move(0, -value, 0);
@@ -100,9 +100,9 @@ void CellScene::moveDown(double value)
 {
     Eigen::Matrix4f moveMat;
     moveMat << 1, 0, 0, 0,
-        0, 1, 0, value,
+        0, 1, 0, 0,
         0, 0, 1, 0,
-        0, 0, 0, 1;
+        0, value, 0, 1;
 
     transMatrix *= moveMat;
 //    centerDot.move(0, value, 0);
@@ -136,10 +136,10 @@ void CellScene::moveDown(double value)
 void CellScene::moveLeft(double value)
 {
     Eigen::Matrix4f moveMat;
-    moveMat << 1, 0, 0, -value,
+    moveMat << 1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
-        0, 0, 0, 1;
+        -value, 0, 0, 1;
 
     transMatrix *= moveMat;
 //    centerDot.move(-value, 0, 0);
@@ -173,10 +173,10 @@ void CellScene::moveLeft(double value)
 void CellScene::moveRight(double value)
 {
     Eigen::Matrix4f moveMat;
-    moveMat << 1, 0, 0, value,
+    moveMat << 1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
-        0, 0, 0, 1;
+        value, 0, 0, 1;
 
     transMatrix *= moveMat;
 //    centerDot.move(value, 0, 0);
@@ -426,4 +426,9 @@ void CellScene::changeSize(size_t newWidth, size_t newheight)
     //    else Тоже самое
 
 //    qDebug("%zu is new height\n", height);
+}
+
+Eigen::Matrix4f &CellScene::getTransMatrix()
+{
+    return transMatrix;
 }

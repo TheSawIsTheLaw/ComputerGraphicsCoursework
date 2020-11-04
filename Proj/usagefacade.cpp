@@ -256,14 +256,47 @@ void UsageFacade::addTable()
 }
 
 void Drawer::zBufForModel(
-std::vector<Facet> &facets, std::vector<Vertex> &vertices, size_t color)
+    std::vector<Facet> &facets, std::vector<Vertex> &vertices, Eigen::Matrix4f &transMat, size_t color)
 {
     std::array<Dot3D, 3> dotsArr;
+    Eigen::Matrix4f toCenter;
+    // clang-format off
+    toCenter << 1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                -X_CENTER, -Y_CENTER, -PLATE_Z, 1;
+    // clang-format on
+    Eigen::Matrix4f backToStart;
+    // clang-format off
+    backToStart << 1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                X_CENTER, Y_CENTER, PLATE_Z, 1;
+    // clang-format on
     for (std::vector<Facet>::iterator iter = facets.begin(); iter != facets.end(); iter++)
     {
+        qDebug("Рза....");
+        Eigen::MatrixXf coordinatesVec(1, 4);
         dotsArr[0] = vertices.at(iter->getUsedDots().at(0)).getPosition();
+        coordinatesVec << dotsArr[0].getXCoordinate(), dotsArr[0].getYCoordinate(), dotsArr[0].getZCoordinate(), 1;
+        coordinatesVec *= toCenter;
+        coordinatesVec *= transMat;
+        coordinatesVec *= backToStart;
+        dotsArr[0] = Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
+
         dotsArr[1] = vertices.at(iter->getUsedDots().at(1)).getPosition();
+        coordinatesVec << dotsArr[1].getXCoordinate(), dotsArr[1].getYCoordinate(), dotsArr[1].getZCoordinate(), 1;
+        coordinatesVec *= toCenter;
+        coordinatesVec *= transMat;
+        coordinatesVec *= backToStart;
+        dotsArr[1] = Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
+
         dotsArr[2] = vertices.at(iter->getUsedDots().at(2)).getPosition();
+        coordinatesVec << dotsArr[2].getXCoordinate(), dotsArr[2].getYCoordinate(), dotsArr[2].getZCoordinate(), 1;
+        coordinatesVec *= toCenter;
+        coordinatesVec *= transMat;
+        coordinatesVec *= backToStart;
+        dotsArr[2] = Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
 
         if (dotsArr[0].getYCoordinate() > dotsArr[1].getYCoordinate())
             std::swap(dotsArr[0], dotsArr[1]);
@@ -416,7 +449,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufHeight, size_t bufWidth)
     PolModel model = scene->getPlateModel();
     std::vector<Facet> facets = model.getFacets();
     std::vector<Vertex> vertices = model.getVertices();
-    zBufForModel(facets, vertices, 1);
+    zBufForModel(facets, vertices, scene->getTransMatrix(), 1);
 
 //    qDebug() << "Моделей на сцене:" << scene->getModelsNum();
     for (size_t i = 0; i < scene->getModelsNum(); i++)
@@ -425,7 +458,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufHeight, size_t bufWidth)
         model = scene->getModel(i);
         facets = model.getFacets();
         vertices = model.getVertices();
-        zBufForModel(facets, vertices, 3);
+        zBufForModel(facets, vertices, scene->getTransMatrix(), 3);
     }
 }
 
