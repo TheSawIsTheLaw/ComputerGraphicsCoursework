@@ -100,155 +100,200 @@ QGraphicsScene *UsageFacade::rotateYScene(double angle, QRectF rect)
     return retScene;
 }
 
+void UsageFacade::addQuad(std::vector<Vertex> &vertices, std::vector<Facet> &facets,
+                          int x1, int y1, int z1,
+                          int x2, int y2, int z2,
+                          int x3, int y3, int z3,
+                          int x4, int y4, int z4)
+{
+    Dot3D dot;
+    std::vector<size_t> vec;
+
+    size_t size = facets.size();
+
+    dot = Dot3D(x1, y1, z1);
+    vec = {size, size + 1};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot = Dot3D(x2, y2, z2);
+    vec = {size};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot = Dot3D(x3, y3, z3);
+    vec = {size, size + 1};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot = Dot3D(x4, y4, z4);
+    vec = {size + 1};
+    vertices.push_back(Vertex(dot, vec));
+
+    size = vertices.size();
+    vec = {size - 4, size - 3, size - 2};
+    facets.push_back(vec);
+    vec = {size - 4, size - 2, size - 1};
+    facets.push_back(vec);
+
+}
+
 void UsageFacade::addTable()
 {
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
 
-    // Нижняя площадка
-    Dot3D dot(50, 50, 850);
-    std::vector<size_t> vec = {0};
-    vertices.push_back(Vertex(dot, vec));
+    Dot3D dot;
+    std::vector<size_t> vec;
 
-    dot.setYCoordinate(90);
-    vec = {0, 1};
-    vertices.push_back(Vertex(dot, vec));
+    addQuad(vertices, facets,
+            50, 50, 801,
+            70, 50, 801,
+            70, 50, 850,
+            50, 50, 850);
 
-    dot.setXCoordinate(90);
-    vec = {0};
-    vertices.push_back(Vertex(dot, vec));
+    addQuad(vertices, facets,
+            70, 50, 801,
+            70, 70, 801,
+            70, 70, 850,
+            70, 50, 850);
 
-    dot.setYCoordinate(50);
-    vec = {0, 1};
-    vertices.push_back(Vertex(dot, vec));
+    addQuad(vertices, facets,
+            70, 70, 801,
+            50, 70, 801,
+            50, 70, 850,
+            70, 70, 850);
+
+    addQuad(vertices, facets,
+            50, 70, 801,
+            50, 50, 801,
+            50, 50, 850,
+            50, 70, 850);
+
+    addQuad(vertices, facets,
+            20, 20, 851,
+            20, 100, 851,
+            100, 100, 851,
+            100, 20, 851);
 
     // *Стержень*
     // Верх
-    dot.setXCoordinate(60);
-    dot.setYCoordinate(60);
-    dot.setZCoordinate(801);
-    vec = {2, 3};
-    vertices.push_back(Vertex(dot, vec));
+//    dot.setXCoordinate(70);
+//    dot.setYCoordinate(70);
+//    dot.setZCoordinate(801);
+//    vec = {0, 1};
+//    vertices.push_back(Vertex(dot, vec));
 
-    dot.setXCoordinate(80);
-    vec = {2};
-    vertices.push_back(Vertex(dot, vec));
+//    dot.setXCoordinate(50);
+//    vec = {0};
+//    vertices.push_back(Vertex(dot, vec));
 
-    dot.setZCoordinate(850);
-    vec = {2, 3};
-    vertices.push_back(Vertex(dot, vec));
+//    dot.setZCoordinate(850);
+//    vec = {0, 1};
+//    vertices.push_back(Vertex(dot, vec));
 
-    dot.setXCoordinate(60);
-    vec = {3};
-    vertices.push_back(Vertex(dot, vec));
+//    vec = {1};
+//    vertices.push_back(Vertex(dot, vec));
 
-    // Лево
-    dot.setZCoordinate(801);
-    vec = {4, 5};
-    vertices.push_back(Vertex(dot, vec));
+//    // Лево
+//    dot.setZCoordinate(801);
+//    vec = {0, 1};
+//    vertices.push_back(Vertex(dot, vec));
 
-    dot.setYCoordinate(80);
-    vec = {4};
-    vertices.push_back(Vertex(dot, vec));
+//    dot.setYCoordinate(70);
+//    vec = {1};
+//    vertices.push_back(Vertex(dot, vec));
 
-    dot.setZCoordinate(850);
-    vec = {4, 5};
-    vertices.push_back(Vertex(dot, vec));
+//    dot.setZCoordinate(850);
+//    vec = {1, 2};
+//    vertices.push_back(Vertex(dot, vec));
 
-    dot.setYCoordinate(60);
-    vec = {5};
-    vertices.push_back(Vertex(dot, vec));
+//    dot.setYCoordinate(70);
+//    vec = {2};
+//    vertices.push_back(Vertex(dot, vec));
 
-    // Низ
-    dot.setZCoordinate(801);
-    dot.setYCoordinate(80);
-    vec = {6, 7};
-    vertices.push_back(Vertex(dot, vec));
+//    // Низ
+//    dot.setXCoordinate(70);
+//    dot.setZCoordinate(801);
+//    dot.setYCoordinate(70);
+//    vec = {0, 1};
+//    vertices.push_back(Vertex(dot, vec));
 
-    dot.setXCoordinate(80);
-    vec = {6};
-    vertices.push_back(Vertex(dot, vec));
+//    dot.setXCoordinate(50);
+//    vec = {0};
+//    vertices.push_back(Vertex(dot, vec));
 
-    dot.setZCoordinate(850);
-    vec = {6, 7};
-    vertices.push_back(Vertex(dot, vec));
+//    dot.setZCoordinate(850);
+//    vec = {0, 1};
+//    vertices.push_back(Vertex(dot, vec));
 
-    dot.setXCoordinate(60);
-    vec = {7};
-    vertices.push_back(Vertex(dot, vec));
+//    dot.setXCoordinate(70);
+//    vec = {1};
+//    vertices.push_back(Vertex(dot, vec));
 
-    // Право
-    dot.setZCoordinate(801);
-    dot.setXCoordinate(80);
-    vec = {8, 9};
-    vertices.push_back(Vertex(dot, vec));
+//    // Право
+//    dot.setZCoordinate(801);
+//    dot.setXCoordinate(70);
+//    vec = {6, 7};
+//    vertices.push_back(Vertex(dot, vec));
 
-    dot.setYCoordinate(60);
-    vec = {8};
-    vertices.push_back(Vertex(dot, vec));
+//    dot.setYCoordinate(50);
+//    vec = {6};
+//    vertices.push_back(Vertex(dot, vec));
 
-    dot.setZCoordinate(850);
-    vec = {8, 9};
-    vertices.push_back(Vertex(dot, vec));
+//    dot.setZCoordinate(850);
+//    vec = {6, 7};
+//    vertices.push_back(Vertex(dot, vec));
 
-    dot.setYCoordinate(80);
-    vec = {9};
-    vertices.push_back(Vertex(dot, vec));
+//    dot.setYCoordinate(70);
+//    vec = {7};
+//    vertices.push_back(Vertex(dot, vec));
 
-    // Столешница
-    dot.setZCoordinate(851);
-    dot.setXCoordinate(20);
-    dot.setYCoordinate(90);
-    vec = {10, 11};
-    vertices.push_back(Vertex(dot, vec));
+//    // Столешница
+//    dot.setZCoordinate(851);
+//    dot.setXCoordinate(40);
+//    dot.setYCoordinate(80);
+//    vec = {10, 11};
+//    vertices.push_back(Vertex(dot, vec));
 
-    dot.setXCoordinate(90);
-    vec = {10};
-    vertices.push_back(Vertex(dot, vec));
+//    dot.setXCoordinate(80);
+//    vec = {10};
+//    vertices.push_back(Vertex(dot, vec));
 
-    dot.setYCoordinate(20);
-    vec = {10, 11};
-    vertices.push_back(Vertex(dot, vec));
+//    dot.setYCoordinate(40);
+//    vec = {10, 11};
+//    vertices.push_back(Vertex(dot, vec));
 
-    dot.setXCoordinate(20);
-    vec = {11};
-    vertices.push_back(Vertex(dot, vec));
+//    dot.setXCoordinate(40);
+//    vec = {11};
+//    vertices.push_back(Vertex(dot, vec));
 
-    vec = {0, 1, 2}; // 0
-    facets.push_back(vec);
+//    vec = {0, 1, 2}; // 0
+//    facets.push_back(vec);
 
-    vec = {1, 2, 3}; // 1
-    facets.push_back(vec);
+//    vec = {0, 2, 3}; // 1
+//    facets.push_back(vec);
 
-    vec = {4, 5, 6}; // 2
-    facets.push_back(vec);
+//    vec = {4, 5, 6}; // 2
+//    facets.push_back(vec);
 
-    vec = {4, 6, 7}; // 3
-    facets.push_back(vec);
+//    vec = {4, 6, 7}; // 3
+//    facets.push_back(vec);
 
-    vec = {8, 9, 10}; // 4
-    facets.push_back(vec);
+//    vec = {8, 9, 10}; // 4
+//    facets.push_back(vec);
 
-    vec = {8, 10, 11}; // 5
-    facets.push_back(vec);
+//    vec = {8, 10, 11}; // 5
+//    facets.push_back(vec);
 
-    vec = {12, 13, 14}; // 6
-    facets.push_back(vec);
+//    vec = {12, 13, 14}; // 6
+//    facets.push_back(vec);
 
-    vec = {12, 14, 15}; // 7
-    facets.push_back(vec);
+//    vec = {12, 14, 15}; // 7
+//    facets.push_back(vec);
 
-    vec = {16, 17, 18}; // 8
-    facets.push_back(vec);
+//    vec = {16, 17, 18}; // 8
+//    facets.push_back(vec);
 
-    vec = {16, 18, 19}; // 9
-    facets.push_back(vec);
-
-    vec = {20, 21, 22}; // 10
-    facets.push_back(vec);
-
-    vec = {20, 22, 23}; // 11
-    facets.push_back(vec);
+//    vec = {16, 18, 19}; // 9
+//    facets.push_back(vec);
 
     PolModel tableModel(vertices, facets);
     qDebug() << "Прошли через создание стола";
@@ -269,13 +314,12 @@ void Drawer::zBufForModel(
     Eigen::Matrix4f backToStart;
     // clang-format off
     backToStart << 1, 0, 0, 0,
-                0, 1, 0, 0,
-                0, 0, 1, 0,
-                X_CENTER, Y_CENTER, PLATE_Z, 1;
+                   0, 1, 0, 0,
+                   0, 0, 1, 0,
+                   X_CENTER, Y_CENTER, PLATE_Z, 1;
     // clang-format on
     for (std::vector<Facet>::iterator iter = facets.begin(); iter != facets.end(); iter++)
     {
-        qDebug("Рза....");
         Eigen::MatrixXf coordinatesVec(1, 4);
         dotsArr[0] = vertices.at(iter->getUsedDots().at(0)).getPosition();
         coordinatesVec << dotsArr[0].getXCoordinate(), dotsArr[0].getYCoordinate(), dotsArr[0].getZCoordinate(), 1;
@@ -298,11 +342,17 @@ void Drawer::zBufForModel(
         coordinatesVec *= backToStart;
         dotsArr[2] = Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
 
-        if (dotsArr[0].getYCoordinate() > dotsArr[1].getYCoordinate())
+        if (dotsArr[0].getYCoordinate() > dotsArr[1].getYCoordinate() ||
+            ((int)dotsArr[0].getXCoordinate() > (int)dotsArr[1].getXCoordinate() &&
+             (int)dotsArr[0].getYCoordinate() == (int)dotsArr[1].getYCoordinate()))
             std::swap(dotsArr[0], dotsArr[1]);
-        if (dotsArr[0].getYCoordinate() > dotsArr[2].getYCoordinate())
+        if (dotsArr[0].getYCoordinate() > dotsArr[2].getYCoordinate()||
+            ((int)dotsArr[0].getXCoordinate() > (int)dotsArr[2].getXCoordinate() &&
+             (int)dotsArr[0].getYCoordinate() == (int)dotsArr[2].getYCoordinate()))
             std::swap(dotsArr[0], dotsArr[2]);
-        if (dotsArr[1].getYCoordinate() > dotsArr[2].getYCoordinate())
+        if (dotsArr[1].getYCoordinate() > dotsArr[2].getYCoordinate()||
+            ((int)dotsArr[1].getXCoordinate() > (int)dotsArr[2].getXCoordinate() &&
+             (int)dotsArr[1].getYCoordinate() == (int)dotsArr[2].getYCoordinate()))
             std::swap(dotsArr[1], dotsArr[2]);
 
         double x1 = dotsArr[0].getXCoordinate();
