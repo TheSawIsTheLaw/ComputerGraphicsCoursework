@@ -9,10 +9,12 @@ class Drawer
 public:
     void zBufferAlg(CellScene *scene, size_t bufheight, size_t bufWidth);
     void zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices, Eigen::Matrix4f &transMat, size_t color);
+    void specBorderPut(int x, int y, double z);
+    void DDABordersForPolygon(int xStart, int yStart, double zStart, int xEnd, int yEnd, double zEnd);
     QGraphicsScene *drawScene(CellScene *scene, QRectF rect);
 
 private:
-    std::vector<std::vector<size_t>> depthBuffer;
+    std::vector<std::vector<double>> depthBuffer;
     std::vector<std::vector<size_t>> frameBuffer;
 };
 

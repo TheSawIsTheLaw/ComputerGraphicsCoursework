@@ -310,6 +310,54 @@ void UsageFacade::addTable()
     scene->addModel(tableModel);
 }
 
+void Drawer::specBorderPut(int x, int y, double z)
+{
+    try
+    {
+        if (std::fabs(z - depthBuffer.at(x).at(y)) < 2 || z > depthBuffer.at(x).at(y))
+            frameBuffer.at(x).at(y) = 2;
+    }  catch (std::exception &err) {}
+
+}
+
+void Drawer::DDABordersForPolygon(int xStart, int yStart, double zStart, int xEnd, int yEnd, double zEnd)
+{
+    if (xStart == xEnd && yStart == yEnd)
+    {
+        specBorderPut(xStart, yStart, zStart);
+        return;
+    }
+
+    double deltaX = xEnd - xStart;
+    double deltaY = yEnd - yStart;
+    double deltaZ = zEnd - zStart;
+
+    int trX = abs(deltaX);
+    int trY = abs(deltaY);
+
+    int length;
+    if (trX > trY)
+        length = trX;
+    else
+        length = trY;
+
+    deltaX /= length;
+    deltaY /= length;
+    deltaZ /= length;
+
+    double curX = xStart;
+    double curY = yStart;
+    double curZ = zStart;
+
+    for (int i = 0; i < length; i++)
+    {
+        specBorderPut(round(curX), round(curY), round(curZ));
+        curX += deltaX;
+        curY += deltaY;
+        curZ += deltaZ;
+    }
+}
+
 /*void Drawer::zBufForModel(
     std::vector<Facet> &facets, std::vector<Vertex> &vertices, Eigen::Matrix4f &transMat, size_t color)
 {
@@ -569,34 +617,14 @@ void Drawer::zBufForModel(
                 std::swap(zA, zB);
             }
 
-
-            try {
-                if (zA > depthBuffer.at(xA).at(curY))
-                {
-                    depthBuffer.at(xA).at(curY) = zA;
-                    frameBuffer.at(xA).at(curY) = 2;
-                }
-            }  catch (std::exception &err) { }
-            try {
-                if (zB > depthBuffer.at(xB).at(curY))
-                {
-                    depthBuffer.at(xB).at(curY) = zB;
-                    frameBuffer.at(xB).at(curY) = 2;
-                }
-            }  catch (std::exception &err) { }
-            int curCol = color;
-            if (curY == round(dotsArr[0].getYCoordinate()))
-            {
-                curCol = 2;
-            }
-            for (int curX = xA + 1; curX < xB; curX++)
+            for (int curX = xA; curX <= xB; curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
                 try {
                     if (curZ > depthBuffer.at(curX).at(curY))
                     {
                         depthBuffer.at(curX).at(curY) = curZ;
-                        frameBuffer.at(curX).at(curY) = curCol;
+                        frameBuffer.at(curX).at(curY) = color;
                     }
                 }  catch (std::exception &err) {}
             }
@@ -627,36 +655,22 @@ void Drawer::zBufForModel(
                 std::swap(zA, zB);
             }
 
-            try {
-                if (zA > depthBuffer.at(xA).at(curY))
-                {
-                    depthBuffer.at(xA).at(curY) = zA;
-                    frameBuffer.at(xA).at(curY) = 2;
-                }
-            }  catch (std::exception &err) {}
-            try {
-                if (zB > depthBuffer.at(xB).at(curY))
-                {
-                    depthBuffer.at(xB).at(curY) = zB;
-                    frameBuffer.at(xB).at(curY) = 2;
-                }
-            }  catch (std::exception &err) { }
-            int curCol = color;
-            if (curY == round(dotsArr[2].getYCoordinate()) || (curY == round(dotsArr[1].getYCoordinate()) && (curY == round(dotsArr[0].getYCoordinate()))))
-                curCol = 2;
-            for (int curX = xA + 1; curX < xB; curX++)
+            for (int curX = xA; curX <= xB; curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
                 try {
                     if (curZ > depthBuffer.at(curX).at(curY))
                     {
                         depthBuffer.at(curX).at(curY) = curZ;
-                        frameBuffer.at(curX).at(curY) = curCol;
+                        frameBuffer.at(curX).at(curY) = color;
                     }
                 }  catch (std::exception &err) {}
 
             }
         }
+        DDABordersForPolygon(x1, round(dotsArr[0].getYCoordinate()), z1, x2, round(dotsArr[1].getYCoordinate()), z2);
+        DDABordersForPolygon(x1, round(dotsArr[0].getYCoordinate()), z1, x3, round(dotsArr[2].getYCoordinate()), z3);
+        DDABordersForPolygon(x2, round(dotsArr[1].getYCoordinate()), z2, x3, round(dotsArr[2].getYCoordinate()), z3);
     }
 }
 
@@ -667,7 +681,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufHeight, size_t bufWidth)
 
     for (size_t i = 0; i < bufWidth; i++)
     {
-        depthBuffer.push_back(std::vector<size_t>(bufHeight, 0));
+        depthBuffer.push_back(std::vector<double>(bufHeight, 0));
         frameBuffer.push_back(std::vector<size_t>(bufHeight, 0));
     }
 
