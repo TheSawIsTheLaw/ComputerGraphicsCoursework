@@ -9,8 +9,8 @@
 #define Y_CENTER 520
 
 #define MOVE_UNIT 50
-#define ROTATE_UNIT 3.14159265358979323846 / 18
+#define ROTATE_UNIT 3.14159265358979323846 / 8
 
-#define EPS 1e-1
+#define EPS 1e-3
 
 #endif // CONFIG_HPP

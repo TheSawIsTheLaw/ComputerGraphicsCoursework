@@ -100,6 +100,16 @@ QGraphicsScene *UsageFacade::rotateYScene(double angle, QRectF rect)
     return retScene;
 }
 
+QGraphicsScene *UsageFacade::rotateZScene(double angle, QRectF rect)
+{
+    scene->rotateZ(angle);
+    QGraphicsScene *retScene = nullptr;
+    if (isSceneSet())
+        retScene = drawer->drawScene(scene, rect);
+
+    return retScene;
+}
+
 void UsageFacade::addQuad(std::vector<Vertex> &vertices, std::vector<Facet> &facets,
                           int x1, int y1, int z1,
                           int x2, int y2, int z2,
@@ -300,6 +310,183 @@ void UsageFacade::addTable()
     scene->addModel(tableModel);
 }
 
+/*void Drawer::zBufForModel(
+    std::vector<Facet> &facets, std::vector<Vertex> &vertices, Eigen::Matrix4f &transMat, size_t color)
+{
+    std::array<Dot3D, 3> dotsArr;
+    Eigen::Matrix4f toCenter;
+    // clang-format off
+    toCenter << 1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                -X_CENTER, -Y_CENTER, -PLATE_Z, 1;
+    // clang-format on
+    Eigen::Matrix4f backToStart;
+    // clang-format off
+    backToStart << 1, 0, 0, 0,
+                   0, 1, 0, 0,
+                   0, 0, 1, 0,
+                   X_CENTER, Y_CENTER, PLATE_Z, 1;
+    // clang-format on
+    for (std::vector<Facet>::iterator iter = facets.begin(); iter != facets.end(); iter++)
+    {
+        Eigen::MatrixXf coordinatesVec(1, 4);
+        dotsArr[0] = vertices.at(iter->getUsedDots().at(0)).getPosition();
+        coordinatesVec << dotsArr[0].getXCoordinate(), dotsArr[0].getYCoordinate(), dotsArr[0].getZCoordinate(), 1;
+        coordinatesVec *= toCenter;
+        coordinatesVec *= transMat;
+        coordinatesVec *= backToStart;
+        dotsArr[0] = Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
+
+        dotsArr[1] = vertices.at(iter->getUsedDots().at(1)).getPosition();
+        coordinatesVec << dotsArr[1].getXCoordinate(), dotsArr[1].getYCoordinate(), dotsArr[1].getZCoordinate(), 1;
+        coordinatesVec *= toCenter;
+        coordinatesVec *= transMat;
+        coordinatesVec *= backToStart;
+        dotsArr[1] = Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
+
+        dotsArr[2] = vertices.at(iter->getUsedDots().at(2)).getPosition();
+        coordinatesVec << dotsArr[2].getXCoordinate(), dotsArr[2].getYCoordinate(), dotsArr[2].getZCoordinate(), 1;
+        coordinatesVec *= toCenter;
+        coordinatesVec *= transMat;
+        coordinatesVec *= backToStart;
+        dotsArr[2] = Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
+
+        if (dotsArr[0].getYCoordinate() > dotsArr[1].getYCoordinate())
+            std::swap(dotsArr[0], dotsArr[1]);
+        if (dotsArr[0].getYCoordinate() > dotsArr[2].getYCoordinate())
+            std::swap(dotsArr[0], dotsArr[2]);
+        if (dotsArr[1].getYCoordinate() > dotsArr[2].getYCoordinate())
+            std::swap(dotsArr[1], dotsArr[2]);
+
+        double x1 = dotsArr[0].getXCoordinate();
+        double x2 = dotsArr[1].getXCoordinate();
+        double x3 = dotsArr[2].getXCoordinate();
+
+        double z1 = dotsArr[0].getZCoordinate();
+        double z2 = dotsArr[1].getZCoordinate();
+        double z3 = dotsArr[2].getZCoordinate();
+
+        for (int curY = round(dotsArr[0].getYCoordinate() + 1);
+             curY <= round(dotsArr[1].getYCoordinate()); curY++)
+        {
+            //            qDebug() << curY << dotsArr[0] << dotsArr[1] << dotsArr[2];
+            double aInc = 0;
+            if (std::fabs(dotsArr[1].getYCoordinate() - dotsArr[0].getYCoordinate()) > EPS)
+                aInc = (curY - dotsArr[0].getYCoordinate()) /
+                       (dotsArr[1].getYCoordinate() - dotsArr[0].getYCoordinate());
+
+            double bInc = 0;
+            if (std::fabs(dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate()) > EPS)
+                bInc = (curY - dotsArr[0].getYCoordinate()) /
+                       (dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate());
+
+            double xA = x1 + (x2 - x1) * aInc;
+            double xB = x1 + (x3 - x1) * bInc;
+            double zA = z1 + (z2 - z1) * aInc;
+            double zB = z1 + (z3 - z1) * bInc;
+
+            if (xA > xB)
+            {
+                std::swap(xA, xB);
+                std::swap(zA, zB);
+            }
+
+
+            try {
+                if (zA > depthBuffer.at(round(xA)).at(curY))
+                {
+                    depthBuffer.at(round(xA)).at(curY) = zA;
+                    frameBuffer.at(round(xA)).at(curY) = 2;
+                }
+            }  catch (std::exception &err) { }
+            int curCol = color;
+            if (curY == round(dotsArr[0].getYCoordinate()) + 1)
+            {
+                curCol = 2;
+            }
+            for (int curX = round(xA) + 1; curX < round(xB); curX++)
+            {
+                double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
+                try {
+                    if (curZ > depthBuffer.at(curX).at(curY))
+                    {
+                        depthBuffer.at(curX).at(curY) = curZ;
+                        frameBuffer.at(curX).at(curY) = curCol;
+                    }
+                }  catch (std::exception &err) {}
+            }
+            double curZ = zA + (zB - zA) * (round(xB) - xA) / (xB - xA);
+            try {
+                if (curZ >= depthBuffer.at(round(xB)).at(curY))
+                {
+                    depthBuffer.at(round(xB)).at(curY) = curZ;
+                    frameBuffer.at(round(xB)).at(curY) = 2;
+                }
+            }  catch (std::exception &err) {}
+        }
+
+        for (int curY = round(dotsArr[1].getYCoordinate());
+             curY <= round(dotsArr[2].getYCoordinate()); curY++)
+        {
+            //            qDebug() << curY << dotsArr[0] << dotsArr[1] << dotsArr[2];
+            double aInc = 0;
+            if (std::fabs(dotsArr[2].getYCoordinate() - dotsArr[1].getYCoordinate()) > EPS)
+                aInc = (curY - dotsArr[1].getYCoordinate()) /
+                       (dotsArr[2].getYCoordinate() - dotsArr[1].getYCoordinate());
+
+            double bInc = 0;
+            if (std::abs(dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate()) > EPS)
+                bInc = (curY - dotsArr[0].getYCoordinate()) /
+                       (dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate());
+
+            double xA = x2 + (x3 - x2) * aInc;
+            double xB = x1 + (x3 - x1) * bInc;
+            double zA = z2 + (z3 - z2) * aInc;
+            double zB = z1 + (z3 - z1) * bInc;
+
+            if (xA > xB)
+            {
+                std::swap(xA, xB);
+                std::swap(zA, zB);
+            }
+
+            try {
+                if (zA > depthBuffer.at(round(xA)).at(curY))
+                {
+                    depthBuffer.at(round(xA)).at(curY) = zA;
+                    frameBuffer.at(round(xA)).at(curY) = 2;
+                }
+            }  catch (std::exception &err) {}
+            int curCol = color;
+            if (curY == round(dotsArr[2].getYCoordinate()) || (curY == round(dotsArr[1].getYCoordinate()) && (curY == round(dotsArr[0].getYCoordinate()))))
+                curCol = 2;
+            for (int curX = round(xA) + 1; curX < round(xB); curX++)
+            {
+                double curZ = zA + (zB - zA) * (double(curX) - xA) / (xB - xA);
+                try {
+                    if (curZ > depthBuffer.at(curX).at(curY))
+                    {
+                        depthBuffer.at(curX).at(curY) = curZ;
+                        frameBuffer.at(curX).at(curY) = curCol;
+                    }
+                }  catch (std::exception &err) {}
+
+            }
+            double curZ = zA + (zB - zA) * (round(xB) - xA) / (xB - xA);
+            try {
+                if (curZ >= depthBuffer.at(round(xB)).at(curY))
+                {
+                    depthBuffer.at(round(xB)).at(curY) = curZ;
+                    frameBuffer.at(round(xB)).at(curY) = 2;
+                }
+            }  catch (std::exception &err) {}
+
+        }
+    }
+}
+*/
+
 void Drawer::zBufForModel(
     std::vector<Facet> &facets, std::vector<Vertex> &vertices, Eigen::Matrix4f &transMat, size_t color)
 {
@@ -342,22 +529,16 @@ void Drawer::zBufForModel(
         coordinatesVec *= backToStart;
         dotsArr[2] = Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
 
-        if (dotsArr[0].getYCoordinate() > dotsArr[1].getYCoordinate() ||
-            ((int)dotsArr[0].getXCoordinate() > (int)dotsArr[1].getXCoordinate() &&
-             (int)dotsArr[0].getYCoordinate() == (int)dotsArr[1].getYCoordinate()))
+        if (dotsArr[0].getYCoordinate() > dotsArr[1].getYCoordinate())
             std::swap(dotsArr[0], dotsArr[1]);
-        if (dotsArr[0].getYCoordinate() > dotsArr[2].getYCoordinate()||
-            ((int)dotsArr[0].getXCoordinate() > (int)dotsArr[2].getXCoordinate() &&
-             (int)dotsArr[0].getYCoordinate() == (int)dotsArr[2].getYCoordinate()))
+        if (dotsArr[0].getYCoordinate() > dotsArr[2].getYCoordinate())
             std::swap(dotsArr[0], dotsArr[2]);
-        if (dotsArr[1].getYCoordinate() > dotsArr[2].getYCoordinate()||
-            ((int)dotsArr[1].getXCoordinate() > (int)dotsArr[2].getXCoordinate() &&
-             (int)dotsArr[1].getYCoordinate() == (int)dotsArr[2].getYCoordinate()))
+        if (dotsArr[1].getYCoordinate() > dotsArr[2].getYCoordinate())
             std::swap(dotsArr[1], dotsArr[2]);
 
-        double x1 = dotsArr[0].getXCoordinate();
-        double x2 = dotsArr[1].getXCoordinate();
-        double x3 = dotsArr[2].getXCoordinate();
+        int x1 = round(dotsArr[0].getXCoordinate());
+        int x2 = round(dotsArr[1].getXCoordinate());
+        int x3 = round(dotsArr[2].getXCoordinate());
 
         double z1 = dotsArr[0].getZCoordinate();
         double z2 = dotsArr[1].getZCoordinate();
@@ -368,17 +549,17 @@ void Drawer::zBufForModel(
         {
 //            qDebug() << curY << dotsArr[0] << dotsArr[1] << dotsArr[2];
             double aInc = 0;
-            if (std::fabs(dotsArr[1].getYCoordinate() - dotsArr[0].getYCoordinate()) > EPS)
-                aInc = (curY - dotsArr[0].getYCoordinate()) /
-                       (dotsArr[1].getYCoordinate() - dotsArr[0].getYCoordinate());
+            if (round(dotsArr[1].getYCoordinate()) != round(dotsArr[0].getYCoordinate()))
+                aInc = (curY - round(dotsArr[0].getYCoordinate())) /
+                       (round(dotsArr[1].getYCoordinate()) - round(dotsArr[0].getYCoordinate()));
 
             double bInc = 0;
-            if (std::fabs(dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate()) > EPS)
-                bInc = (curY - dotsArr[0].getYCoordinate()) /
-                       (dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate());
+            if (round(dotsArr[2].getYCoordinate()) != round(dotsArr[0].getYCoordinate()))
+                bInc = (curY - round(dotsArr[0].getYCoordinate())) /
+                       (round(dotsArr[2].getYCoordinate()) - round(dotsArr[0].getYCoordinate()));
 
-            double xA = x1 + (x2 - x1) * aInc;
-            double xB = x1 + (x3 - x1) * bInc;
+            int xA = round(x1 + (x2 - x1) * aInc);
+            int xB = round(x1 + (x3 - x1) * bInc);
             double zA = z1 + (z2 - z1) * aInc;
             double zB = z1 + (z3 - z1) * bInc;
 
@@ -390,10 +571,17 @@ void Drawer::zBufForModel(
 
 
             try {
-                if (zA > depthBuffer.at(round(xA)).at(curY))
+                if (zA > depthBuffer.at(xA).at(curY))
                 {
-                    depthBuffer.at(round(xA)).at(curY) = zA;
-                    frameBuffer.at(round(xA)).at(curY) = 2;
+                    depthBuffer.at(xA).at(curY) = zA;
+                    frameBuffer.at(xA).at(curY) = 2;
+                }
+            }  catch (std::exception &err) { }
+            try {
+                if (zB > depthBuffer.at(xB).at(curY))
+                {
+                    depthBuffer.at(xB).at(curY) = zB;
+                    frameBuffer.at(xB).at(curY) = 2;
                 }
             }  catch (std::exception &err) { }
             int curCol = color;
@@ -401,7 +589,7 @@ void Drawer::zBufForModel(
             {
                 curCol = 2;
             }
-            for (int curX = round(xA) + 1; curX < round(xB); curX++)
+            for (int curX = xA + 1; curX < xB; curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
                 try {
@@ -412,14 +600,6 @@ void Drawer::zBufForModel(
                     }
                 }  catch (std::exception &err) {}
             }
-            double curZ = zA + (zB - zA) * (round(xB) - xA) / (xB - xA);
-            try {
-                if (curZ >= depthBuffer.at(round(xB)).at(curY))
-                {
-                    depthBuffer.at(round(xB)).at(curY) = curZ;
-                    frameBuffer.at(round(xB)).at(curY) = 2;
-                }
-            }  catch (std::exception &err) {}
         }
 
         for (int curY = round(dotsArr[1].getYCoordinate());
@@ -427,17 +607,17 @@ void Drawer::zBufForModel(
         {
 //            qDebug() << curY << dotsArr[0] << dotsArr[1] << dotsArr[2];
             double aInc = 0;
-            if (std::fabs(dotsArr[2].getYCoordinate() - dotsArr[1].getYCoordinate()) > EPS)
-                aInc = (curY - dotsArr[1].getYCoordinate()) /
-                       (dotsArr[2].getYCoordinate() - dotsArr[1].getYCoordinate());
+            if (round(dotsArr[2].getYCoordinate()) != round(dotsArr[1].getYCoordinate()))
+                aInc = (curY - round(dotsArr[1].getYCoordinate())) /
+                       (round(dotsArr[2].getYCoordinate()) - round(dotsArr[1].getYCoordinate()));
 
             double bInc = 0;
-            if (std::abs(dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate()) > EPS)
-                bInc = (curY - dotsArr[0].getYCoordinate()) /
-                       (dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate());
+            if (round(dotsArr[2].getYCoordinate()) != round(dotsArr[0].getYCoordinate()))
+                bInc = (curY - round(dotsArr[0].getYCoordinate())) /
+                       (round(dotsArr[2].getYCoordinate()) - round(dotsArr[0].getYCoordinate()));
 
-            double xA = x2 + (x3 - x2) * aInc;
-            double xB = x1 + (x3 - x1) * bInc;
+            int xA = round(x2 + (x3 - x2) * aInc);
+            int xB = round(x1 + (x3 - x1) * bInc);
             double zA = z2 + (z3 - z2) * aInc;
             double zB = z1 + (z3 - z1) * bInc;
 
@@ -447,22 +627,28 @@ void Drawer::zBufForModel(
                 std::swap(zA, zB);
             }
 
-
             try {
-                if (zA > depthBuffer.at(round(xA)).at(curY))
+                if (zA > depthBuffer.at(xA).at(curY))
                 {
-                    depthBuffer.at(round(xA)).at(curY) = zA;
-                    frameBuffer.at(round(xA)).at(curY) = 2;
+                    depthBuffer.at(xA).at(curY) = zA;
+                    frameBuffer.at(xA).at(curY) = 2;
                 }
             }  catch (std::exception &err) {}
+            try {
+                if (zB > depthBuffer.at(xB).at(curY))
+                {
+                    depthBuffer.at(xB).at(curY) = zB;
+                    frameBuffer.at(xB).at(curY) = 2;
+                }
+            }  catch (std::exception &err) { }
             int curCol = color;
             if (curY == round(dotsArr[2].getYCoordinate()) || (curY == round(dotsArr[1].getYCoordinate()) && (curY == round(dotsArr[0].getYCoordinate()))))
                 curCol = 2;
-            for (int curX = round(xA) + 1; curX < round(xB); curX++)
+            for (int curX = xA + 1; curX < xB; curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
                 try {
-                    if (curZ >= depthBuffer.at(curX).at(curY))
+                    if (curZ > depthBuffer.at(curX).at(curY))
                     {
                         depthBuffer.at(curX).at(curY) = curZ;
                         frameBuffer.at(curX).at(curY) = curCol;
@@ -470,15 +656,6 @@ void Drawer::zBufForModel(
                 }  catch (std::exception &err) {}
 
             }
-            double curZ = zA + (zB - zA) * (round(xB) - xA) / (xB - xA);
-            try {
-                if (curZ >= depthBuffer.at(round(xB)).at(curY))
-                {
-                    depthBuffer.at(round(xB)).at(curY) = curZ;
-                    frameBuffer.at(round(xB)).at(curY) = 2;
-                }
-            }  catch (std::exception &err) {}
-
         }
     }
 }
@@ -607,7 +784,7 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     QImage *image =
     new QImage(rect.size().width(), rect.size().height(), QImage::Format_RGB32);
     image->fill(Qt::white);
-    uint whiteCol = qRgb(255, 150, 255);
+    uint plateCol = qRgb(255, 150, 255);
     uint blackCol = qRgb(0, 0, 0);
     uint goldCol = qRgb(255, 215, 0);
 
@@ -615,7 +792,7 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
         for (size_t j = 0; j < rect.size().height() - 1; j++)
             if (frameBuffer.at(i).at(j) == 1)
             {
-                image->setPixel(i, j, whiteCol);
+                image->setPixel(i, j, plateCol);
                 //                int z = 0;
                 //                for (; z < rect.size().width() && frameBuffer.at(i).at(j
                 //                + z) == 1; z++) {} outScene->addLine(i, j, i, j + z - 1,

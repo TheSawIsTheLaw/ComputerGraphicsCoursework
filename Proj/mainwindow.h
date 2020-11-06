@@ -40,6 +40,8 @@ private slots:
     void pictureRotateXLeft();
     void pictureRotateYRight();
     void pictureRotateYLeft();
+    void pictureRotateZRight();
+    void pictureRotateZLeft();
 
     void on_pushButton_clicked();
 

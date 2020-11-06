@@ -94,6 +94,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     QShortcut *shortcutRotateYLeft = new QShortcut(QKeySequence("a"), this);
     QObject::connect(shortcutRotateYLeft, SIGNAL(activated()), this, SLOT(pictureRotateYLeft()));
+
+    QShortcut *shortcutRotateZLeft = new QShortcut(QKeySequence("q"), this);
+    QObject::connect(shortcutRotateZLeft, SIGNAL(activated()), this, SLOT(pictureRotateZLeft()));
+
+    QShortcut *shortcutRotateZRight = new QShortcut(QKeySequence("e"), this);
+    QObject::connect(shortcutRotateZRight, SIGNAL(activated()), this, SLOT(pictureRotateZRight()));
 }
 
 //void MainWindow::updateScene()
@@ -187,6 +193,26 @@ void MainWindow::pictureRotateYLeft()
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
     QGraphicsScene *setScene = facade->rotateYScene(-ROTATE_UNIT, ui->graphicsView->rect());
+
+    ui->graphicsView->setScene(setScene);
+}
+
+void MainWindow::pictureRotateZRight()
+{
+    qDebug() << "Вертим по z";
+    if (ui->graphicsView->scene())
+        delete ui->graphicsView->scene();
+    QGraphicsScene *setScene = facade->rotateZScene(ROTATE_UNIT, ui->graphicsView->rect());
+
+    ui->graphicsView->setScene(setScene);
+}
+
+void MainWindow::pictureRotateZLeft()
+{
+    qDebug() << "Вертим по z";
+    if (ui->graphicsView->scene())
+        delete ui->graphicsView->scene();
+    QGraphicsScene *setScene = facade->rotateZScene(-ROTATE_UNIT, ui->graphicsView->rect());
 
     ui->graphicsView->setScene(setScene);
 }

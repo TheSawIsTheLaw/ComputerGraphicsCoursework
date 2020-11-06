@@ -289,6 +289,19 @@ void CellScene::rotateY(double angle)
 //    }
 }
 
+void CellScene::rotateZ(double angle)
+{
+    Eigen::Matrix4f rotateMatrix;
+    // clang-format off
+    rotateMatrix << cos(angle),  -sin(angle), 0, 0,
+                    sin(angle),   cos(angle), 0, 0,
+                    0,            0,          1, 0,
+                    0,            0,          0, 1;
+    // clang-format on
+
+    transMatrix *= rotateMatrix;
+}
+
 size_t CellScene::getModelsNum() { return modelsNum; }
 
 PolModel &CellScene::getModel(size_t num) { return models.at(num); }

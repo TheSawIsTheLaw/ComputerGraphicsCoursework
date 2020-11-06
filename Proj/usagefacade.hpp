@@ -36,6 +36,7 @@ public:
 
     QGraphicsScene *rotateXScene(double angle, QRectF rect);
     QGraphicsScene *rotateYScene(double angle, QRectF rect);
+    QGraphicsScene *rotateZScene(double angle, QRectF rect);
 
 private:
     CellScene *scene;
