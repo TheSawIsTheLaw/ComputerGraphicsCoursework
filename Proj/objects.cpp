@@ -28,11 +28,24 @@ std::vector<std::vector<double>> &Illuminant::getBuf() { return shadowBuffer; }
 Illuminant::Illuminant(Eigen::Matrix4f &transMatrix_)
 {
     transMatrix = transMatrix_;
+    for (size_t i = 0; i < ILLUM_VIS_X; i++)
+    {
+        shadowBuffer.push_back(std::vector<double>(ILLUM_VIS_Y, 0));
+    }
 }
 
 void Illuminant::setBuf(std::vector<std::vector<double>> &setBuf)
 {
     shadowBuffer = setBuf;
+}
+
+void Illuminant::clearShadowMap()
+{
+    for (size_t i = 0; i < shadowBuffer.size(); i++)
+    {
+        for (size_t j = 0; j < shadowBuffer.at(0).size(); j++)
+            shadowBuffer.at(i).at(j) = 0;
+    }
 }
 
 Eigen::Matrix4f &Illuminant::getTransMat() { return transMatrix; }

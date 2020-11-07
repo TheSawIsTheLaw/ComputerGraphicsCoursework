@@ -168,10 +168,16 @@ void UsageFacade::addTable()
 void UsageFacade::addIlluminant()
 {
     Eigen::Matrix4f transMat;
-    transMat << 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1;
+    // clang-format off
+    transMat << cos(ROTATE_UNIT), 0, sin(ROTATE_UNIT), 0,
+                0, 1, 0, 0,
+                -sin(ROTATE_UNIT), 0, cos(ROTATE_UNIT), 0,
+                0, 0, 0, 1;
+    // clang-format on
 
     Illuminant illum(transMat);
     scene->addIlluminant(illum);
+    qDebug() << "Добавили";
 }
 
 void Drawer::specBorderPut(int x, int y, double z)
@@ -179,7 +185,7 @@ void Drawer::specBorderPut(int x, int y, double z)
     try
     {
         if (std::fabs(z - depthBuffer.at(x).at(y)) < 5 || z > depthBuffer.at(x).at(y))
-            frameBuffer.at(x).at(y) = 2;
+            frameBuffer.at(x).at(y) = 5;
     }
     catch (std::exception &err)
     {
@@ -404,8 +410,164 @@ round(dotsArr[1].getYCoordinate()) && (curY == round(dotsArr[0].getYCoordinate()
 }
 */
 
+void Drawer::shadowMapForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices,
+Eigen::Matrix4f &transMat, Illuminant &illum, size_t bufHeight, size_t bufWidth)
+{
+    std::array<Dot3D, 3> dotsArr;
+    Eigen::Matrix4f toCenter;
+    // clang-format off
+    toCenter << 1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                -X_CENTER, -Y_CENTER, -PLATE_Z, 1;
+    // clang-format on
+    Eigen::Matrix4f backToStart;
+    // clang-format off
+    backToStart << 1, 0, 0, 0,
+                   0, 1, 0, 0,
+                   0, 0, 1, 0,
+                   X_CENTER, Y_CENTER, PLATE_Z, 1;
+    // clang-format on
+    std::vector<std::vector<double>> shadowMap;
+    for (size_t i = 0; i < bufWidth; i++)
+        shadowMap.push_back(std::vector<double>(bufHeight, 0));
+    for (std::vector<Facet>::iterator iter = facets.begin(); iter != facets.end(); iter++)
+    {
+        Eigen::MatrixXf coordinatesVec(1, 4);
+        dotsArr[0] = vertices.at(iter->getUsedDots().at(0)).getPosition();
+        coordinatesVec << dotsArr[0].getXCoordinate(), dotsArr[0].getYCoordinate(),
+        dotsArr[0].getZCoordinate(), 1;
+        coordinatesVec *= toCenter;
+        coordinatesVec *= transMat;
+        coordinatesVec *= illum.getTransMat();
+        coordinatesVec *= backToStart;
+        dotsArr[0] =
+        Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
+
+        dotsArr[1] = vertices.at(iter->getUsedDots().at(1)).getPosition();
+        coordinatesVec << dotsArr[1].getXCoordinate(), dotsArr[1].getYCoordinate(),
+        dotsArr[1].getZCoordinate(), 1;
+        coordinatesVec *= toCenter;
+        coordinatesVec *= transMat;
+        coordinatesVec *= illum.getTransMat();
+        coordinatesVec *= backToStart;
+        dotsArr[1] =
+        Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
+
+        dotsArr[2] = vertices.at(iter->getUsedDots().at(2)).getPosition();
+        coordinatesVec << dotsArr[2].getXCoordinate(), dotsArr[2].getYCoordinate(),
+        dotsArr[2].getZCoordinate(), 1;
+        coordinatesVec *= toCenter;
+        coordinatesVec *= transMat;
+        coordinatesVec *= illum.getTransMat();
+        coordinatesVec *= backToStart;
+        dotsArr[2] =
+        Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
+
+        if (dotsArr[0].getYCoordinate() > dotsArr[1].getYCoordinate())
+            std::swap(dotsArr[0], dotsArr[1]);
+        if (dotsArr[0].getYCoordinate() > dotsArr[2].getYCoordinate())
+            std::swap(dotsArr[0], dotsArr[2]);
+        if (dotsArr[1].getYCoordinate() > dotsArr[2].getYCoordinate())
+            std::swap(dotsArr[1], dotsArr[2]);
+
+        int x1 = round(dotsArr[0].getXCoordinate());
+        int x2 = round(dotsArr[1].getXCoordinate());
+        int x3 = round(dotsArr[2].getXCoordinate());
+
+        double z1 = dotsArr[0].getZCoordinate();
+        double z2 = dotsArr[1].getZCoordinate();
+        double z3 = dotsArr[2].getZCoordinate();
+
+        for (int curY = round(dotsArr[0].getYCoordinate());
+             curY < round(dotsArr[1].getYCoordinate()); curY++)
+        {
+            double aInc = 0;
+            if (round(dotsArr[1].getYCoordinate()) != round(dotsArr[0].getYCoordinate()))
+                aInc =
+                (curY - round(dotsArr[0].getYCoordinate())) /
+                (round(dotsArr[1].getYCoordinate()) - round(dotsArr[0].getYCoordinate()));
+
+            double bInc = 0;
+            if (round(dotsArr[2].getYCoordinate()) != round(dotsArr[0].getYCoordinate()))
+                bInc =
+                (curY - round(dotsArr[0].getYCoordinate())) /
+                (round(dotsArr[2].getYCoordinate()) - round(dotsArr[0].getYCoordinate()));
+
+            int xA = round(x1 + (x2 - x1) * aInc);
+            int xB = round(x1 + (x3 - x1) * bInc);
+            double zA = z1 + (z2 - z1) * aInc;
+            double zB = z1 + (z3 - z1) * bInc;
+
+            if (xA > xB)
+            {
+                std::swap(xA, xB);
+                std::swap(zA, zB);
+            }
+
+            for (int curX = xA; curX <= xB; curX++)
+            {
+                double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
+                try
+                {
+                    if (curZ > illum.getBuf().at(curX).at(curY))
+                    {
+                        illum.getBuf().at(curX).at(curY) = curZ;
+                    }
+                }
+                catch (std::exception &err)
+                {
+                }
+            }
+        }
+
+        for (int curY = round(dotsArr[1].getYCoordinate());
+             curY <= round(dotsArr[2].getYCoordinate()); curY++)
+        {
+            //            qDebug() << curY << dotsArr[0] << dotsArr[1] << dotsArr[2];
+            double aInc = 0;
+            if (round(dotsArr[2].getYCoordinate()) != round(dotsArr[1].getYCoordinate()))
+                aInc =
+                (curY - round(dotsArr[1].getYCoordinate())) /
+                (round(dotsArr[2].getYCoordinate()) - round(dotsArr[1].getYCoordinate()));
+
+            double bInc = 0;
+            if (round(dotsArr[2].getYCoordinate()) != round(dotsArr[0].getYCoordinate()))
+                bInc =
+                (curY - round(dotsArr[0].getYCoordinate())) /
+                (round(dotsArr[2].getYCoordinate()) - round(dotsArr[0].getYCoordinate()));
+
+            int xA = round(x2 + (x3 - x2) * aInc);
+            int xB = round(x1 + (x3 - x1) * bInc);
+            double zA = z2 + (z3 - z2) * aInc;
+            double zB = z1 + (z3 - z1) * bInc;
+
+            if (xA > xB)
+            {
+                std::swap(xA, xB);
+                std::swap(zA, zB);
+            }
+
+            for (int curX = xA; curX <= xB; curX++)
+            {
+                double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
+                try
+                {
+                    if (curZ > illum.getBuf().at(curX).at(curY))
+                    {
+                        illum.getBuf().at(curX).at(curY) = curZ;
+                    }
+                }
+                catch (std::exception &err)
+                {
+                }
+            }
+        }
+    }
+}
+
 void Drawer::zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices,
-Eigen::Matrix4f &transMat, size_t color)
+Eigen::Matrix4f &transMat, size_t color, CellScene &scene)
 {
     std::array<Dot3D, 3> dotsArr;
     Eigen::Matrix4f toCenter;
@@ -500,12 +662,35 @@ Eigen::Matrix4f &transMat, size_t color)
                 {
                     if (curZ > depthBuffer.at(curX).at(curY))
                     {
+                        int visible = 0;
+                        Illuminant *illum;
+                        for (size_t i = 0; i < scene.getIllumNum() && !visible; i++)
+                        {
+                            Eigen::MatrixXf newCoordinates(1, 4);
+                            newCoordinates << curX, curY, curZ, 1;
+                            illum = &scene.getIlluminant(i);
+
+                            newCoordinates *= toCenter;
+                            newCoordinates *= illum->getTransMat();
+                            newCoordinates *= backToStart;
+                            if (newCoordinates(0, 2) > illum->getBuf().at(newCoordinates(0, 0)).at(newCoordinates(0, 1)))
+                            {
+                                visible = 1;
+                                illum->getBuf().at(newCoordinates(0, 0)).at(newCoordinates(0, 1)) = newCoordinates(0, 2);
+                            }
+                        }
                         depthBuffer.at(curX).at(curY) = curZ;
-                        frameBuffer.at(curX).at(curY) = color;
+                        if (scene.getIllumNum())
+                        {
+                            frameBuffer.at(curX).at(curY) = color + visible;
+                        }
+                        else
+                            frameBuffer.at(curX).at(curY) = color + 1;
                     }
                 }
                 catch (std::exception &err)
                 {
+                    qDebug() << err.what() << 1;
                 }
             }
         }
@@ -544,12 +729,35 @@ Eigen::Matrix4f &transMat, size_t color)
                 {
                     if (curZ > depthBuffer.at(curX).at(curY))
                     {
+                        int visible = 0;
+                        Illuminant *illum;
+                        for (size_t i = 0; i < scene.getIllumNum() && !visible; i++)
+                        {
+                            Eigen::MatrixXf newCoordinates(1, 4);
+                            newCoordinates << curX, curY, curZ, 1;
+                            illum = &scene.getIlluminant(i);
+
+                            newCoordinates *= toCenter;
+                            newCoordinates *= illum->getTransMat();
+                            newCoordinates *= backToStart;
+                            if (newCoordinates(0, 2) >= illum->getBuf().at(newCoordinates(0, 0)).at(newCoordinates(0, 1)))
+                            {
+                                visible = 1;
+                                illum->getBuf().at(newCoordinates(0, 0)).at(newCoordinates(0, 1)) = newCoordinates(0, 2);
+                            }
+                        }
                         depthBuffer.at(curX).at(curY) = curZ;
-                        frameBuffer.at(curX).at(curY) = color;
+                        if (scene.getIllumNum() > 0)
+                        {
+                            frameBuffer.at(curX).at(curY) = color + visible;
+                        }
+                        else
+                            frameBuffer.at(curX).at(curY) = color + 1;
                     }
                 }
                 catch (std::exception &err)
                 {
+                    qDebug() << err.what() << 2;
                 }
             }
         }
@@ -559,6 +767,11 @@ Eigen::Matrix4f &transMat, size_t color)
         round(dotsArr[2].getYCoordinate()), z3);
         DDABordersForPolygon(x2, round(dotsArr[1].getYCoordinate()), z2, x3,
         round(dotsArr[2].getYCoordinate()), z3);
+    }
+
+    for (size_t i = 0; i < scene.getIllumNum(); i++)
+    {
+        scene.getIlluminant(i).clearShadowMap();
     }
 }
 
@@ -577,14 +790,27 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufHeight, size_t bufWidth)
     PolModel model = scene->getPlateModel();
     std::vector<Facet> facets = model.getFacets();
     std::vector<Vertex> vertices = model.getVertices();
-    zBufForModel(facets, vertices, scene->getTransMatrix(), 1);
+    Illuminant illuminant;
+    zBufForModel(facets, vertices, scene->getTransMatrix(), 1, *scene);
+//    for (size_t j = 0; j < scene->getIllumNum(); j++)
+//    {
+//        illuminant = scene->getIlluminant(j);
+//        shadowMapForModel(
+//        facets, vertices, scene->getTransMatrix(), illuminant, bufHeight, bufWidth);
+//    }
 
     for (size_t i = 0; i < scene->getModelsNum(); i++)
     {
         model = scene->getModel(i);
         facets = model.getFacets();
         vertices = model.getVertices();
-        zBufForModel(facets, vertices, scene->getTransMatrix(), 3);
+        zBufForModel(facets, vertices, scene->getTransMatrix(), 3, *scene);
+//        for (size_t j = 0; j < scene->getIllumNum(); i++)
+//        {
+//            illuminant = scene->getIlluminant(j);
+//            shadowMapForModel(
+//            facets, vertices, scene->getTransMatrix(), illuminant, bufHeight, bufWidth);
+//        }
     }
 }
 
@@ -684,14 +910,16 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     new QImage(rect.size().width(), rect.size().height(), QImage::Format_RGB32);
     image->fill(Qt::white);
     uint plateCol = qRgb(255, 150, 255);
+    uint darkPlateCol = qRgb(220, 150, 220);
     uint blackCol = qRgb(0, 0, 0);
     uint goldCol = qRgb(255, 215, 0);
+    uint darkGoldCol = qRgb(235, 200, 0);
 
     for (size_t i = 0; i < rect.size().width() - 1; i++)
         for (size_t j = 0; j < rect.size().height() - 1; j++)
             if (frameBuffer.at(i).at(j) == 1)
             {
-                image->setPixel(i, j, plateCol);
+                image->setPixel(i, j, darkPlateCol);
                 //                int z = 0;
                 //                for (; z < rect.size().width() && frameBuffer.at(i).at(j
                 //                + z) == 1; z++) {} outScene->addLine(i, j, i, j + z - 1,
@@ -699,15 +927,27 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
             }
             else if (frameBuffer.at(i).at(j) == 2)
             {
+                image->setPixel(i, j, plateCol);
+                //                int z = 0;
+                //                for (; z < rect.size().width() && frameBuffer.at(i).at(j
+                //                + z) == 1; z++) {} outScene->addLine(i, j, i, j + z - 1,
+                //                redPen); j += z - 1;
+            }
+            else if (frameBuffer.at(i).at(j) == 3)
+            {
+                image->setPixel(i, j, darkGoldCol);
+            }
+            else if (frameBuffer.at(i).at(j) == 4)
+            {
+                image->setPixel(i, j, goldCol);
+            }
+            else if (frameBuffer.at(i).at(j) == 5)
+            {
                 image->setPixel(i, j, blackCol);
                 //                int z = 0;
                 //                for (; z < rect.size().width() && frameBuffer.at(i).at(j
                 //                + z) == 2; z++) {} outScene->addLine(i, j, i, j + z - 1,
                 //                blackPen); j += z - 1;
-            }
-            else if (frameBuffer.at(i).at(j) == 3)
-            {
-                image->setPixel(i, j, goldCol);
             }
     end = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
     qDebug() << "Time for drawing" << (end - start).count();

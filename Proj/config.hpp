@@ -8,6 +8,9 @@
 #define X_CENTER 785
 #define Y_CENTER 520
 
+#define ILLUM_VIS_X 1600
+#define ILLUM_VIS_Y 1100
+
 #define MOVE_UNIT 50
 #define ROTATE_UNIT 3.14159265358979323846 / 8
 

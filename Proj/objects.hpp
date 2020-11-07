@@ -62,9 +62,11 @@ class Illuminant
 {
 public:
     Illuminant(Eigen::Matrix4f &transMat);
+    Illuminant() {};
 
     void setBuf(std::vector<std::vector<double>> &setBuf);
     std::vector<std::vector<double>> &getBuf();
+    void clearShadowMap();
 
     void setTransMat(Eigen::Matrix4f &mat);
     Eigen::Matrix4f &getTransMat();
@@ -126,7 +128,7 @@ private:
     size_t modelsNum = 0;
     std::vector<PolModel> models;
 
-    size_t illumNum;
+    size_t illumNum = 0;
     std::vector<Illuminant> illuminants;
 
     Dot3D centerDot;

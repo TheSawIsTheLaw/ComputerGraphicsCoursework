@@ -8,10 +8,13 @@ class Drawer
 {
 public:
     void zBufferAlg(CellScene *scene, size_t bufheight, size_t bufWidth);
-    void zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices, Eigen::Matrix4f &transMat, size_t color);
-    void shadowBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices, Eigen::Matrix4f &transMat);
+    void zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices,
+    Eigen::Matrix4f &transMat, size_t color, CellScene &scene);
+    void shadowMapForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices,
+    Eigen::Matrix4f &transMat, Illuminant &illum, size_t bufHeight, size_t bufWidth);
     void specBorderPut(int x, int y, double z);
-    void DDABordersForPolygon(int xStart, int yStart, double zStart, int xEnd, int yEnd, double zEnd);
+    void DDABordersForPolygon(
+    int xStart, int yStart, double zStart, int xEnd, int yEnd, double zEnd);
     QGraphicsScene *drawScene(CellScene *scene, QRectF rect);
 
 private:
@@ -46,11 +49,9 @@ public:
 private:
     CellScene *scene;
 
-    void addQuad(std::vector<Vertex> &vertices, std::vector<Facet> &facets,
-                 int x1, int y1, int z1,
-                 int x2, int y2, int z2,
-                 int x3, int y3, int z3,
-                 int x4, int y4, int z4);
+    void addQuad(std::vector<Vertex> &vertices, std::vector<Facet> &facets, int x1,
+    int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3, int x4, int y4,
+    int z4);
 
     Drawer *drawer;
 };

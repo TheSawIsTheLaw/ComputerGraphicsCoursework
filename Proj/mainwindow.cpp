@@ -189,7 +189,7 @@ void MainWindow::pictureRotateYRight()
 
 void MainWindow::pictureRotateYLeft()
 {
-    qDebug() << "Вертим по Y";
+    qDebug() << "Вертим по Y влево";
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
     QGraphicsScene *setScene = facade->rotateYScene(-ROTATE_UNIT, ui->graphicsView->rect());
@@ -267,6 +267,4 @@ void MainWindow::on_pushButton_clicked()
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
     ui->graphicsView->setScene(setScene);
-
-    qDebug() << "Добавили стол...";
 }
