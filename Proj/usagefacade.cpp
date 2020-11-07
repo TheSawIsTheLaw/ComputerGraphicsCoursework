@@ -111,10 +111,8 @@ QGraphicsScene *UsageFacade::rotateZScene(double angle, QRectF rect)
 }
 
 void UsageFacade::addQuad(std::vector<Vertex> &vertices, std::vector<Facet> &facets,
-                          int x1, int y1, int z1,
-                          int x2, int y2, int z2,
-                          int x3, int y3, int z3,
-                          int x4, int y4, int z4)
+int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3, int x4, int y4,
+int z4)
 {
     Dot3D dot;
     std::vector<size_t> vec;
@@ -142,7 +140,6 @@ void UsageFacade::addQuad(std::vector<Vertex> &vertices, std::vector<Facet> &fac
     facets.push_back(vec);
     vec = {size - 4, size - 2, size - 1};
     facets.push_back(vec);
-
 }
 
 void UsageFacade::addTable()
@@ -153,174 +150,44 @@ void UsageFacade::addTable()
     Dot3D dot;
     std::vector<size_t> vec;
 
-    addQuad(vertices, facets,
-            50, 50, 801,
-            70, 50, 801,
-            70, 50, 850,
-            50, 50, 850);
+    addQuad(vertices, facets, 50, 50, 801, 70, 50, 801, 70, 50, 850, 50, 50, 850);
 
-    addQuad(vertices, facets,
-            70, 50, 801,
-            70, 70, 801,
-            70, 70, 850,
-            70, 50, 850);
+    addQuad(vertices, facets, 70, 50, 801, 70, 70, 801, 70, 70, 850, 70, 50, 850);
 
-    addQuad(vertices, facets,
-            70, 70, 801,
-            50, 70, 801,
-            50, 70, 850,
-            70, 70, 850);
+    addQuad(vertices, facets, 70, 70, 801, 50, 70, 801, 50, 70, 850, 70, 70, 850);
 
-    addQuad(vertices, facets,
-            50, 70, 801,
-            50, 50, 801,
-            50, 50, 850,
-            50, 70, 850);
+    addQuad(vertices, facets, 50, 70, 801, 50, 50, 801, 50, 50, 850, 50, 70, 850);
 
-    addQuad(vertices, facets,
-            20, 20, 851,
-            20, 100, 851,
-            100, 100, 851,
-            100, 20, 851);
-
-    // *Стержень*
-    // Верх
-//    dot.setXCoordinate(70);
-//    dot.setYCoordinate(70);
-//    dot.setZCoordinate(801);
-//    vec = {0, 1};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    dot.setXCoordinate(50);
-//    vec = {0};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    dot.setZCoordinate(850);
-//    vec = {0, 1};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    vec = {1};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    // Лево
-//    dot.setZCoordinate(801);
-//    vec = {0, 1};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    dot.setYCoordinate(70);
-//    vec = {1};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    dot.setZCoordinate(850);
-//    vec = {1, 2};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    dot.setYCoordinate(70);
-//    vec = {2};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    // Низ
-//    dot.setXCoordinate(70);
-//    dot.setZCoordinate(801);
-//    dot.setYCoordinate(70);
-//    vec = {0, 1};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    dot.setXCoordinate(50);
-//    vec = {0};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    dot.setZCoordinate(850);
-//    vec = {0, 1};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    dot.setXCoordinate(70);
-//    vec = {1};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    // Право
-//    dot.setZCoordinate(801);
-//    dot.setXCoordinate(70);
-//    vec = {6, 7};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    dot.setYCoordinate(50);
-//    vec = {6};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    dot.setZCoordinate(850);
-//    vec = {6, 7};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    dot.setYCoordinate(70);
-//    vec = {7};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    // Столешница
-//    dot.setZCoordinate(851);
-//    dot.setXCoordinate(40);
-//    dot.setYCoordinate(80);
-//    vec = {10, 11};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    dot.setXCoordinate(80);
-//    vec = {10};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    dot.setYCoordinate(40);
-//    vec = {10, 11};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    dot.setXCoordinate(40);
-//    vec = {11};
-//    vertices.push_back(Vertex(dot, vec));
-
-//    vec = {0, 1, 2}; // 0
-//    facets.push_back(vec);
-
-//    vec = {0, 2, 3}; // 1
-//    facets.push_back(vec);
-
-//    vec = {4, 5, 6}; // 2
-//    facets.push_back(vec);
-
-//    vec = {4, 6, 7}; // 3
-//    facets.push_back(vec);
-
-//    vec = {8, 9, 10}; // 4
-//    facets.push_back(vec);
-
-//    vec = {8, 10, 11}; // 5
-//    facets.push_back(vec);
-
-//    vec = {12, 13, 14}; // 6
-//    facets.push_back(vec);
-
-//    vec = {12, 14, 15}; // 7
-//    facets.push_back(vec);
-
-//    vec = {16, 17, 18}; // 8
-//    facets.push_back(vec);
-
-//    vec = {16, 18, 19}; // 9
-//    facets.push_back(vec);
+    addQuad(vertices, facets, 20, 20, 851, 20, 100, 851, 100, 100, 851, 100, 20, 851);
 
     PolModel tableModel(vertices, facets);
     qDebug() << "Прошли через создание стола";
     scene->addModel(tableModel);
 }
 
+void UsageFacade::addIlluminant()
+{
+    Eigen::Matrix4f transMat;
+    transMat << 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1;
+
+    Illuminant illum(transMat);
+    scene->addIlluminant(illum);
+}
+
 void Drawer::specBorderPut(int x, int y, double z)
 {
     try
     {
-        if (std::fabs(z - depthBuffer.at(x).at(y)) < 2 || z > depthBuffer.at(x).at(y))
+        if (std::fabs(z - depthBuffer.at(x).at(y)) < 5 || z > depthBuffer.at(x).at(y))
             frameBuffer.at(x).at(y) = 2;
-    }  catch (std::exception &err) {}
-
+    }
+    catch (std::exception &err)
+    {
+    }
 }
 
-void Drawer::DDABordersForPolygon(int xStart, int yStart, double zStart, int xEnd, int yEnd, double zEnd)
+void Drawer::DDABordersForPolygon(
+int xStart, int yStart, double zStart, int xEnd, int yEnd, double zEnd)
 {
     if (xStart == xEnd && yStart == yEnd)
     {
@@ -351,7 +218,7 @@ void Drawer::DDABordersForPolygon(int xStart, int yStart, double zStart, int xEn
 
     for (int i = 0; i < length; i++)
     {
-        specBorderPut(round(curX), round(curY), round(curZ));
+        specBorderPut(round(curX), round(curY), curZ);
         curX += deltaX;
         curY += deltaY;
         curZ += deltaZ;
@@ -359,7 +226,8 @@ void Drawer::DDABordersForPolygon(int xStart, int yStart, double zStart, int xEn
 }
 
 /*void Drawer::zBufForModel(
-    std::vector<Facet> &facets, std::vector<Vertex> &vertices, Eigen::Matrix4f &transMat, size_t color)
+    std::vector<Facet> &facets, std::vector<Vertex> &vertices, Eigen::Matrix4f &transMat,
+size_t color)
 {
     std::array<Dot3D, 3> dotsArr;
     Eigen::Matrix4f toCenter;
@@ -380,25 +248,25 @@ void Drawer::DDABordersForPolygon(int xStart, int yStart, double zStart, int xEn
     {
         Eigen::MatrixXf coordinatesVec(1, 4);
         dotsArr[0] = vertices.at(iter->getUsedDots().at(0)).getPosition();
-        coordinatesVec << dotsArr[0].getXCoordinate(), dotsArr[0].getYCoordinate(), dotsArr[0].getZCoordinate(), 1;
-        coordinatesVec *= toCenter;
-        coordinatesVec *= transMat;
+        coordinatesVec << dotsArr[0].getXCoordinate(), dotsArr[0].getYCoordinate(),
+dotsArr[0].getZCoordinate(), 1; coordinatesVec *= toCenter; coordinatesVec *= transMat;
         coordinatesVec *= backToStart;
-        dotsArr[0] = Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
+        dotsArr[0] = Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0,
+2));
 
         dotsArr[1] = vertices.at(iter->getUsedDots().at(1)).getPosition();
-        coordinatesVec << dotsArr[1].getXCoordinate(), dotsArr[1].getYCoordinate(), dotsArr[1].getZCoordinate(), 1;
-        coordinatesVec *= toCenter;
-        coordinatesVec *= transMat;
+        coordinatesVec << dotsArr[1].getXCoordinate(), dotsArr[1].getYCoordinate(),
+dotsArr[1].getZCoordinate(), 1; coordinatesVec *= toCenter; coordinatesVec *= transMat;
         coordinatesVec *= backToStart;
-        dotsArr[1] = Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
+        dotsArr[1] = Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0,
+2));
 
         dotsArr[2] = vertices.at(iter->getUsedDots().at(2)).getPosition();
-        coordinatesVec << dotsArr[2].getXCoordinate(), dotsArr[2].getYCoordinate(), dotsArr[2].getZCoordinate(), 1;
-        coordinatesVec *= toCenter;
-        coordinatesVec *= transMat;
+        coordinatesVec << dotsArr[2].getXCoordinate(), dotsArr[2].getYCoordinate(),
+dotsArr[2].getZCoordinate(), 1; coordinatesVec *= toCenter; coordinatesVec *= transMat;
         coordinatesVec *= backToStart;
-        dotsArr[2] = Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
+        dotsArr[2] = Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0,
+2));
 
         if (dotsArr[0].getYCoordinate() > dotsArr[1].getYCoordinate())
             std::swap(dotsArr[0], dotsArr[1]);
@@ -420,14 +288,14 @@ void Drawer::DDABordersForPolygon(int xStart, int yStart, double zStart, int xEn
         {
             //            qDebug() << curY << dotsArr[0] << dotsArr[1] << dotsArr[2];
             double aInc = 0;
-            if (std::fabs(dotsArr[1].getYCoordinate() - dotsArr[0].getYCoordinate()) > EPS)
-                aInc = (curY - dotsArr[0].getYCoordinate()) /
-                       (dotsArr[1].getYCoordinate() - dotsArr[0].getYCoordinate());
+            if (std::fabs(dotsArr[1].getYCoordinate() - dotsArr[0].getYCoordinate()) >
+EPS) aInc = (curY - dotsArr[0].getYCoordinate()) / (dotsArr[1].getYCoordinate() -
+dotsArr[0].getYCoordinate());
 
             double bInc = 0;
-            if (std::fabs(dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate()) > EPS)
-                bInc = (curY - dotsArr[0].getYCoordinate()) /
-                       (dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate());
+            if (std::fabs(dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate()) >
+EPS) bInc = (curY - dotsArr[0].getYCoordinate()) / (dotsArr[2].getYCoordinate() -
+dotsArr[0].getYCoordinate());
 
             double xA = x1 + (x2 - x1) * aInc;
             double xB = x1 + (x3 - x1) * bInc;
@@ -479,9 +347,9 @@ void Drawer::DDABordersForPolygon(int xStart, int yStart, double zStart, int xEn
         {
             //            qDebug() << curY << dotsArr[0] << dotsArr[1] << dotsArr[2];
             double aInc = 0;
-            if (std::fabs(dotsArr[2].getYCoordinate() - dotsArr[1].getYCoordinate()) > EPS)
-                aInc = (curY - dotsArr[1].getYCoordinate()) /
-                       (dotsArr[2].getYCoordinate() - dotsArr[1].getYCoordinate());
+            if (std::fabs(dotsArr[2].getYCoordinate() - dotsArr[1].getYCoordinate()) >
+EPS) aInc = (curY - dotsArr[1].getYCoordinate()) / (dotsArr[2].getYCoordinate() -
+dotsArr[1].getYCoordinate());
 
             double bInc = 0;
             if (std::abs(dotsArr[2].getYCoordinate() - dotsArr[0].getYCoordinate()) > EPS)
@@ -507,7 +375,8 @@ void Drawer::DDABordersForPolygon(int xStart, int yStart, double zStart, int xEn
                 }
             }  catch (std::exception &err) {}
             int curCol = color;
-            if (curY == round(dotsArr[2].getYCoordinate()) || (curY == round(dotsArr[1].getYCoordinate()) && (curY == round(dotsArr[0].getYCoordinate()))))
+            if (curY == round(dotsArr[2].getYCoordinate()) || (curY ==
+round(dotsArr[1].getYCoordinate()) && (curY == round(dotsArr[0].getYCoordinate()))))
                 curCol = 2;
             for (int curX = round(xA) + 1; curX < round(xB); curX++)
             {
@@ -535,8 +404,8 @@ void Drawer::DDABordersForPolygon(int xStart, int yStart, double zStart, int xEn
 }
 */
 
-void Drawer::zBufForModel(
-    std::vector<Facet> &facets, std::vector<Vertex> &vertices, Eigen::Matrix4f &transMat, size_t color)
+void Drawer::zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices,
+Eigen::Matrix4f &transMat, size_t color)
 {
     std::array<Dot3D, 3> dotsArr;
     Eigen::Matrix4f toCenter;
@@ -557,25 +426,31 @@ void Drawer::zBufForModel(
     {
         Eigen::MatrixXf coordinatesVec(1, 4);
         dotsArr[0] = vertices.at(iter->getUsedDots().at(0)).getPosition();
-        coordinatesVec << dotsArr[0].getXCoordinate(), dotsArr[0].getYCoordinate(), dotsArr[0].getZCoordinate(), 1;
+        coordinatesVec << dotsArr[0].getXCoordinate(), dotsArr[0].getYCoordinate(),
+        dotsArr[0].getZCoordinate(), 1;
         coordinatesVec *= toCenter;
         coordinatesVec *= transMat;
         coordinatesVec *= backToStart;
-        dotsArr[0] = Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
+        dotsArr[0] =
+        Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
 
         dotsArr[1] = vertices.at(iter->getUsedDots().at(1)).getPosition();
-        coordinatesVec << dotsArr[1].getXCoordinate(), dotsArr[1].getYCoordinate(), dotsArr[1].getZCoordinate(), 1;
+        coordinatesVec << dotsArr[1].getXCoordinate(), dotsArr[1].getYCoordinate(),
+        dotsArr[1].getZCoordinate(), 1;
         coordinatesVec *= toCenter;
         coordinatesVec *= transMat;
         coordinatesVec *= backToStart;
-        dotsArr[1] = Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
+        dotsArr[1] =
+        Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
 
         dotsArr[2] = vertices.at(iter->getUsedDots().at(2)).getPosition();
-        coordinatesVec << dotsArr[2].getXCoordinate(), dotsArr[2].getYCoordinate(), dotsArr[2].getZCoordinate(), 1;
+        coordinatesVec << dotsArr[2].getXCoordinate(), dotsArr[2].getYCoordinate(),
+        dotsArr[2].getZCoordinate(), 1;
         coordinatesVec *= toCenter;
         coordinatesVec *= transMat;
         coordinatesVec *= backToStart;
-        dotsArr[2] = Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
+        dotsArr[2] =
+        Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
 
         if (dotsArr[0].getYCoordinate() > dotsArr[1].getYCoordinate())
             std::swap(dotsArr[0], dotsArr[1]);
@@ -595,16 +470,17 @@ void Drawer::zBufForModel(
         for (int curY = round(dotsArr[0].getYCoordinate());
              curY < round(dotsArr[1].getYCoordinate()); curY++)
         {
-//            qDebug() << curY << dotsArr[0] << dotsArr[1] << dotsArr[2];
             double aInc = 0;
             if (round(dotsArr[1].getYCoordinate()) != round(dotsArr[0].getYCoordinate()))
-                aInc = (curY - round(dotsArr[0].getYCoordinate())) /
-                       (round(dotsArr[1].getYCoordinate()) - round(dotsArr[0].getYCoordinate()));
+                aInc =
+                (curY - round(dotsArr[0].getYCoordinate())) /
+                (round(dotsArr[1].getYCoordinate()) - round(dotsArr[0].getYCoordinate()));
 
             double bInc = 0;
             if (round(dotsArr[2].getYCoordinate()) != round(dotsArr[0].getYCoordinate()))
-                bInc = (curY - round(dotsArr[0].getYCoordinate())) /
-                       (round(dotsArr[2].getYCoordinate()) - round(dotsArr[0].getYCoordinate()));
+                bInc =
+                (curY - round(dotsArr[0].getYCoordinate())) /
+                (round(dotsArr[2].getYCoordinate()) - round(dotsArr[0].getYCoordinate()));
 
             int xA = round(x1 + (x2 - x1) * aInc);
             int xB = round(x1 + (x3 - x1) * bInc);
@@ -620,29 +496,35 @@ void Drawer::zBufForModel(
             for (int curX = xA; curX <= xB; curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
-                try {
+                try
+                {
                     if (curZ > depthBuffer.at(curX).at(curY))
                     {
                         depthBuffer.at(curX).at(curY) = curZ;
                         frameBuffer.at(curX).at(curY) = color;
                     }
-                }  catch (std::exception &err) {}
+                }
+                catch (std::exception &err)
+                {
+                }
             }
         }
 
         for (int curY = round(dotsArr[1].getYCoordinate());
              curY <= round(dotsArr[2].getYCoordinate()); curY++)
         {
-//            qDebug() << curY << dotsArr[0] << dotsArr[1] << dotsArr[2];
+            //            qDebug() << curY << dotsArr[0] << dotsArr[1] << dotsArr[2];
             double aInc = 0;
             if (round(dotsArr[2].getYCoordinate()) != round(dotsArr[1].getYCoordinate()))
-                aInc = (curY - round(dotsArr[1].getYCoordinate())) /
-                       (round(dotsArr[2].getYCoordinate()) - round(dotsArr[1].getYCoordinate()));
+                aInc =
+                (curY - round(dotsArr[1].getYCoordinate())) /
+                (round(dotsArr[2].getYCoordinate()) - round(dotsArr[1].getYCoordinate()));
 
             double bInc = 0;
             if (round(dotsArr[2].getYCoordinate()) != round(dotsArr[0].getYCoordinate()))
-                bInc = (curY - round(dotsArr[0].getYCoordinate())) /
-                       (round(dotsArr[2].getYCoordinate()) - round(dotsArr[0].getYCoordinate()));
+                bInc =
+                (curY - round(dotsArr[0].getYCoordinate())) /
+                (round(dotsArr[2].getYCoordinate()) - round(dotsArr[0].getYCoordinate()));
 
             int xA = round(x2 + (x3 - x2) * aInc);
             int xB = round(x1 + (x3 - x1) * bInc);
@@ -658,24 +540,31 @@ void Drawer::zBufForModel(
             for (int curX = xA; curX <= xB; curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
-                try {
+                try
+                {
                     if (curZ > depthBuffer.at(curX).at(curY))
                     {
                         depthBuffer.at(curX).at(curY) = curZ;
                         frameBuffer.at(curX).at(curY) = color;
                     }
-                }  catch (std::exception &err) {}
-
+                }
+                catch (std::exception &err)
+                {
+                }
             }
         }
-        DDABordersForPolygon(x1, round(dotsArr[0].getYCoordinate()), z1, x2, round(dotsArr[1].getYCoordinate()), z2);
-        DDABordersForPolygon(x1, round(dotsArr[0].getYCoordinate()), z1, x3, round(dotsArr[2].getYCoordinate()), z3);
-        DDABordersForPolygon(x2, round(dotsArr[1].getYCoordinate()), z2, x3, round(dotsArr[2].getYCoordinate()), z3);
+        DDABordersForPolygon(x1, round(dotsArr[0].getYCoordinate()), z1, x2,
+        round(dotsArr[1].getYCoordinate()), z2);
+        DDABordersForPolygon(x1, round(dotsArr[0].getYCoordinate()), z1, x3,
+        round(dotsArr[2].getYCoordinate()), z3);
+        DDABordersForPolygon(x2, round(dotsArr[1].getYCoordinate()), z2, x3,
+        round(dotsArr[2].getYCoordinate()), z3);
     }
 }
 
 void Drawer::zBufferAlg(CellScene *scene, size_t bufHeight, size_t bufWidth)
 {
+    shadowBuffer.erase(shadowBuffer.begin(), shadowBuffer.end());
     depthBuffer.erase(depthBuffer.begin(), depthBuffer.end());
     frameBuffer.erase(frameBuffer.begin(), frameBuffer.end());
 
@@ -685,17 +574,13 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufHeight, size_t bufWidth)
         frameBuffer.push_back(std::vector<size_t>(bufHeight, 0));
     }
 
-    //    qDebug() << "Frame Vec: " << frameBuffer;
-
     PolModel model = scene->getPlateModel();
     std::vector<Facet> facets = model.getFacets();
     std::vector<Vertex> vertices = model.getVertices();
     zBufForModel(facets, vertices, scene->getTransMatrix(), 1);
 
-//    qDebug() << "Моделей на сцене:" << scene->getModelsNum();
     for (size_t i = 0; i < scene->getModelsNum(); i++)
     {
-//        qDebug() << "Нашли дополнитульную модель";
         model = scene->getModel(i);
         facets = model.getFacets();
         vertices = model.getVertices();
@@ -793,7 +678,7 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     //    fclose(f);
     //    outScene->addPixmap(QPixmap("img.bmp"));
 
-//    qDebug() << rect.size().height() << rect.size().width();
+    //    qDebug() << rect.size().height() << rect.size().width();
 
     QImage *image =
     new QImage(rect.size().width(), rect.size().height(), QImage::Format_RGB32);

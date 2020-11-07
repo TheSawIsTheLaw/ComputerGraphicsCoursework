@@ -61,15 +61,16 @@ private:
 class Illuminant
 {
 public:
-    const Dot3D &getPosition();
-    void setPosition(Dot3D &position_);
+    Illuminant(Eigen::Matrix4f &transMat);
 
-    const MathVec &getVector();
-    void setVector(MathVec &vector_);
+    void setBuf(std::vector<std::vector<double>> &setBuf);
+    std::vector<std::vector<double>> &getBuf();
 
+    void setTransMat(Eigen::Matrix4f &mat);
+    Eigen::Matrix4f &getTransMat();
 private:
-    Dot3D position;
-    MathVec vector;
+    std::vector<std::vector<double>> shadowBuffer;
+    Eigen::Matrix4f transMatrix;
 };
 
 class CellScene
@@ -109,6 +110,7 @@ public:
 
     size_t getIllumNum();
     Illuminant &getIlluminant(size_t num);
+    void addIlluminant(Illuminant &illum);
 
     Eigen::Matrix4f &getTransMatrix();
     void multToTrans(Eigen::Matrix4f &newTrans);

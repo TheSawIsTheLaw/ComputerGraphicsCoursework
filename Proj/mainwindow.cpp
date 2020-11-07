@@ -259,6 +259,8 @@ void MainWindow::on_pushButton_clicked()
 
     if (curRow == 0)
         facade->addTable();
+    else if (curRow == 11)
+        facade->addIlluminant();
 
     QGraphicsScene *setScene = facade->drawScene(ui->graphicsView->rect());
 

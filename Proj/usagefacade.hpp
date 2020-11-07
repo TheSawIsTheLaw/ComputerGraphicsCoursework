@@ -9,12 +9,14 @@ class Drawer
 public:
     void zBufferAlg(CellScene *scene, size_t bufheight, size_t bufWidth);
     void zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices, Eigen::Matrix4f &transMat, size_t color);
+    void shadowBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices, Eigen::Matrix4f &transMat);
     void specBorderPut(int x, int y, double z);
     void DDABordersForPolygon(int xStart, int yStart, double zStart, int xEnd, int yEnd, double zEnd);
     QGraphicsScene *drawScene(CellScene *scene, QRectF rect);
 
 private:
     std::vector<std::vector<double>> depthBuffer;
+    std::vector<std::vector<double>> shadowBuffer;
     std::vector<std::vector<size_t>> frameBuffer;
 };
 
@@ -30,6 +32,7 @@ public:
     QGraphicsScene *drawScene(QRectF rect);
 
     void addTable();
+    void addIlluminant();
 
     QGraphicsScene *moveUpScene(double value, QRectF rect);
     QGraphicsScene *moveDownScene(double value, QRectF rect);
