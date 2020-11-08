@@ -159,7 +159,7 @@ void MainWindow::pictureRight()
 
 void MainWindow::pictureRotateXRight()
 {
-    qDebug() << "Вертим по Х";
+    qDebug() << "Вертим по Х вниз";
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
     QGraphicsScene * setScene = facade->rotateXScene(ROTATE_UNIT, ui->graphicsView->rect());

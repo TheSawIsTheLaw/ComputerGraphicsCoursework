@@ -150,6 +150,8 @@ void UsageFacade::addTable()
     Dot3D dot;
     std::vector<size_t> vec;
 
+    addQuad(vertices, facets, 20, 20, 851, 20, 100, 851, 100, 100, 851, 100, 20, 851);
+
     addQuad(vertices, facets, 50, 50, 801, 70, 50, 801, 70, 50, 850, 50, 50, 850);
 
     addQuad(vertices, facets, 70, 50, 801, 70, 70, 801, 70, 70, 850, 70, 50, 850);
@@ -158,7 +160,6 @@ void UsageFacade::addTable()
 
     addQuad(vertices, facets, 50, 70, 801, 50, 50, 801, 50, 50, 850, 50, 70, 850);
 
-    addQuad(vertices, facets, 20, 20, 851, 20, 100, 851, 100, 100, 851, 100, 20, 851);
 
     PolModel tableModel(vertices, facets);
     qDebug() << "Прошли через создание стола";
@@ -169,11 +170,21 @@ void UsageFacade::addIlluminant()
 {
     Eigen::Matrix4f transMat;
     // clang-format off
-    transMat << cos(ROTATE_UNIT), 0, sin(ROTATE_UNIT), 0,
+    transMat << cos(-ROTATE_UNIT), 0, sin(-ROTATE_UNIT), 0,
                 0, 1, 0, 0,
-                -sin(ROTATE_UNIT), 0, cos(ROTATE_UNIT), 0,
+                -sin(-ROTATE_UNIT), 0, cos(-ROTATE_UNIT), 0,
                 0, 0, 0, 1;
     // clang-format on
+
+    Eigen::Matrix4f prodMat;
+    // clang-format off
+    prodMat << 1,           0,          0, 0,
+               0, cos(ROTATE_UNIT), -sin(ROTATE_UNIT), 0,
+               0, sin(ROTATE_UNIT),  cos(ROTATE_UNIT), 0,
+               0,           0,          0, 1;
+    // clang-format on
+
+    transMat *= prodMat;
 
     Illuminant illum(transMat);
     scene->addIlluminant(illum);
@@ -664,7 +675,7 @@ Eigen::Matrix4f &transMat, size_t color, CellScene &scene)
                     {
                         int visible = 0;
                         Illuminant *illum;
-                        for (size_t i = 0; i < scene.getIllumNum() && !visible; i++)
+                        for (size_t i = 0; i < scene.getIllumNum(); i++)
                         {
                             Eigen::MatrixXf newCoordinates(1, 4);
                             newCoordinates << curX, curY, curZ, 1;
@@ -673,10 +684,14 @@ Eigen::Matrix4f &transMat, size_t color, CellScene &scene)
                             newCoordinates *= toCenter;
                             newCoordinates *= illum->getTransMat();
                             newCoordinates *= backToStart;
-                            if (newCoordinates(0, 2) > illum->getBuf().at(newCoordinates(0, 0)).at(newCoordinates(0, 1)))
+                            if (newCoordinates(0, 2) - illum->getBuf()
+                                                           .at(round(newCoordinates(0, 0)))
+                                                           .at(round(newCoordinates(0, 1))) >= 0)
                             {
                                 visible = 1;
-                                illum->getBuf().at(newCoordinates(0, 0)).at(newCoordinates(0, 1)) = newCoordinates(0, 2);
+                                illum->getBuf()
+                                    .at(round(newCoordinates(0, 0)))
+                                    .at(round(newCoordinates(0, 1))) = newCoordinates(0, 2);
                             }
                         }
                         depthBuffer.at(curX).at(curY) = curZ;
@@ -731,7 +746,7 @@ Eigen::Matrix4f &transMat, size_t color, CellScene &scene)
                     {
                         int visible = 0;
                         Illuminant *illum;
-                        for (size_t i = 0; i < scene.getIllumNum() && !visible; i++)
+                        for (size_t i = 0; i < scene.getIllumNum(); i++)
                         {
                             Eigen::MatrixXf newCoordinates(1, 4);
                             newCoordinates << curX, curY, curZ, 1;
@@ -740,10 +755,14 @@ Eigen::Matrix4f &transMat, size_t color, CellScene &scene)
                             newCoordinates *= toCenter;
                             newCoordinates *= illum->getTransMat();
                             newCoordinates *= backToStart;
-                            if (newCoordinates(0, 2) >= illum->getBuf().at(newCoordinates(0, 0)).at(newCoordinates(0, 1)))
+                            if (newCoordinates(0, 2) - illum->getBuf()
+                                                           .at(round(newCoordinates(0, 0)))
+                                                           .at(round(newCoordinates(0, 1))) >= 0)
                             {
                                 visible = 1;
-                                illum->getBuf().at(newCoordinates(0, 0)).at(newCoordinates(0, 1)) = newCoordinates(0, 2);
+                                illum->getBuf()
+                                    .at(round(newCoordinates(0, 0)))
+                                    .at(round(newCoordinates(0, 1))) = newCoordinates(0, 2);
                             }
                         }
                         depthBuffer.at(curX).at(curY) = curZ;
@@ -769,15 +788,15 @@ Eigen::Matrix4f &transMat, size_t color, CellScene &scene)
         round(dotsArr[2].getYCoordinate()), z3);
     }
 
-    for (size_t i = 0; i < scene.getIllumNum(); i++)
-    {
-        scene.getIlluminant(i).clearShadowMap();
-    }
+    //    for (size_t i = 0; i < scene.getIllumNum(); i++)
+    //    {
+    //        scene.getIlluminant(i).clearShadowMap();
+    //    }
 }
 
 void Drawer::zBufferAlg(CellScene *scene, size_t bufHeight, size_t bufWidth)
 {
-    shadowBuffer.erase(shadowBuffer.begin(), shadowBuffer.end());
+    //    shadowBuffer.erase(shadowBuffer.begin(), shadowBuffer.end());
     depthBuffer.erase(depthBuffer.begin(), depthBuffer.end());
     frameBuffer.erase(frameBuffer.begin(), frameBuffer.end());
 
@@ -787,31 +806,37 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufHeight, size_t bufWidth)
         frameBuffer.push_back(std::vector<size_t>(bufHeight, 0));
     }
 
-    PolModel model = scene->getPlateModel();
-    std::vector<Facet> facets = model.getFacets();
-    std::vector<Vertex> vertices = model.getVertices();
+    PolModel model;
+    std::vector<Facet> facets;
+    std::vector<Vertex> vertices;
     Illuminant illuminant;
-    zBufForModel(facets, vertices, scene->getTransMatrix(), 1, *scene);
-//    for (size_t j = 0; j < scene->getIllumNum(); j++)
-//    {
-//        illuminant = scene->getIlluminant(j);
-//        shadowMapForModel(
-//        facets, vertices, scene->getTransMatrix(), illuminant, bufHeight, bufWidth);
-//    }
-
     for (size_t i = 0; i < scene->getModelsNum(); i++)
     {
         model = scene->getModel(i);
         facets = model.getFacets();
         vertices = model.getVertices();
+        //        for (size_t j = 0; j < scene->getIllumNum(); i++)
+        //        {
+        //            illuminant = scene->getIlluminant(j);
+        //            shadowMapForModel(
+        //                facets, vertices, scene->getTransMatrix(), illuminant,
+        //                bufHeight, bufWidth);
+        //        }
         zBufForModel(facets, vertices, scene->getTransMatrix(), 3, *scene);
-//        for (size_t j = 0; j < scene->getIllumNum(); i++)
-//        {
-//            illuminant = scene->getIlluminant(j);
-//            shadowMapForModel(
-//            facets, vertices, scene->getTransMatrix(), illuminant, bufHeight, bufWidth);
-//        }
     }
+    model = scene->getPlateModel();
+    facets = model.getFacets();
+    vertices = model.getVertices();
+    zBufForModel(facets, vertices, scene->getTransMatrix(), 1, *scene);
+    //    for (size_t j = 0; j < scene->getIllumNum(); j++)
+    //    {
+    //        illuminant = scene->getIlluminant(j);
+    //        shadowMapForModel(
+    //        facets, vertices, scene->getTransMatrix(), illuminant, bufHeight, bufWidth);
+    //    }
+
+    for (size_t i = 0; i < scene->getIllumNum(); i++)
+    { scene->getIlluminant(i).clearShadowMap(); }
 }
 
 QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
@@ -910,49 +935,98 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     new QImage(rect.size().width(), rect.size().height(), QImage::Format_RGB32);
     image->fill(Qt::white);
     uint plateCol = qRgb(255, 150, 255);
-    uint darkPlateCol = qRgb(220, 150, 220);
+    uint darkPlateCol = qRgb(190, 130, 190);
     uint blackCol = qRgb(0, 0, 0);
     uint goldCol = qRgb(255, 215, 0);
     uint darkGoldCol = qRgb(235, 200, 0);
 
+    //    Illuminant illum;
+    //    Eigen::MatrixXf newCoordinates(1, 4);
+    //    Eigen::Matrix4f toCenter;
+    // clang-format off
+//    toCenter << 1, 0, 0, 0,
+//                0, 1, 0, 0,
+//                0, 0, 1, 0,
+//                -X_CENTER, -Y_CENTER, -PLATE_Z, 1;
+    // clang-format on
+    //    Eigen::Matrix4f backToStart;
+    // clang-format off
+//    backToStart << 1, 0, 0, 0,
+//                   0, 1, 0, 0,
+//                   0, 0, 1, 0,
+//                   X_CENTER, Y_CENTER, PLATE_Z, 1;
+//     clang-format on
+
     for (size_t i = 0; i < rect.size().width() - 1; i++)
         for (size_t j = 0; j < rect.size().height() - 1; j++)
-            if (frameBuffer.at(i).at(j) == 1)
-            {
-                image->setPixel(i, j, darkPlateCol);
-                //                int z = 0;
-                //                for (; z < rect.size().width() && frameBuffer.at(i).at(j
-                //                + z) == 1; z++) {} outScene->addLine(i, j, i, j + z - 1,
-                //                redPen); j += z - 1;
-            }
-            else if (frameBuffer.at(i).at(j) == 2)
-            {
-                image->setPixel(i, j, plateCol);
-                //                int z = 0;
-                //                for (; z < rect.size().width() && frameBuffer.at(i).at(j
-                //                + z) == 1; z++) {} outScene->addLine(i, j, i, j + z - 1,
-                //                redPen); j += z - 1;
-            }
-            else if (frameBuffer.at(i).at(j) == 3)
-            {
-                image->setPixel(i, j, darkGoldCol);
-            }
-            else if (frameBuffer.at(i).at(j) == 4)
-            {
-                image->setPixel(i, j, goldCol);
-            }
-            else if (frameBuffer.at(i).at(j) == 5)
-            {
-                image->setPixel(i, j, blackCol);
-                //                int z = 0;
-                //                for (; z < rect.size().width() && frameBuffer.at(i).at(j
-                //                + z) == 2; z++) {} outScene->addLine(i, j, i, j + z - 1,
-                //                blackPen); j += z - 1;
-            }
+        {
+//            if (scene->getIllumNum())
+//                for (size_t i = 0; i < scene->getIllumNum(); i++)
+//                {
+//                    newCoordinates << i, j, depthBuffer.at(i).at(j), 1;
+//                    illum = scene->getIlluminant(i);
+//                    newCoordinates *= toCenter;
+//                    newCoordinates *= illum.getTransMat();
+//                    newCoordinates *= backToStart;
+//                    if (frameBuffer.at(i).at(j) == 2)
+//                    {
+//                        if (std::fabs(depthBuffer.at(i).at(j) - illum.getBuf().at(newCoordinates(0, 0)).at(newCoordinates(0, 1))) < 5)
+//                            image->setPixel(i, j, plateCol);
+//                        else
+//                            image->setPixel(i, j, darkPlateCol);
+//                        //                int z = 0;
+//                        //                for (; z < rect.size().width() && frameBuffer.at(i).at(j
+//                        //                + z) == 1; z++) {} outScene->addLine(i, j, i, j + z - 1,
+//                        //                redPen); j += z - 1;
+//                    }
+//                    else if (frameBuffer.at(i).at(j) == 4)
+//                    {
+//                        if (std::fabs(depthBuffer.at(i).at(j) - illum.getBuf().at(newCoordinates(0, 0)).at(newCoordinates(0, 1))) < 5)
+//                            image->setPixel(i, j, goldCol);
+//                        else
+//                            image->setPixel(i, j, darkGoldCol);
+//                    }
+//                    else if (frameBuffer.at(i).at(j) == 5)
+//                    {
+//                        image->setPixel(i, j, blackCol);
+//                        //                int z = 0;
+//                        //                for (; z < rect.size().width() && frameBuffer.at(i).at(j
+//                        //                + z) == 2; z++) {} outScene->addLine(i, j, i, j + z - 1,
+//                        //                blackPen); j += z - 1;
+//                    }
+//                }
+//            else
+//            {
+                if (frameBuffer.at(i).at(j) == 1)
+                {
+                    image->setPixel(i, j, darkPlateCol);
+                }
+                else if (frameBuffer.at(i).at(j) == 2)
+                {
+                    image->setPixel(i, j, plateCol);
+                }
+                else if (frameBuffer.at(i).at(j) == 3)
+                {
+                    image->setPixel(i, j, darkGoldCol);
+                }
+                else if (frameBuffer.at(i).at(j) == 4)
+                {
+                    image->setPixel(i, j, goldCol);
+                }
+                else if (frameBuffer.at(i).at(j) == 5)
+                {
+                    image->setPixel(i, j, blackCol);
+                }
+//            }
+        }
     end = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
     qDebug() << "Time for drawing" << (end - start).count();
     outScene->addPixmap(QPixmap::fromImage(*image));
     delete image;
+    for (size_t i = 0; i < scene->getIllumNum(); i++)
+    {
+        scene->getIlluminant(i).clearShadowMap();
+    }
     //    qDebug() <<
     //    QPixmap("C:/Users/dobri/Desktop/FirstCurseWork/Proj/imgs/smert.jpg");
     return outScene;
