@@ -263,36 +263,26 @@ Eigen::Matrix4f &transMat, Illuminant *illum)
     Eigen::Matrix4f illumMat = illum->getTransMat();
     for (std::vector<Facet>::iterator iter = facets.begin(); iter != facets.end(); iter++)
     {
-        Eigen::MatrixXf coordinatesVec(1, 4);
+        Eigen::MatrixXf coordinatesVec(3, 4);
+
         dotsArr[0] = vertices.at(iter->getUsedDots().at(0)).getPosition();
-        coordinatesVec << dotsArr[0].getXCoordinate(), dotsArr[0].getYCoordinate(),
-        dotsArr[0].getZCoordinate(), 1;
-        coordinatesVec *= toCenter;
-        coordinatesVec *= transMat;
-        //        coordinatesVec *= illum.getTransMat();
-        coordinatesVec *= backToStart;
-        dotsArr[0] =
-        Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
-
         dotsArr[1] = vertices.at(iter->getUsedDots().at(1)).getPosition();
-        coordinatesVec << dotsArr[1].getXCoordinate(), dotsArr[1].getYCoordinate(),
-        dotsArr[1].getZCoordinate(), 1;
-        coordinatesVec *= toCenter;
-        coordinatesVec *= transMat;
-        //        coordinatesVec *= illum.getTransMat();
-        coordinatesVec *= backToStart;
-        dotsArr[1] =
-        Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
-
         dotsArr[2] = vertices.at(iter->getUsedDots().at(2)).getPosition();
-        coordinatesVec << dotsArr[2].getXCoordinate(), dotsArr[2].getYCoordinate(),
+
+        coordinatesVec << dotsArr[0].getXCoordinate(), dotsArr[0].getYCoordinate(),
+        dotsArr[0].getZCoordinate(), 1, dotsArr[1].getXCoordinate(),
+        dotsArr[1].getYCoordinate(), dotsArr[1].getZCoordinate(), 1,
+        dotsArr[2].getXCoordinate(), dotsArr[2].getYCoordinate(),
         dotsArr[2].getZCoordinate(), 1;
         coordinatesVec *= toCenter;
         coordinatesVec *= transMat;
-        //        coordinatesVec *= illum.getTransMat();
         coordinatesVec *= backToStart;
-        dotsArr[2] =
+        dotsArr[0] =
         Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
+        dotsArr[1] =
+        Dot3D(coordinatesVec(1, 0), coordinatesVec(1, 1), coordinatesVec(1, 2));
+        dotsArr[2] =
+        Dot3D(coordinatesVec(2, 0), coordinatesVec(2, 1), coordinatesVec(2, 2));
 
         if (dotsArr[0].getYCoordinate() > dotsArr[1].getYCoordinate())
             std::swap(dotsArr[0], dotsArr[1]);
@@ -343,16 +333,13 @@ Eigen::Matrix4f &transMat, Illuminant *illum)
                 newCoordinates *= toCenter;
                 newCoordinates *= illumMat;
                 newCoordinates *= backToStart;
-                try
-                {
-                    if (curZ > shadowMap->at(round(newCoordinates(0, 0)))
-                               .at(round(newCoordinates(0, 1))))
-                        shadowMap->at(round(newCoordinates(0, 0)))
-                        .at(round(newCoordinates(0, 1))) = newCoordinates(0, 2);
-                }
-                catch (std::exception &err)
-                {
-                }
+                int x = round(newCoordinates(0, 0));
+                int y = round(newCoordinates(0, 1));
+                if (x >= (int) depthBuffer.size() || x < 0 ||
+                    y >= (int) depthBuffer.at(0).size() || y < 0)
+                    continue;
+                if (curZ > shadowMap->at(x).at(y))
+                    shadowMap->at(x).at(y) = newCoordinates(0, 2);
             }
         }
 
@@ -390,16 +377,13 @@ Eigen::Matrix4f &transMat, Illuminant *illum)
                 newCoordinates *= toCenter;
                 newCoordinates *= illumMat;
                 newCoordinates *= backToStart;
-                try
-                {
-                    if (curZ > shadowMap->at(round(newCoordinates(0, 0)))
-                                   .at(round(newCoordinates(0, 1))))
-                        shadowMap->at(round(newCoordinates(0, 0)))
-                            .at(round(newCoordinates(0, 1))) = newCoordinates(0, 2);
-                }
-                catch (std::exception &err)
-                {
-                }
+                int x = round(newCoordinates(0, 0));
+                int y = round(newCoordinates(0, 1));
+                if (x >= (int) depthBuffer.size() || x < 0 ||
+                    y >= (int) depthBuffer.at(0).size() || y < 0)
+                    continue;
+                if (curZ > shadowMap->at(x).at(y))
+                    shadowMap->at(x).at(y) = newCoordinates(0, 2);
             }
         }
     }
@@ -425,33 +409,26 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
     // clang-format on
     for (std::vector<Facet>::iterator iter = facets.begin(); iter != facets.end(); iter++)
     {
-        Eigen::MatrixXf coordinatesVec(1, 4);
+        Eigen::MatrixXf coordinatesVec(3, 4);
+
         dotsArr[0] = vertices.at(iter->getUsedDots().at(0)).getPosition();
+        dotsArr[1] = vertices.at(iter->getUsedDots().at(1)).getPosition();
+        dotsArr[2] = vertices.at(iter->getUsedDots().at(2)).getPosition();
+
         coordinatesVec << dotsArr[0].getXCoordinate(), dotsArr[0].getYCoordinate(),
-        dotsArr[0].getZCoordinate(), 1;
+        dotsArr[0].getZCoordinate(), 1, dotsArr[1].getXCoordinate(),
+        dotsArr[1].getYCoordinate(), dotsArr[1].getZCoordinate(), 1,
+        dotsArr[2].getXCoordinate(), dotsArr[2].getYCoordinate(),
+        dotsArr[2].getZCoordinate(), 1;
         coordinatesVec *= toCenter;
         coordinatesVec *= transMat;
         coordinatesVec *= backToStart;
         dotsArr[0] =
         Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
-
-        dotsArr[1] = vertices.at(iter->getUsedDots().at(1)).getPosition();
-        coordinatesVec << dotsArr[1].getXCoordinate(), dotsArr[1].getYCoordinate(),
-        dotsArr[1].getZCoordinate(), 1;
-        coordinatesVec *= toCenter;
-        coordinatesVec *= transMat;
-        coordinatesVec *= backToStart;
         dotsArr[1] =
-        Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
-
-        dotsArr[2] = vertices.at(iter->getUsedDots().at(2)).getPosition();
-        coordinatesVec << dotsArr[2].getXCoordinate(), dotsArr[2].getYCoordinate(),
-        dotsArr[2].getZCoordinate(), 1;
-        coordinatesVec *= toCenter;
-        coordinatesVec *= transMat;
-        coordinatesVec *= backToStart;
+        Dot3D(coordinatesVec(1, 0), coordinatesVec(1, 1), coordinatesVec(1, 2));
         dotsArr[2] =
-        Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
+        Dot3D(coordinatesVec(2, 0), coordinatesVec(2, 1), coordinatesVec(2, 2));
 
         if (dotsArr[0].getYCoordinate() > dotsArr[1].getYCoordinate())
             std::swap(dotsArr[0], dotsArr[1]);
@@ -497,44 +474,37 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
             for (int curX = xA; curX <= xB; curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
-                try
+                if (curX >= (int) depthBuffer.size() || curX < 0 ||
+                    curY >= (int) depthBuffer.at(0).size() || curY < 0)
+                    continue;
+                if (curZ > depthBuffer.at(curX).at(curY))
                 {
-                    if (curZ > depthBuffer.at(curX).at(curY))
+                    short visible = 0;
+                    Illuminant *illum;
+                    for (size_t i = 0; i < scene->getIllumNum() && !visible; i++)
                     {
-                        int visible = 0;
-                        Illuminant *illum;
-                        for (size_t i = 0; i < scene->getIllumNum() && !visible; i++)
-                        {
-                            Eigen::MatrixXf newCoordinates(1, 4);
-                            newCoordinates << curX, curY, curZ, 1;
-                            illum = &scene->getIlluminant(i);
+                        Eigen::MatrixXf newCoordinates(1, 4);
+                        newCoordinates << curX, curY, curZ, 1;
+                        illum = &scene->getIlluminant(i);
 
-                            newCoordinates *= toCenter;
-                            newCoordinates *= illum->getTransMat();
-                            newCoordinates *= backToStart;
-                            try
-                            {
-                                if (std::fabs(illum->getBuf()
-                                              .at(round(newCoordinates(0, 0)))
-                                              .at(round(newCoordinates(0, 1))) -
-                                              newCoordinates(0, 2)) < 1)
-                                    visible = 1;
-                            }
-                            catch (...)
-                            {
-                            }
-                        }
-                        depthBuffer.at(curX).at(curY) = curZ;
-                        if (scene->getIllumNum())
-                        {
-                            frameBuffer.at(curX).at(curY) = color + visible;
-                        }
-                        else
-                            frameBuffer.at(curX).at(curY) = color + 1;
+                        newCoordinates *= toCenter;
+                        newCoordinates *= illum->getTransMat();
+                        newCoordinates *= backToStart;
+                        std::vector<std::vector<double>> *shadowMap = &illum->getBuf();
+                        int x = round(newCoordinates(0, 0));
+                        int y = round(newCoordinates(0, 1));
+                        if (x < (int) shadowMap->size() && x > 0 &&
+                            y < (int) shadowMap->at(0).size() && y > 0 &&
+                            std::fabs(shadowMap->at(x).at(y) - newCoordinates(0, 2)) < 1)
+                            visible = 1;
                     }
-                }
-                catch (...)
-                {
+                    depthBuffer.at(curX).at(curY) = curZ;
+                    if (scene->getIllumNum())
+                    {
+                        frameBuffer.at(curX).at(curY) = color + visible;
+                    }
+                    else
+                        frameBuffer.at(curX).at(curY) = color + 1;
                 }
             }
         }
@@ -568,42 +538,37 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
             for (int curX = xA; curX <= xB; curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
-                try
+                if (curX >= (int) depthBuffer.size() || curX < 0 ||
+                    curY >= (int) depthBuffer.at(0).size() || curY < 0)
+                    continue;
+                if (curZ > depthBuffer.at(curX).at(curY))
                 {
-                    if (curZ > depthBuffer.at(curX).at(curY))
+                    short visible = 0;
+                    Illuminant *illum;
+                    for (size_t i = 0; i < scene->getIllumNum() && !visible; i++)
                     {
-                        int visible = 0;
-                        Illuminant *illum;
-                        for (size_t i = 0; i < scene->getIllumNum() && !visible; i++)
-                        {
-                            Eigen::MatrixXf newCoordinates(1, 4);
-                            newCoordinates << curX, curY, curZ, 1;
-                            illum = &scene->getIlluminant(i);
+                        Eigen::MatrixXf newCoordinates(1, 4);
+                        newCoordinates << curX, curY, curZ, 1;
+                        illum = &scene->getIlluminant(i);
 
-                            newCoordinates *= toCenter;
-                            newCoordinates *= illum->getTransMat();
-                            newCoordinates *= backToStart;
-                            try
-                            {
-                                if (std::fabs(illum->getBuf()
-                                              .at(round(newCoordinates(0, 0)))
-                                              .at(round(newCoordinates(0, 1))) -
-                                              newCoordinates(0, 2)) < 1)
-                                    visible = 1;
-                            }
-                            catch (...)
-                            {
-                            }
-                        }
-                        depthBuffer.at(curX).at(curY) = curZ;
-                        if (scene->getIllumNum())
-                            frameBuffer.at(curX).at(curY) = color + visible;
-                        else
-                            frameBuffer.at(curX).at(curY) = color + 1;
+                        newCoordinates *= toCenter;
+                        newCoordinates *= illum->getTransMat();
+                        newCoordinates *= backToStart;
+                        std::vector<std::vector<double>> *shadowMap = &illum->getBuf();
+                        int x = round(newCoordinates(0, 0));
+                        int y = round(newCoordinates(0, 1));
+                        if (x < (int) shadowMap->size() && x > 0 &&
+                            y < (int) shadowMap->at(0).size() && y > 0 &&
+                            std::fabs(shadowMap->at(x).at(y) - newCoordinates(0, 2)) < 1)
+                            visible = 1;
                     }
-                }
-                catch (...)
-                {
+                    depthBuffer.at(curX).at(curY) = curZ;
+                    if (scene->getIllumNum())
+                    {
+                        frameBuffer.at(curX).at(curY) = color + visible;
+                    }
+                    else
+                        frameBuffer.at(curX).at(curY) = color + 1;
                 }
             }
         }
