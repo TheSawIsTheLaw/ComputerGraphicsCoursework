@@ -9,9 +9,9 @@ class Drawer
 public:
     void zBufferAlg(CellScene *scene, size_t bufheight, size_t bufWidth);
     void zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices,
-    Eigen::Matrix4f &transMat, size_t color, CellScene &scene);
+    Eigen::Matrix4f &transMat, size_t color, CellScene *scene);
     void shadowMapForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices,
-    Eigen::Matrix4f &transMat, Illuminant &illum, size_t bufHeight, size_t bufWidth);
+    Eigen::Matrix4f &transMat, Illuminant *illum);
     void specBorderPut(int x, int y, double z);
     void DDABordersForPolygon(
     int xStart, int yStart, double zStart, int xEnd, int yEnd, double zEnd);
@@ -19,7 +19,6 @@ public:
 
 private:
     std::vector<std::vector<double>> depthBuffer;
-    std::vector<std::vector<double>> shadowBuffer;
     std::vector<std::vector<size_t>> frameBuffer;
 };
 
