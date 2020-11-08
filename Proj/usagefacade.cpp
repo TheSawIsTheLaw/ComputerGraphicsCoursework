@@ -245,28 +245,21 @@ void Drawer::interpolateRowIntoShadowMap(std::vector<std::vector<double>> *map, 
 int xB, double zA, double zB, int curY, Eigen::Matrix4f &toCenter,
 Eigen::Matrix4f &backToStart, Eigen::Matrix4f &illumMat)
 {
-    try
+    for (int curX = xA; curX <= xB; curX++)
     {
-        for (int curX = xA; curX <= xB; curX++)
-        {
-            double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
-            Eigen::MatrixXf newCoordinates(1, 4);
-            newCoordinates << curX, curY, curZ, 1;
-            newCoordinates *= toCenter;
-            newCoordinates *= illumMat;
-            newCoordinates *= backToStart;
-            int x = round(newCoordinates(0, 0));
-            int y = round(newCoordinates(0, 1));
-            if (x >= (int) depthBuffer.size() || x < 0 ||
-                y >= (int) depthBuffer.at(0).size() || y < 0)
-                continue;
-            if (curZ > map->at(x).at(y))
-                map->at(x).at(y) = newCoordinates(0, 2);
-        }
-    }
-    catch (std::exception &err)
-    {
-        qDebug() << err.what();
+        double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
+        Eigen::MatrixXf newCoordinates(1, 4);
+        newCoordinates << curX, curY, curZ, 1;
+        newCoordinates *= toCenter;
+        newCoordinates *= illumMat;
+        newCoordinates *= backToStart;
+        int x = round(newCoordinates(0, 0));
+        int y = round(newCoordinates(0, 1));
+        if (x >= (int) depthBuffer.size() || x < 0 ||
+            y >= (int) depthBuffer.at(0).size() || y < 0)
+            continue;
+        if (curZ > map->at(x).at(y))
+            map->at(x).at(y) = newCoordinates(0, 2);
     }
 }
 
@@ -290,6 +283,7 @@ Eigen::Matrix4f &transMat, Illuminant *illum)
     // clang-format on
     std::vector<std::vector<double>> *shadowMap = &illum->getBuf();
     Eigen::Matrix4f illumMat = illum->getTransMat();
+
     for (std::vector<Facet>::iterator iter = facets.begin(); iter != facets.end(); iter++)
     {
         Eigen::MatrixXf coordinatesVec(3, 4);
@@ -331,7 +325,7 @@ Eigen::Matrix4f &transMat, Illuminant *illum)
         int y1 = round(dotsArr[0].getYCoordinate());
         int y2 = round(dotsArr[1].getYCoordinate());
         int y3 = round(dotsArr[2].getYCoordinate());
-
+#pragma omp parallel for
         for (int curY = y1; curY < y2; curY++)
         {
             double aInc = 0;
@@ -356,7 +350,7 @@ Eigen::Matrix4f &transMat, Illuminant *illum)
             interpolateRowIntoShadowMap(
             shadowMap, xA, xB, zA, zB, curY, toCenter, backToStart, illumMat);
         }
-
+#pragma omp parallel for
         for (int curY = y2; curY <= y3; curY++)
         {
             double aInc = 0;
@@ -402,6 +396,8 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
                    0, 0, 1, 0,
                    X_CENTER, Y_CENTER, PLATE_Z, 1;
     // clang-format on
+
+//#pragma omp parallel for
     for (std::vector<Facet>::iterator iter = facets.begin(); iter != facets.end(); iter++)
     {
         Eigen::MatrixXf coordinatesVec(3, 4);
@@ -443,9 +439,8 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
         int y1 = round(dotsArr[0].getYCoordinate());
         int y2 = round(dotsArr[1].getYCoordinate());
         int y3 = round(dotsArr[2].getYCoordinate());
-
-        for (int curY = round(dotsArr[0].getYCoordinate());
-             curY < round(dotsArr[1].getYCoordinate()); curY++)
+#pragma omp parallel for
+        for (int curY = y1; curY < y2; curY++)
         {
             double aInc = 0;
             if (y1 != y2)
@@ -503,9 +498,8 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
                 }
             }
         }
-
-        for (int curY = round(dotsArr[1].getYCoordinate());
-             curY <= round(dotsArr[2].getYCoordinate()); curY++)
+#pragma omp parallel for
+        for (int curY = y2; curY <= y3; curY++)
         {
             double aInc = 0;
             if (y2 != y3)
@@ -563,12 +557,12 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
                 }
             }
         }
-        DDABordersForPolygon(x1, round(dotsArr[0].getYCoordinate()), z1, x2,
-        round(dotsArr[1].getYCoordinate()), z2);
-        DDABordersForPolygon(x1, round(dotsArr[0].getYCoordinate()), z1, x3,
-        round(dotsArr[2].getYCoordinate()), z3);
-        DDABordersForPolygon(x2, round(dotsArr[1].getYCoordinate()), z2, x3,
-        round(dotsArr[2].getYCoordinate()), z3);
+        DDABordersForPolygon(x1, y1, z1, x2,
+                             y2, z2);
+        DDABordersForPolygon(x1, y1, z1, x3,
+                             y3, z3);
+        DDABordersForPolygon(x2, y2, z2, x3,
+                             y3, z3);
     }
 }
 
@@ -586,27 +580,20 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufHeight, size_t bufWidth)
     PolModel model;
     std::vector<Facet> facets;
     std::vector<Vertex> vertices;
-    Illuminant *illuminant;
     for (size_t i = 0; i < scene->getModelsNum(); i++)
     {
         model = scene->getModel(i);
         facets = model.getFacets();
         vertices = model.getVertices();
         for (size_t j = 0; j < scene->getIllumNum(); j++)
-        {
-            illuminant = &scene->getIlluminant(j);
-            shadowMapForModel(facets, vertices, scene->getTransMatrix(), illuminant);
-        }
+            shadowMapForModel(facets, vertices, scene->getTransMatrix(), &scene->getIlluminant(j));
     }
 
     model = scene->getPlateModel();
     facets = model.getFacets();
     vertices = model.getVertices();
     for (size_t j = 0; j < scene->getIllumNum(); j++)
-    {
-        illuminant = &scene->getIlluminant(j);
-        shadowMapForModel(facets, vertices, scene->getTransMatrix(), illuminant);
-    }
+        shadowMapForModel(facets, vertices, scene->getTransMatrix(), &scene->getIlluminant(j));
 
     for (size_t i = 0; i < scene->getModelsNum(); i++)
     {

@@ -3,6 +3,7 @@
 
 #include "objects.hpp"
 #include <QGraphicsScene>
+#include <omp.h>
 
 class Drawer
 {
