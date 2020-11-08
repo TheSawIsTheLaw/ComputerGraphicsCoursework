@@ -112,6 +112,7 @@ public:
 
     size_t getIllumNum();
     Illuminant &getIlluminant(size_t num);
+    void setIlluminant(Illuminant &illum, size_t i);
     void addIlluminant(Illuminant &illum);
 
     Eigen::Matrix4f &getTransMatrix();

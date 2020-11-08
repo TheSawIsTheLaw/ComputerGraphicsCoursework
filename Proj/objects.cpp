@@ -338,6 +338,11 @@ size_t CellScene::getIllumNum() { return illumNum; }
 
 Illuminant &CellScene::getIlluminant(size_t num) { return illuminants.at(num); }
 
+void CellScene::setIlluminant(Illuminant &illum, size_t i)
+{
+    illuminants.at(i) = illum;
+}
+
 void CellScene::addIlluminant(Illuminant &illum)
 {
     illumNum++;
