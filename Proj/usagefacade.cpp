@@ -241,6 +241,35 @@ int xStart, int yStart, double zStart, int xEnd, int yEnd, double zEnd)
     }
 }
 
+void Drawer::interpolateRowIntoShadowMap(std::vector<std::vector<double>> *map, int xA,
+int xB, double zA, double zB, int curY, Eigen::Matrix4f &toCenter,
+Eigen::Matrix4f &backToStart, Eigen::Matrix4f &illumMat)
+{
+    try
+    {
+        for (int curX = xA; curX <= xB; curX++)
+        {
+            double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
+            Eigen::MatrixXf newCoordinates(1, 4);
+            newCoordinates << curX, curY, curZ, 1;
+            newCoordinates *= toCenter;
+            newCoordinates *= illumMat;
+            newCoordinates *= backToStart;
+            int x = round(newCoordinates(0, 0));
+            int y = round(newCoordinates(0, 1));
+            if (x >= (int) depthBuffer.size() || x < 0 ||
+                y >= (int) depthBuffer.at(0).size() || y < 0)
+                continue;
+            if (curZ > map->at(x).at(y))
+                map->at(x).at(y) = newCoordinates(0, 2);
+        }
+    }
+    catch (std::exception &err)
+    {
+        qDebug() << err.what();
+    }
+}
+
 void Drawer::shadowMapForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices,
 Eigen::Matrix4f &transMat, Illuminant *illum)
 {
@@ -299,20 +328,19 @@ Eigen::Matrix4f &transMat, Illuminant *illum)
         double z2 = dotsArr[1].getZCoordinate();
         double z3 = dotsArr[2].getZCoordinate();
 
-        for (int curY = round(dotsArr[0].getYCoordinate());
-             curY < round(dotsArr[1].getYCoordinate()); curY++)
+        int y1 = round(dotsArr[0].getYCoordinate());
+        int y2 = round(dotsArr[1].getYCoordinate());
+        int y3 = round(dotsArr[2].getYCoordinate());
+
+        for (int curY = y1; curY < y2; curY++)
         {
             double aInc = 0;
-            if (round(dotsArr[1].getYCoordinate()) != round(dotsArr[0].getYCoordinate()))
-                aInc =
-                (curY - round(dotsArr[0].getYCoordinate())) /
-                (round(dotsArr[1].getYCoordinate()) - round(dotsArr[0].getYCoordinate()));
+            if (y1 != y2)
+                aInc = (double) (curY - y1) / (y2 - y1);
 
             double bInc = 0;
-            if (round(dotsArr[2].getYCoordinate()) != round(dotsArr[0].getYCoordinate()))
-                bInc =
-                (curY - round(dotsArr[0].getYCoordinate())) /
-                (round(dotsArr[2].getYCoordinate()) - round(dotsArr[0].getYCoordinate()));
+            if (y1 != y3)
+                bInc = (double) (curY - y1) / (y3 - y1);
 
             int xA = round(x1 + (x2 - x1) * aInc);
             int xB = round(x1 + (x3 - x1) * bInc);
@@ -325,38 +353,19 @@ Eigen::Matrix4f &transMat, Illuminant *illum)
                 std::swap(zA, zB);
             }
 
-            for (int curX = xA; curX <= xB; curX++)
-            {
-                double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
-                Eigen::MatrixXf newCoordinates(1, 4);
-                newCoordinates << curX, curY, curZ, 1;
-                newCoordinates *= toCenter;
-                newCoordinates *= illumMat;
-                newCoordinates *= backToStart;
-                int x = round(newCoordinates(0, 0));
-                int y = round(newCoordinates(0, 1));
-                if (x >= (int) depthBuffer.size() || x < 0 ||
-                    y >= (int) depthBuffer.at(0).size() || y < 0)
-                    continue;
-                if (curZ > shadowMap->at(x).at(y))
-                    shadowMap->at(x).at(y) = newCoordinates(0, 2);
-            }
+            interpolateRowIntoShadowMap(
+            shadowMap, xA, xB, zA, zB, curY, toCenter, backToStart, illumMat);
         }
 
-        for (int curY = round(dotsArr[1].getYCoordinate());
-             curY <= round(dotsArr[2].getYCoordinate()); curY++)
+        for (int curY = y2; curY <= y3; curY++)
         {
             double aInc = 0;
-            if (round(dotsArr[2].getYCoordinate()) != round(dotsArr[1].getYCoordinate()))
-                aInc =
-                (curY - round(dotsArr[1].getYCoordinate())) /
-                (round(dotsArr[2].getYCoordinate()) - round(dotsArr[1].getYCoordinate()));
+            if (y2 != y3)
+                aInc = (double) (curY - y2) / (y3 - y2);
 
             double bInc = 0;
-            if (round(dotsArr[2].getYCoordinate()) != round(dotsArr[0].getYCoordinate()))
-                bInc =
-                (curY - round(dotsArr[0].getYCoordinate())) /
-                (round(dotsArr[2].getYCoordinate()) - round(dotsArr[0].getYCoordinate()));
+            if (y1 != y3)
+                bInc = (double) (curY - y1) / (y3 - y1);
 
             int xA = round(x2 + (x3 - x2) * aInc);
             int xB = round(x1 + (x3 - x1) * bInc);
@@ -369,22 +378,8 @@ Eigen::Matrix4f &transMat, Illuminant *illum)
                 std::swap(zA, zB);
             }
 
-            for (int curX = xA; curX <= xB; curX++)
-            {
-                double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
-                Eigen::MatrixXf newCoordinates(1, 4);
-                newCoordinates << curX, curY, curZ, 1;
-                newCoordinates *= toCenter;
-                newCoordinates *= illumMat;
-                newCoordinates *= backToStart;
-                int x = round(newCoordinates(0, 0));
-                int y = round(newCoordinates(0, 1));
-                if (x >= (int) depthBuffer.size() || x < 0 ||
-                    y >= (int) depthBuffer.at(0).size() || y < 0)
-                    continue;
-                if (curZ > shadowMap->at(x).at(y))
-                    shadowMap->at(x).at(y) = newCoordinates(0, 2);
-            }
+            interpolateRowIntoShadowMap(
+            shadowMap, xA, xB, zA, zB, curY, toCenter, backToStart, illumMat);
         }
     }
 }
@@ -445,20 +440,20 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
         double z2 = dotsArr[1].getZCoordinate();
         double z3 = dotsArr[2].getZCoordinate();
 
+        int y1 = round(dotsArr[0].getYCoordinate());
+        int y2 = round(dotsArr[1].getYCoordinate());
+        int y3 = round(dotsArr[2].getYCoordinate());
+
         for (int curY = round(dotsArr[0].getYCoordinate());
              curY < round(dotsArr[1].getYCoordinate()); curY++)
         {
             double aInc = 0;
-            if (round(dotsArr[1].getYCoordinate()) != round(dotsArr[0].getYCoordinate()))
-                aInc =
-                (curY - round(dotsArr[0].getYCoordinate())) /
-                (round(dotsArr[1].getYCoordinate()) - round(dotsArr[0].getYCoordinate()));
+            if (y1 != y2)
+                aInc = (double) (curY - y1) / (y2 - y1);
 
             double bInc = 0;
-            if (round(dotsArr[2].getYCoordinate()) != round(dotsArr[0].getYCoordinate()))
-                bInc =
-                (curY - round(dotsArr[0].getYCoordinate())) /
-                (round(dotsArr[2].getYCoordinate()) - round(dotsArr[0].getYCoordinate()));
+            if (y1 != y3)
+                bInc = (double) (curY - y1) / (y3 - y1);
 
             int xA = round(x1 + (x2 - x1) * aInc);
             int xB = round(x1 + (x3 - x1) * bInc);
@@ -481,9 +476,9 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
                 {
                     short visible = 0;
                     Illuminant *illum;
+                    Eigen::MatrixXf newCoordinates(1, 4);
                     for (size_t i = 0; i < scene->getIllumNum() && !visible; i++)
                     {
-                        Eigen::MatrixXf newCoordinates(1, 4);
                         newCoordinates << curX, curY, curZ, 1;
                         illum = &scene->getIlluminant(i);
 
@@ -513,16 +508,12 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
              curY <= round(dotsArr[2].getYCoordinate()); curY++)
         {
             double aInc = 0;
-            if (round(dotsArr[2].getYCoordinate()) != round(dotsArr[1].getYCoordinate()))
-                aInc =
-                (curY - round(dotsArr[1].getYCoordinate())) /
-                (round(dotsArr[2].getYCoordinate()) - round(dotsArr[1].getYCoordinate()));
+            if (y2 != y3)
+                aInc = (double) (curY - y2) / (y3 - y2);
 
             double bInc = 0;
-            if (round(dotsArr[2].getYCoordinate()) != round(dotsArr[0].getYCoordinate()))
-                bInc =
-                (curY - round(dotsArr[0].getYCoordinate())) /
-                (round(dotsArr[2].getYCoordinate()) - round(dotsArr[0].getYCoordinate()));
+            if (y1 != y3)
+                bInc = (double) (curY - y1) / (y3 - y1);
 
             int xA = round(x2 + (x3 - x2) * aInc);
             int xB = round(x1 + (x3 - x1) * bInc);
@@ -545,9 +536,9 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
                 {
                     short visible = 0;
                     Illuminant *illum;
+                    Eigen::MatrixXf newCoordinates(1, 4);
                     for (size_t i = 0; i < scene->getIllumNum() && !visible; i++)
                     {
-                        Eigen::MatrixXf newCoordinates(1, 4);
                         newCoordinates << curX, curY, curZ, 1;
                         illum = &scene->getIlluminant(i);
 

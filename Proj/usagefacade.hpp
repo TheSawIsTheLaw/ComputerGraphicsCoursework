@@ -12,12 +12,19 @@ public:
     Eigen::Matrix4f &transMat, size_t color, CellScene *scene);
     void shadowMapForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices,
     Eigen::Matrix4f &transMat, Illuminant *illum);
-    void specBorderPut(int x, int y, double z);
-    void DDABordersForPolygon(
-    int xStart, int yStart, double zStart, int xEnd, int yEnd, double zEnd);
+
+
     QGraphicsScene *drawScene(CellScene *scene, QRectF rect);
 
 private:
+    void interpolateColIntoShadowMap();
+    void interpolateRowIntoShadowMap(
+        std::vector<std::vector<double>> *map, int xA, int xB, double zA, double zB, int curY,
+        Eigen::Matrix4f &toCenter, Eigen::Matrix4f &backToStart, Eigen::Matrix4f &illumMat);
+    void specBorderPut(int x, int y, double z);
+    void DDABordersForPolygon(
+        int xStart, int yStart, double zStart, int xEnd, int yEnd, double zEnd);
+
     std::vector<std::vector<double>> depthBuffer;
     std::vector<std::vector<size_t>> frameBuffer;
 };
