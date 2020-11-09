@@ -43,71 +43,50 @@ QGraphicsScene *UsageFacade::drawScene(QRectF rect)
 QGraphicsScene *UsageFacade::moveUpScene(double value, QRectF rect)
 {
     scene->moveUp(value);
-    QGraphicsScene *retScene = nullptr;
-    if (isSceneSet())
-        retScene = drawer->drawScene(scene, rect);
 
-    return retScene;
+    return drawScene(rect);
 }
 
 QGraphicsScene *UsageFacade::moveDownScene(double value, QRectF rect)
 {
     scene->moveDown(value);
-    QGraphicsScene *retScene = nullptr;
-    if (isSceneSet())
-        retScene = drawer->drawScene(scene, rect);
 
-    return retScene;
+    return drawScene(rect);
 }
 
 QGraphicsScene *UsageFacade::moveRightScene(double value, QRectF rect)
 {
     scene->moveRight(value);
-    QGraphicsScene *retScene = nullptr;
-    if (isSceneSet())
-        retScene = drawer->drawScene(scene, rect);
 
-    return retScene;
+    return drawScene(rect);
 }
 
 QGraphicsScene *UsageFacade::moveLeftScene(double value, QRectF rect)
 {
     scene->moveLeft(value);
-    QGraphicsScene *retScene = nullptr;
-    if (isSceneSet())
-        retScene = drawer->drawScene(scene, rect);
 
-    return retScene;
+    return drawScene(rect);
 }
 
 QGraphicsScene *UsageFacade::rotateXScene(double angle, QRectF rect)
 {
     scene->rotateX(angle);
-    QGraphicsScene *retScene = nullptr;
-    if (isSceneSet())
-        retScene = drawer->drawScene(scene, rect);
 
-    return retScene;
+    return drawScene(rect);
 }
 
 QGraphicsScene *UsageFacade::rotateYScene(double angle, QRectF rect)
 {
     scene->rotateY(angle);
-    QGraphicsScene *retScene = nullptr;
-    if (isSceneSet())
-        retScene = drawer->drawScene(scene, rect);
 
-    return retScene;
+    return drawScene(rect);
 }
 
 QGraphicsScene *UsageFacade::rotateZScene(double angle, QRectF rect)
 {
     scene->rotateZ(angle);
-    QGraphicsScene *retScene = nullptr;
-    if (isSceneSet())
-        retScene = drawer->drawScene(scene, rect);
 
-    return retScene;
+    return drawScene(rect);
 }
 
 void UsageFacade::addQuad(std::vector<Vertex> &vertices, std::vector<Facet> &facets,
@@ -192,14 +171,10 @@ void UsageFacade::addIlluminant()
 
 void Drawer::specBorderPut(int x, int y, double z)
 {
-    try
-    {
-        if (std::fabs(z - depthBuffer.at(x).at(y)) < 5 || z > depthBuffer.at(x).at(y))
-            frameBuffer.at(x).at(y) = 5;
-    }
-    catch (std::exception &err)
-    {
-    }
+    if (x < 0 || x >= (int)depthBuffer.size() || y < 0 || y >= (int)depthBuffer.at(0).size())
+        return;
+    if (std::fabs(z - depthBuffer.at(x).at(y)) < 5 || z > depthBuffer.at(x).at(y))
+        frameBuffer.at(x).at(y) = 5;
 }
 
 void Drawer::DDABordersForPolygon(
