@@ -19,9 +19,8 @@ public:
 
 private:
     void interpolateColIntoShadowMap();
-    void interpolateRowIntoShadowMap(
-        std::vector<std::vector<double>> *map, int xA, int xB, double zA, double zB, int curY,
-        Eigen::Matrix4f &toCenter, Eigen::Matrix4f &backToStart, Eigen::Matrix4f &illumMat);
+    void interpolateRowIntoShadowMap(std::vector<std::vector<double>> *map, int xA, int xB, double zA, double zB, int curY,
+        Eigen::Matrix4f &illumDotTransMat);
     void specBorderPut(int x, int y, double z);
     void DDABordersForPolygon(
         int xStart, int yStart, double zStart, int xEnd, int yEnd, double zEnd);

@@ -62,14 +62,15 @@ class Illuminant
 {
 public:
     Illuminant(Eigen::Matrix4f &transMat);
-    Illuminant() {};
+    Illuminant(){};
 
     void setBuf(std::vector<std::vector<double>> &setBuf);
-    std::vector<std::vector<double>> &getBuf();
+    std::vector<std::vector<double>> &getShadowMap();
     void clearShadowMap();
 
     void setTransMat(Eigen::Matrix4f &mat);
     Eigen::Matrix4f &getTransMat();
+
 private:
     std::vector<std::vector<double>> shadowBuffer;
     Eigen::Matrix4f transMatrix;
@@ -119,6 +120,10 @@ public:
     void multToTrans(Eigen::Matrix4f &newTrans);
 
 private:
+    void addQuad(std::vector<Vertex> &vertices, std::vector<Facet> &facets, int x1,
+    int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3, int x4, int y4,
+    int z4);
+
     size_t width, height;
 
     Dot3D startOfPlate, endOfPlate;

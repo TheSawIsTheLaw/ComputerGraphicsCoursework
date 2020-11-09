@@ -11,6 +11,8 @@ CONFIG += c++11
 DEFINES += QT_DEPRECATED_WARNINGS
 QMAKE_CXXFLAGS += -fopenmp
 QMAKE_LFLAGS +=  -fopenmp
+QMAKE_CXXFLAGS += -O3
+QMAKE_LFLAGS += -O3
 
 # You can also make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.

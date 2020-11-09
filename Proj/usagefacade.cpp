@@ -180,7 +180,8 @@ void UsageFacade::addIlluminant()
 
 void Drawer::specBorderPut(int x, int y, double z)
 {
-    if (x < 0 || x >= (int)depthBuffer.size() || y < 0 || y >= (int)depthBuffer.at(0).size())
+    if (x < 0 || x >= (int) depthBuffer.size() || y < 0 ||
+        y >= (int) depthBuffer.at(0).size())
         return;
     if (std::fabs(z - depthBuffer.at(x).at(y)) < 5 || z > depthBuffer.at(x).at(y))
         frameBuffer.at(x).at(y) = 5;
@@ -226,17 +227,14 @@ int xStart, int yStart, double zStart, int xEnd, int yEnd, double zEnd)
 }
 
 void Drawer::interpolateRowIntoShadowMap(std::vector<std::vector<double>> *map, int xA,
-int xB, double zA, double zB, int curY, Eigen::Matrix4f &toCenter,
-Eigen::Matrix4f &backToStart, Eigen::Matrix4f &illumMat)
+int xB, double zA, double zB, int curY, Eigen::Matrix4f &illumDotTransMat)
 {
     for (int curX = xA; curX <= xB; curX++)
     {
         double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
         Eigen::MatrixXf newCoordinates(1, 4);
         newCoordinates << curX, curY, curZ, 1;
-        newCoordinates *= toCenter;
-        newCoordinates *= illumMat;
-        newCoordinates *= backToStart;
+        newCoordinates *= illumDotTransMat;
         int x = round(newCoordinates(0, 0));
         int y = round(newCoordinates(0, 1));
         if (x >= (int) depthBuffer.size() || x < 0 ||
@@ -265,11 +263,11 @@ Eigen::Matrix4f &transMat, Illuminant *illum)
                    0, 0, 1, 0,
                    X_CENTER, Y_CENTER, PLATE_Z, 1;
     // clang-format on
-    std::vector<std::vector<double>> *shadowMap = &illum->getBuf();
+    std::vector<std::vector<double>> *shadowMap = &illum->getShadowMap();
     Eigen::Matrix4f illumMat = illum->getTransMat();
 
-    Eigen::Matrix4f dotTransMat;
-    dotTransMat = toCenter * transMat * backToStart;
+    Eigen::Matrix4f dotTransMat = toCenter * transMat * backToStart;
+    Eigen::Matrix4f illumDotTransMat = toCenter * illumMat * backToStart;
 
     for (std::vector<Facet>::iterator iter = facets.begin(); iter != facets.end(); iter++)
     {
@@ -286,9 +284,6 @@ Eigen::Matrix4f &transMat, Illuminant *illum)
         dotsArr[2].getZCoordinate(), 1;
 
         coordinatesVec *= dotTransMat;
-        //        coordinatesVec *= toCenter;
-//        coordinatesVec *= transMat;
-//        coordinatesVec *= backToStart;
         dotsArr[0] =
         Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
         dotsArr[1] =
@@ -337,7 +332,7 @@ Eigen::Matrix4f &transMat, Illuminant *illum)
             }
 
             interpolateRowIntoShadowMap(
-            shadowMap, xA, xB, zA, zB, curY, toCenter, backToStart, illumMat);
+            shadowMap, xA, xB, zA, zB, curY, illumDotTransMat);
         }
 #pragma omp parallel for
         for (int curY = y2; curY <= y3; curY++)
@@ -362,7 +357,7 @@ Eigen::Matrix4f &transMat, Illuminant *illum)
             }
 
             interpolateRowIntoShadowMap(
-            shadowMap, xA, xB, zA, zB, curY, toCenter, backToStart, illumMat);
+            shadowMap, xA, xB, zA, zB, curY, illumDotTransMat);
         }
     }
 }
@@ -388,7 +383,10 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
 
     Eigen::Matrix4f dotTransMat;
     dotTransMat = toCenter * transMat * backToStart;
-//#pragma omp parallel for
+    std::vector<Eigen::Matrix4f> illumDotMatrices;
+    for (size_t i = 0; i < scene->getIllumNum(); i++)
+        illumDotMatrices.push_back(toCenter * scene->getIlluminant(i).getTransMat() * backToStart);
+//    #pragma omp parallel for
     for (std::vector<Facet>::iterator iter = facets.begin(); iter != facets.end(); iter++)
     {
         Eigen::MatrixXf coordinatesVec(3, 4);
@@ -403,9 +401,6 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
         dotsArr[2].getXCoordinate(), dotsArr[2].getYCoordinate(),
         dotsArr[2].getZCoordinate(), 1;
         coordinatesVec *= dotTransMat;
-//        coordinatesVec *= toCenter;
-//        coordinatesVec *= transMat;
-//        coordinatesVec *= backToStart;
         dotsArr[0] =
         Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
         dotsArr[1] =
@@ -431,6 +426,7 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
         int y1 = round(dotsArr[0].getYCoordinate());
         int y2 = round(dotsArr[1].getYCoordinate());
         int y3 = round(dotsArr[2].getYCoordinate());
+
 #pragma omp parallel for
         for (int curY = y1; curY < y2; curY++)
         {
@@ -462,17 +458,13 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
                 if (curZ > depthBuffer.at(curX).at(curY))
                 {
                     short visible = 0;
-                    Illuminant *illum;
                     Eigen::MatrixXf newCoordinates(1, 4);
                     for (size_t i = 0; i < scene->getIllumNum() && !visible; i++)
                     {
                         newCoordinates << curX, curY, curZ, 1;
-                        illum = &scene->getIlluminant(i);
 
-                        newCoordinates *= toCenter;
-                        newCoordinates *= illum->getTransMat();
-                        newCoordinates *= backToStart;
-                        std::vector<std::vector<double>> *shadowMap = &illum->getBuf();
+                        newCoordinates *= illumDotMatrices.at(i);
+                        std::vector<std::vector<double>> *shadowMap = &scene->getIlluminant(i).getShadowMap();
                         int x = round(newCoordinates(0, 0));
                         int y = round(newCoordinates(0, 1));
                         if (x < (int) shadowMap->size() && x > 0 &&
@@ -521,17 +513,13 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
                 if (curZ > depthBuffer.at(curX).at(curY))
                 {
                     short visible = 0;
-                    Illuminant *illum;
                     Eigen::MatrixXf newCoordinates(1, 4);
                     for (size_t i = 0; i < scene->getIllumNum() && !visible; i++)
                     {
                         newCoordinates << curX, curY, curZ, 1;
-                        illum = &scene->getIlluminant(i);
 
-                        newCoordinates *= toCenter;
-                        newCoordinates *= illum->getTransMat();
-                        newCoordinates *= backToStart;
-                        std::vector<std::vector<double>> *shadowMap = &illum->getBuf();
+                        newCoordinates *= illumDotMatrices.at(i);
+                        std::vector<std::vector<double>> *shadowMap = &scene->getIlluminant(i).getShadowMap();
                         int x = round(newCoordinates(0, 0));
                         int y = round(newCoordinates(0, 1));
                         if (x < (int) shadowMap->size() && x > 0 &&
@@ -549,12 +537,9 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
                 }
             }
         }
-        DDABordersForPolygon(x1, y1, z1, x2,
-                             y2, z2);
-        DDABordersForPolygon(x1, y1, z1, x3,
-                             y3, z3);
-        DDABordersForPolygon(x2, y2, z2, x3,
-                             y3, z3);
+        DDABordersForPolygon(x1, y1, z1, x2, y2, z2);
+        DDABordersForPolygon(x1, y1, z1, x3, y3, z3);
+        DDABordersForPolygon(x2, y2, z2, x3, y3, z3);
     }
 }
 
@@ -578,14 +563,16 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufHeight, size_t bufWidth)
         facets = model.getFacets();
         vertices = model.getVertices();
         for (size_t j = 0; j < scene->getIllumNum(); j++)
-            shadowMapForModel(facets, vertices, scene->getTransMatrix(), &scene->getIlluminant(j));
+            shadowMapForModel(
+            facets, vertices, scene->getTransMatrix(), &scene->getIlluminant(j));
     }
 
     model = scene->getPlateModel();
     facets = model.getFacets();
     vertices = model.getVertices();
     for (size_t j = 0; j < scene->getIllumNum(); j++)
-        shadowMapForModel(facets, vertices, scene->getTransMatrix(), &scene->getIlluminant(j));
+        shadowMapForModel(
+        facets, vertices, scene->getTransMatrix(), &scene->getIlluminant(j));
 
     for (size_t i = 0; i < scene->getModelsNum(); i++)
     {
@@ -603,6 +590,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufHeight, size_t bufWidth)
         scene->getIlluminant(i).clearShadowMap();
 }
 
+// 396
 QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
 {
     size_t width = scene->getWidth() * SCALE_FACTOR;

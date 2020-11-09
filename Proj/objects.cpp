@@ -23,7 +23,7 @@ const std::vector<Facet> PolModel::getFacets() { return facets; }
 
 void PolModel::setFacets(std::vector<Facet> facets_) { facets = facets_; }
 
-std::vector<std::vector<double>> &Illuminant::getBuf() { return shadowBuffer; }
+std::vector<std::vector<double>> &Illuminant::getShadowMap() { return shadowBuffer; }
 
 Illuminant::Illuminant(Eigen::Matrix4f &transMatrix_)
 {
@@ -67,6 +67,37 @@ CellScene::CellScene(size_t width_, size_t height_)
     illumNum = 0;
 
     transMatrix << 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1;
+}
+
+void CellScene::addQuad(std::vector<Vertex> &vertices, std::vector<Facet> &facets, int x1,
+int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3, int x4, int y4, int z4)
+{
+    Dot3D dot;
+    std::vector<size_t> vec;
+
+    size_t size = facets.size();
+
+    dot = Dot3D(x1, y1, z1);
+    vec = {size, size + 1};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot = Dot3D(x2, y2, z2);
+    vec = {size};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot = Dot3D(x3, y3, z3);
+    vec = {size, size + 1};
+    vertices.push_back(Vertex(dot, vec));
+
+    dot = Dot3D(x4, y4, z4);
+    vec = {size + 1};
+    vertices.push_back(Vertex(dot, vec));
+
+    size = vertices.size();
+    vec = {size - 4, size - 3, size - 2};
+    facets.push_back(vec);
+    vec = {size - 4, size - 2, size - 1};
+    facets.push_back(vec);
 }
 
 size_t CellScene::getWidth() { return width; }
@@ -352,8 +383,6 @@ void CellScene::setStartOfPlate(Dot3D dot_) { startOfPlate = dot_; }
 
 const Dot3D CellScene::getEndOfPlate() { return endOfPlate; }
 
-//!!!
-//! Переноси addQuad и собирай нормально
 void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
 {
     if (plateModel)
@@ -364,96 +393,15 @@ void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
 
-    size_t facetNum = 0;
-    size_t vertexNum = 0;
-
-    centerDot = Dot3D(startOfPlate_.getXCoordinate() + endOfPlate_.getXCoordinate() / 2,
-    startOfPlate_.getYCoordinate() + endOfPlate_.getYCoordinate() / 2, PLATE_Z);
-
     for (size_t y = startOfPlate_.getYCoordinate(); y < endOfPlate_.getYCoordinate();
          y += SCALE_FACTOR)
-    {
         for (size_t x = startOfPlate_.getXCoordinate(); x < endOfPlate_.getXCoordinate();
-             x += SCALE_FACTOR, facetNum += 4, vertexNum += 5)
-        {
-            Dot3D start(x, y, PLATE_Z);
-            vertices.push_back(
-            Vertex(start)); // std::vector<size_t>{facetNum, facetNum + 1}));
-            Dot3D middleDot(x + SCALE_FACTOR / 2, y + SCALE_FACTOR / 2, PLATE_Z);
-            vertices.push_back(
-            Vertex(middleDot)); // std::vector<size_t>{facetNum + 0, facetNum + 1,
-                                // facetNum + 2, facetNum + 3}));
-            Dot3D end(x + SCALE_FACTOR, y + SCALE_FACTOR, PLATE_Z);
-            vertices.push_back(
-            Vertex(end)); // std::vector<size_t>{facetNum + 2, facetNum + 3}));
-            Dot3D leftBot(x, y + SCALE_FACTOR, PLATE_Z);
-            vertices.push_back(
-            Vertex(leftBot)); // std::vector<size_t>{facetNum + 0, facetNum + 3}));
-            Dot3D rightTop(x + SCALE_FACTOR, y, PLATE_Z);
-            vertices.push_back(
-            Vertex(rightTop)); // std::vector<size_t>{facetNum + 1, facetNum + 2}));
-
-            facets.push_back(
-            std::vector<size_t>{vertexNum, vertexNum + 1, vertexNum + 3});
-            facets.push_back(
-            std::vector<size_t>{vertexNum, vertexNum + 1, vertexNum + 4});
-            facets.push_back(
-            std::vector<size_t>{vertexNum + 1, vertexNum + 2, vertexNum + 4});
-            facets.push_back(
-            std::vector<size_t>{vertexNum + 1, vertexNum + 2, vertexNum + 3});
-        }
-    }
-
-    //    Dot3D exDot(startOfPlate_.getXCoordinate() + (endOfPlate_.getXCoordinate() -
-    //                                                  startOfPlate_.getXCoordinate()) /
-    //                                                  2,
-    //    endOfPlate_.getYCoordinate() - (endOfPlate_.getYCoordinate() -
-    //                                                startOfPlate_.getYCoordinate()) / 2,
-    //    startOfPlate_.getZCoordinate());
-
-    //    std::vector<Vertex> vertices;
-    //    vertices.push_back(Vertex(startOfPlate_, std::vector<size_t>{0, 1}));
-    //    vertices.push_back(Vertex(exDot, std::vector<size_t>{0, 1, 2, 3}));
-    //    vertices.push_back(Vertex(endOfPlate_, std::vector<size_t>{2, 3}));
-
-    //    exDot.setXCoordinate(startOfPlate_.getXCoordinate());
-    //    exDot.setYCoordinate(endOfPlate_.getYCoordinate());
-    //    vertices.push_back(Vertex(exDot, std::vector<size_t>{0, 3}));
-
-    //    exDot.setXCoordinate(endOfPlate_.getXCoordinate());
-    //    exDot.setYCoordinate(startOfPlate_.getYCoordinate());
-    //    vertices.push_back(Vertex(exDot, std::vector<size_t>{1, 2}));
-
-    //    std::vector<Facet> facets;
-    //    facets.push_back(std::vector<size_t>{0, 1, 3});
-    //    facets.push_back(std::vector<size_t>{0, 1, 4});
-    //    facets.push_back(std::vector<size_t>{1, 2, 4});
-    //    facets.push_back(std::vector<size_t>{1, 2, 3});
-
-    //    Dot3D newDiagDot(startOfPlate_.getXCoordinate(), endOfPlate_.getYCoordinate(),
-    //    startOfPlate_.getZCoordinate());
-
-    //    std::vector<Vertex> vertices;
-    //    vertices.push_back(Vertex(startOfPlate_, std::vector<size_t>{0}));
-    //    vertices.push_back(Vertex(newDiagDot, std::vector<size_t>{0, 1}));
-    //    vertices.push_back(Vertex(endOfPlate_, std::vector<size_t>{1}));
-
-    //    newDiagDot.setXCoordinate(endOfPlate_.getXCoordinate());
-    //    newDiagDot.setYCoordinate(startOfPlate_.getYCoordinate());
-    //    newDiagDot.setZCoordinate(startOfPlate_.getZCoordinate());
-    //    vertices.push_back(Vertex(newDiagDot, std::vector<size_t>{0, 1}));
-
-    //    std::vector<Facet> facets;
-    //    facets.push_back(std::vector<size_t>{0, 1, 2});
-    //    facets.push_back(std::vector<size_t>{0, 2, 3});
-
+             x += SCALE_FACTOR)
+            addQuad(vertices, facets, x, y, PLATE_Z, x + SCALE_FACTOR, y, PLATE_Z,
+            x + SCALE_FACTOR, y + SCALE_FACTOR, PLATE_Z, x, y + SCALE_FACTOR, PLATE_Z);
     if (plateModel)
         delete plateModel;
     plateModel = new PolModel(vertices, facets);
-
-    //    // Debug
-    //    for (size_t i = 0; i < plateModel->getVertices().size(); i++)
-    //        qDebug() << plateModel->getVertices().at(i).getPosition();
 }
 
 void CellScene::setEndOfPlate(Dot3D dot_) { endOfPlate = dot_; }
