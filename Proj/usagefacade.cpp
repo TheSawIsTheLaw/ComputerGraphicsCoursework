@@ -129,8 +129,17 @@ void UsageFacade::addTable()
     Dot3D dot;
     std::vector<size_t> vec;
 
+    // Столешница
+    addQuad(vertices, facets, 20, 20, 861, 20, 100, 861, 100, 100, 861, 100, 20, 861);
+
+    addQuad(vertices, facets, 20, 20, 851, 20, 100, 851, 20, 100, 861, 20, 20, 861);
+    addQuad(vertices, facets, 20, 100, 851, 100, 100, 851, 100, 100, 861, 20, 100, 861);
+    addQuad(vertices, facets, 100, 100, 851, 100, 20, 851, 100, 20, 861, 100, 100, 861);
+    addQuad(vertices, facets, 100, 100, 851, 20, 100, 851, 20, 100, 861, 100, 100, 861);
+
     addQuad(vertices, facets, 20, 20, 851, 20, 100, 851, 100, 100, 851, 100, 20, 851);
 
+    // Ножка
     addQuad(vertices, facets, 50, 50, 801, 70, 50, 801, 70, 50, 850, 50, 50, 850);
 
     addQuad(vertices, facets, 70, 50, 801, 70, 70, 801, 70, 70, 850, 70, 50, 850);
@@ -259,6 +268,9 @@ Eigen::Matrix4f &transMat, Illuminant *illum)
     std::vector<std::vector<double>> *shadowMap = &illum->getBuf();
     Eigen::Matrix4f illumMat = illum->getTransMat();
 
+    Eigen::Matrix4f dotTransMat;
+    dotTransMat = toCenter * transMat * backToStart;
+
     for (std::vector<Facet>::iterator iter = facets.begin(); iter != facets.end(); iter++)
     {
         Eigen::MatrixXf coordinatesVec(3, 4);
@@ -272,9 +284,11 @@ Eigen::Matrix4f &transMat, Illuminant *illum)
         dotsArr[1].getYCoordinate(), dotsArr[1].getZCoordinate(), 1,
         dotsArr[2].getXCoordinate(), dotsArr[2].getYCoordinate(),
         dotsArr[2].getZCoordinate(), 1;
-        coordinatesVec *= toCenter;
-        coordinatesVec *= transMat;
-        coordinatesVec *= backToStart;
+
+        coordinatesVec *= dotTransMat;
+        //        coordinatesVec *= toCenter;
+//        coordinatesVec *= transMat;
+//        coordinatesVec *= backToStart;
         dotsArr[0] =
         Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
         dotsArr[1] =
@@ -372,6 +386,8 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
                    X_CENTER, Y_CENTER, PLATE_Z, 1;
     // clang-format on
 
+    Eigen::Matrix4f dotTransMat;
+    dotTransMat = toCenter * transMat * backToStart;
 //#pragma omp parallel for
     for (std::vector<Facet>::iterator iter = facets.begin(); iter != facets.end(); iter++)
     {
@@ -386,9 +402,10 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
         dotsArr[1].getYCoordinate(), dotsArr[1].getZCoordinate(), 1,
         dotsArr[2].getXCoordinate(), dotsArr[2].getYCoordinate(),
         dotsArr[2].getZCoordinate(), 1;
-        coordinatesVec *= toCenter;
-        coordinatesVec *= transMat;
-        coordinatesVec *= backToStart;
+        coordinatesVec *= dotTransMat;
+//        coordinatesVec *= toCenter;
+//        coordinatesVec *= transMat;
+//        coordinatesVec *= backToStart;
         dotsArr[0] =
         Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
         dotsArr[1] =

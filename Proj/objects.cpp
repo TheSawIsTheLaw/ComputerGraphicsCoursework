@@ -29,9 +29,7 @@ Illuminant::Illuminant(Eigen::Matrix4f &transMatrix_)
 {
     transMatrix = transMatrix_;
     for (size_t i = 0; i < ILLUM_VIS_X; i++)
-    {
-        shadowBuffer.push_back(std::vector<double>(ILLUM_VIS_Y, 0));
-    }
+    { shadowBuffer.push_back(std::vector<double>(ILLUM_VIS_Y, 0)); }
 }
 
 void Illuminant::setBuf(std::vector<std::vector<double>> &setBuf)
@@ -338,10 +336,7 @@ size_t CellScene::getIllumNum() { return illumNum; }
 
 Illuminant &CellScene::getIlluminant(size_t num) { return illuminants.at(num); }
 
-void CellScene::setIlluminant(Illuminant &illum, size_t i)
-{
-    illuminants.at(i) = illum;
-}
+void CellScene::setIlluminant(Illuminant &illum, size_t i) { illuminants.at(i) = illum; }
 
 void CellScene::addIlluminant(Illuminant &illum)
 {
@@ -357,6 +352,8 @@ void CellScene::setStartOfPlate(Dot3D dot_) { startOfPlate = dot_; }
 
 const Dot3D CellScene::getEndOfPlate() { return endOfPlate; }
 
+//!!!
+//! Переноси addQuad и собирай нормально
 void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
 {
     if (plateModel)
