@@ -1,10 +1,16 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#define FLEX
+
 #include "QDebug"
 #include <QErrorMessage>
 #include <QShortcut>
 #include <QTimer>
+
+#ifdef FLEX
+#include <QMediaPlayer>
+#endif
 
 #include "config.hpp"
 
@@ -17,6 +23,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
 
     facade = new UsageFacade;
+
+#ifdef FLEX
+    QMediaPlayer *player = new QMediaPlayer();
+    player->setMedia(QUrl("C:/Users/dobri/Downloads/BigBabyTape.mp3"));
+    player->play();
+#endif
 
     QListWidgetItem *tableIMG =
     new QListWidgetItem(QIcon("../Proj/imgs/table.png"), "Стол");
@@ -120,6 +132,8 @@ void MainWindow::getMouseEvent(size_t x_, size_t y_)
 
 void MainWindow::pictureDown()
 {
+    if (!facade->isSceneSet())
+        return;
     qDebug() << "Крутим вниз";
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
@@ -130,6 +144,8 @@ void MainWindow::pictureDown()
 
 void MainWindow::pictureUp()
 {
+    if (!facade->isSceneSet())
+        return;
     qDebug() << "Крутим вверх";
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
@@ -140,6 +156,8 @@ void MainWindow::pictureUp()
 
 void MainWindow::pictureLeft()
 {
+    if (!facade->isSceneSet())
+        return;
     qDebug() << "Крутим влево";
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
@@ -150,6 +168,8 @@ void MainWindow::pictureLeft()
 
 void MainWindow::pictureRight()
 {
+    if (!facade->isSceneSet())
+        return;
     qDebug() << "Крутим вправо";
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
@@ -159,6 +179,8 @@ void MainWindow::pictureRight()
 
 void MainWindow::pictureRotateXRight()
 {
+    if (!facade->isSceneSet())
+        return;
     qDebug() << "Вертим по Х вниз";
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
@@ -169,6 +191,8 @@ void MainWindow::pictureRotateXRight()
 
 void MainWindow::pictureRotateXLeft()
 {
+    if (!facade->isSceneSet())
+        return;
     qDebug() << "Вертим по Х";
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
@@ -179,6 +203,8 @@ void MainWindow::pictureRotateXLeft()
 
 void MainWindow::pictureRotateYRight()
 {
+    if (!facade->isSceneSet())
+        return;
     qDebug() << "Вертим по Y";
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
@@ -189,6 +215,8 @@ void MainWindow::pictureRotateYRight()
 
 void MainWindow::pictureRotateYLeft()
 {
+    if (!facade->isSceneSet())
+        return;
     qDebug() << "Вертим по Y влево";
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
@@ -199,6 +227,8 @@ void MainWindow::pictureRotateYLeft()
 
 void MainWindow::pictureRotateZRight()
 {
+    if (!facade->isSceneSet())
+        return;
     qDebug() << "Вертим по z";
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
@@ -209,6 +239,8 @@ void MainWindow::pictureRotateZRight()
 
 void MainWindow::pictureRotateZLeft()
 {
+    if (!facade->isSceneSet())
+        return;
     qDebug() << "Вертим по z";
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
@@ -219,6 +251,8 @@ void MainWindow::pictureRotateZLeft()
 
 void MainWindow::on_pushButton_4_clicked()
 {
+    if (!facade->isSceneSet())
+        return;
     SizeChooser chooserWindow(nullptr);
     chooserWindow.setModal(true);
     chooserWindow.exec();
@@ -253,6 +287,13 @@ void MainWindow::on_pushButton_5_clicked()
 
 void MainWindow::on_pushButton_clicked()
 {
+    if (!facade->isSceneSet())
+    {
+        QErrorMessage *err = new QErrorMessage();
+        err->showMessage("Сцена ещё не была задана.");
+        return;
+    }
+
     int curRow = this->ui->listWidget->currentRow();
     if (curRow < 0)
         return;

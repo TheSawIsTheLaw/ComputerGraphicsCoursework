@@ -9,12 +9,7 @@
 
 #include "config.hpp"
 
-UsageFacade::UsageFacade()
-{
-    scene = new CellScene;
-
-    drawer = new Drawer;
-}
+UsageFacade::UsageFacade() { drawer = new Drawer; }
 
 void UsageFacade::setCellScene(size_t width_, size_t height_)
 {
@@ -29,7 +24,7 @@ void UsageFacade::changeCellScene(size_t newWidth, size_t newheight)
     scene->changeSize(newWidth, newheight);
 }
 
-bool UsageFacade::isSceneSet() { return scene->getHeight() && scene->getWidth(); }
+bool UsageFacade::isSceneSet() { return scene; }
 
 QGraphicsScene *UsageFacade::drawScene(QRectF rect)
 {
@@ -269,13 +264,14 @@ Eigen::Matrix4f &transMat, Illuminant *illum)
     Eigen::Matrix4f dotTransMat = toCenter * transMat * backToStart;
     Eigen::Matrix4f illumDotTransMat = toCenter * illumMat * backToStart;
 
-    for (std::vector<Facet>::iterator iter = facets.begin(); iter != facets.end(); iter++)
+    for (size_t curFaceNum = 0; curFaceNum < facets.size(); curFaceNum++)
     {
         Eigen::MatrixXf coordinatesVec(3, 4);
 
-        dotsArr[0] = vertices.at(iter->getUsedDots().at(0)).getPosition();
-        dotsArr[1] = vertices.at(iter->getUsedDots().at(1)).getPosition();
-        dotsArr[2] = vertices.at(iter->getUsedDots().at(2)).getPosition();
+        std::vector<size_t> curDots = facets.at(curFaceNum).getUsedDots();
+        dotsArr[0] = vertices.at(curDots.at(0)).getPosition();
+        dotsArr[1] = vertices.at(curDots.at(1)).getPosition();
+        dotsArr[2] = vertices.at(curDots.at(2)).getPosition();
 
         coordinatesVec << dotsArr[0].getXCoordinate(), dotsArr[0].getYCoordinate(),
         dotsArr[0].getZCoordinate(), 1, dotsArr[1].getXCoordinate(),
@@ -385,15 +381,16 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
     dotTransMat = toCenter * transMat * backToStart;
     std::vector<Eigen::Matrix4f> illumDotMatrices;
     for (size_t i = 0; i < scene->getIllumNum(); i++)
-        illumDotMatrices.push_back(toCenter * scene->getIlluminant(i).getTransMat() * backToStart);
-//    #pragma omp parallel for
-    for (std::vector<Facet>::iterator iter = facets.begin(); iter != facets.end(); iter++)
+        illumDotMatrices.push_back(
+        toCenter * scene->getIlluminant(i).getTransMat() * backToStart);
+    for (size_t curFaceNum = 0; curFaceNum < facets.size(); curFaceNum++)
     {
         Eigen::MatrixXf coordinatesVec(3, 4);
 
-        dotsArr[0] = vertices.at(iter->getUsedDots().at(0)).getPosition();
-        dotsArr[1] = vertices.at(iter->getUsedDots().at(1)).getPosition();
-        dotsArr[2] = vertices.at(iter->getUsedDots().at(2)).getPosition();
+        std::vector<size_t> curDots = facets.at(curFaceNum).getUsedDots();
+        dotsArr[0] = vertices.at(curDots.at(0)).getPosition();
+        dotsArr[1] = vertices.at(curDots.at(1)).getPosition();
+        dotsArr[2] = vertices.at(curDots.at(2)).getPosition();
 
         coordinatesVec << dotsArr[0].getXCoordinate(), dotsArr[0].getYCoordinate(),
         dotsArr[0].getZCoordinate(), 1, dotsArr[1].getXCoordinate(),
@@ -426,7 +423,6 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
         int y1 = round(dotsArr[0].getYCoordinate());
         int y2 = round(dotsArr[1].getYCoordinate());
         int y3 = round(dotsArr[2].getYCoordinate());
-
 #pragma omp parallel for
         for (int curY = y1; curY < y2; curY++)
         {
@@ -464,7 +460,8 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
                         newCoordinates << curX, curY, curZ, 1;
 
                         newCoordinates *= illumDotMatrices.at(i);
-                        std::vector<std::vector<double>> *shadowMap = &scene->getIlluminant(i).getShadowMap();
+                        std::vector<std::vector<double>> *shadowMap =
+                        &scene->getIlluminant(i).getShadowMap();
                         int x = round(newCoordinates(0, 0));
                         int y = round(newCoordinates(0, 1));
                         if (x < (int) shadowMap->size() && x > 0 &&
@@ -519,7 +516,8 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
                         newCoordinates << curX, curY, curZ, 1;
 
                         newCoordinates *= illumDotMatrices.at(i);
-                        std::vector<std::vector<double>> *shadowMap = &scene->getIlluminant(i).getShadowMap();
+                        std::vector<std::vector<double>> *shadowMap =
+                        &scene->getIlluminant(i).getShadowMap();
                         int x = round(newCoordinates(0, 0));
                         int y = round(newCoordinates(0, 1));
                         if (x < (int) shadowMap->size() && x > 0 &&
@@ -590,7 +588,6 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufHeight, size_t bufWidth)
         scene->getIlluminant(i).clearShadowMap();
 }
 
-// 396
 QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
 {
     size_t width = scene->getWidth() * SCALE_FACTOR;
@@ -721,7 +718,7 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     outScene->addPixmap(QPixmap::fromImage(*image));
     delete image;
     for (size_t i = 0; i < scene->getIllumNum(); i++)
-    { scene->getIlluminant(i).clearShadowMap(); }
+        scene->getIlluminant(i).clearShadowMap();
     //    qDebug() <<
     //    QPixmap("C:/Users/dobri/Desktop/FirstCurseWork/Proj/imgs/smert.jpg");
     return outScene;
