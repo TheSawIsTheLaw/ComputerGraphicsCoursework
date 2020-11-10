@@ -10,9 +10,9 @@ class Drawer
 public:
     void zBufferAlg(CellScene *scene, size_t bufheight, size_t bufWidth);
     void zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices,
-    Eigen::Matrix4f &transMat, size_t color, CellScene *scene);
+    Eigen::Matrix4f &transMat, size_t color, CellScene *scene, size_t bufWidth, size_t bufHeight);
     void shadowMapForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices,
-    Eigen::Matrix4f &transMat, Illuminant *illum);
+    Eigen::Matrix4f &transMat, Illuminant *illum, size_t bufWidth, size_t bufHeight);
 
 
     QGraphicsScene *drawScene(CellScene *scene, QRectF rect);
