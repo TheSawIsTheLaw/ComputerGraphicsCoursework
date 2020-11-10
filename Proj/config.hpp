@@ -8,6 +8,8 @@
 #define X_CENTER 785
 #define Y_CENTER 520
 
+#define SCALE_VALUE 0.1
+
 #define ILLUM_VIS_X 1600
 #define ILLUM_VIS_Y 1100
 

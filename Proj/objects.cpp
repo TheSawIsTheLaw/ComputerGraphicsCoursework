@@ -256,6 +256,18 @@ void CellScene::moveRight(double value)
     //    }
 }
 
+void CellScene::scale(double value)
+{
+    Eigen::Matrix4f scaleMatrix;
+    // clang-format off
+    scaleMatrix << value,     0,     0, 0,
+                    0,    value,     0, 0,
+                    0,        0, value, 0,
+                    0,        0,     0, 1;
+    // clang-format on
+    transMatrix *= scaleMatrix;
+}
+
 void CellScene::rotateX(double angle)
 {
     Eigen::Matrix4f rotateMatrix;

@@ -36,6 +36,9 @@ private slots:
     void pictureLeft();
     void pictureRight();
 
+    void pictureScaleUp();
+    void pictureScaleDown();
+
     void pictureRotateXRight();
     void pictureRotateXLeft();
     void pictureRotateYRight();

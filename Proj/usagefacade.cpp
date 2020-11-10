@@ -63,6 +63,13 @@ QGraphicsScene *UsageFacade::moveLeftScene(double value, QRectF rect)
     return drawScene(rect);
 }
 
+QGraphicsScene *UsageFacade::scaleScene(double value, QRectF rect)
+{
+    scene->scale(value);
+
+    return drawScene(rect);
+}
+
 QGraphicsScene *UsageFacade::rotateXScene(double angle, QRectF rect)
 {
     scene->rotateX(angle);
@@ -306,7 +313,7 @@ Eigen::Matrix4f &transMat, Illuminant *illum)
         int y2 = round(dotsArr[1].getYCoordinate());
         int y3 = round(dotsArr[2].getYCoordinate());
 #pragma omp parallel for
-        for (int curY = y1; curY < y2; curY++)
+        for (int curY = (y1 < 0) ? 0 : y1; curY < ((y2 > 1050) ? 1050 : y2); curY++)
         {
             double aInc = 0;
             if (y1 != y2)
@@ -327,11 +334,16 @@ Eigen::Matrix4f &transMat, Illuminant *illum)
                 std::swap(zA, zB);
             }
 
+            if (xA < 0)
+                xA = 0;
+            if (xB > 1600)
+                xB = 1600;
+
             interpolateRowIntoShadowMap(
             shadowMap, xA, xB, zA, zB, curY, illumDotTransMat);
         }
 #pragma omp parallel for
-        for (int curY = y2; curY <= y3; curY++)
+        for (int curY = (y2 < 0) ? 0 : y2; curY <= ((y3 > 1050) ? 1050 : y3); curY++)
         {
             double aInc = 0;
             if (y2 != y3)
@@ -351,6 +363,11 @@ Eigen::Matrix4f &transMat, Illuminant *illum)
                 std::swap(xA, xB);
                 std::swap(zA, zB);
             }
+
+            if (xA < 0)
+                xA = 0;
+            if (xB > 1600)
+                xB = 1600;
 
             interpolateRowIntoShadowMap(
             shadowMap, xA, xB, zA, zB, curY, illumDotTransMat);
@@ -424,7 +441,7 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
         int y2 = round(dotsArr[1].getYCoordinate());
         int y3 = round(dotsArr[2].getYCoordinate());
 #pragma omp parallel for
-        for (int curY = y1; curY < y2; curY++)
+        for (int curY = (y1 < 0) ? 0 : y1; curY < ((y2 > 1050) ? 1050 : y2); curY++)
         {
             double aInc = 0;
             if (y1 != y2)
@@ -444,6 +461,11 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
                 std::swap(xA, xB);
                 std::swap(zA, zB);
             }
+
+            if (xA < 0)
+                xA = 0;
+            if (xB > 1600)
+                xB = 1600;
 
             for (int curX = xA; curX <= xB; curX++)
             {
@@ -480,7 +502,7 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
             }
         }
 #pragma omp parallel for
-        for (int curY = y2; curY <= y3; curY++)
+        for (int curY = (y2 < 0) ? 0 : y2; curY <= ((y3 > 1050) ? 1050 : y3); curY++)
         {
             double aInc = 0;
             if (y2 != y3)
@@ -500,6 +522,11 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene)
                 std::swap(xA, xB);
                 std::swap(zA, zB);
             }
+
+            if (xA < 0)
+                xA = 0;
+            if (xB > 1600)
+                xB = 1600;
 
             for (int curX = xA; curX <= xB; curX++)
             {

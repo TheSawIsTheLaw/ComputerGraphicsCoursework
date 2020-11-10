@@ -95,6 +95,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     QShortcut *shortcutRight = new QShortcut(QKeySequence("right"), this);
     QObject::connect(shortcutRight, SIGNAL(activated()), this, SLOT(pictureRight()));
 
+    QShortcut *shortcutScaleUp = new QShortcut(QKeySequence("z"), this);
+    QObject::connect(shortcutScaleUp, SIGNAL(activated()), this, SLOT(pictureScaleUp()));
+
+    QShortcut *shortcutScaleDown = new QShortcut(QKeySequence("x"), this);
+    QObject::connect(shortcutScaleDown, SIGNAL(activated()), this, SLOT(pictureScaleDown()));
+
     QShortcut *shortcutRotateXRight = new QShortcut(QKeySequence("s"), this);
     QObject::connect(shortcutRotateXRight, SIGNAL(activated()), this, SLOT(pictureRotateXRight()));
 
@@ -177,6 +183,28 @@ void MainWindow::pictureRight()
     ui->graphicsView->setScene(setScene);
 }
 
+void MainWindow::pictureScaleUp()
+{
+    if (!facade->isSceneSet())
+        return;
+    if (ui->graphicsView->scene())
+        delete ui->graphicsView->scene();
+
+    QGraphicsScene *setScene = facade->scaleScene(SCALE_VALUE + 1, ui->graphicsView->rect());
+    ui->graphicsView->setScene(setScene);
+}
+
+void MainWindow::pictureScaleDown()
+{
+    if (!facade->isSceneSet())
+        return;
+    if (ui->graphicsView->scene())
+        delete ui->graphicsView->scene();
+
+    QGraphicsScene *setScene = facade->scaleScene(1 - SCALE_VALUE, ui->graphicsView->rect());
+    ui->graphicsView->setScene(setScene);
+}
+
 void MainWindow::pictureRotateXRight()
 {
     if (!facade->isSceneSet())
@@ -251,8 +279,6 @@ void MainWindow::pictureRotateZLeft()
 
 void MainWindow::on_pushButton_4_clicked()
 {
-    if (!facade->isSceneSet())
-        return;
     SizeChooser chooserWindow(nullptr);
     chooserWindow.setModal(true);
     chooserWindow.exec();

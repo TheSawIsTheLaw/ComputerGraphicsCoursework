@@ -48,6 +48,8 @@ public:
     QGraphicsScene *moveLeftScene(double value, QRectF rect);
     QGraphicsScene *moveRightScene(double value, QRectF rect);
 
+    QGraphicsScene *scaleScene(double value, QRectF rect);
+
     QGraphicsScene *rotateXScene(double angle, QRectF rect);
     QGraphicsScene *rotateYScene(double angle, QRectF rect);
     QGraphicsScene *rotateZScene(double angle, QRectF rect);

@@ -103,6 +103,8 @@ public:
     void moveLeft(double value);
     void moveRight(double value);
 
+    void scale(double value);
+
     void rotateX(double angle);
     void rotateY(double angle);
     void rotateZ(double angle);
