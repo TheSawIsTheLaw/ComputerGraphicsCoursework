@@ -15,10 +15,10 @@ public:
     explicit PlaceChooser(QWidget *parent = nullptr);
     ~PlaceChooser();
 
-    void setXCell(size_t xCell_);
+    void setXCell(int xCell_);
     int getXCell();
 
-    void setYCell(size_t yCell_);
+    void setYCell(int yCell_);
     int getYCell();
 
 private slots:
@@ -27,8 +27,8 @@ private slots:
 private:
     Ui::PlaceChooser *ui;
 
-    size_t xCell = 0;
-    size_t yCell = 0;
+    int xCell = 0;
+    int yCell = 0;
 };
 
 #endif // PLACECHOOSER_H

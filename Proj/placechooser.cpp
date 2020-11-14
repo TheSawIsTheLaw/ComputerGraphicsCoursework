@@ -16,7 +16,7 @@ PlaceChooser::~PlaceChooser()
     delete ui;
 }
 
-void PlaceChooser::setXCell(size_t xCell_)
+void PlaceChooser::setXCell(int xCell_)
 {
     xCell = xCell_;
 }
@@ -26,7 +26,7 @@ int PlaceChooser::getXCell()
     return xCell;
 }
 
-void PlaceChooser::setYCell(size_t yCell_)
+void PlaceChooser::setYCell(int yCell_)
 {
     yCell = yCell_;
 }

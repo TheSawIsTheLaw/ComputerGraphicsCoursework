@@ -338,12 +338,11 @@ void MainWindow::on_pushButton_clicked()
         {
             QErrorMessage *err = new QErrorMessage();
             err->showMessage("Указанная ячейка уже занята.");
+            return;
         }
     }
     else
         facade->addIlluminant();
-
-
 
     QGraphicsScene *setScene = facade->drawScene(ui->graphicsView->rect());
 

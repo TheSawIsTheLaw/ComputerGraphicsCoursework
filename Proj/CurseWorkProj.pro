@@ -22,6 +22,7 @@ QMAKE_LFLAGS += -O3
 
 SOURCES += \
     additivemathelements.cpp \
+    illuminantplacechooser.cpp \
     main.cpp \
     mainwindow.cpp \
     objects.cpp \
@@ -34,6 +35,7 @@ SOURCES += \
 HEADERS += \
     additivemathelements.hpp \
     config.hpp \
+    illuminantplacechooser.hpp \
     mainwindow.h \
     objects.hpp \
     placechooser.h \
@@ -43,6 +45,7 @@ HEADERS += \
     usagefacade.hpp
 
 FORMS += \
+    illuminantplacechooser.ui \
     mainwindow.ui \
     placechooser.ui \
     sizechanger.ui \
