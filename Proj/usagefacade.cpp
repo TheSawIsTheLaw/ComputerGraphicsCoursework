@@ -162,21 +162,23 @@ int UsageFacade::addTable(int xCell, int yCell)
     return 0;
 }
 
-void UsageFacade::addIlluminant()
+void UsageFacade::addIlluminant(int xAngle, int yAngle)
 {
     Eigen::Matrix4f transMat;
+    double radianXAngle = (double)xAngle * M_PI / 180.0;
+    double radianYAngle = (double)yAngle * M_PI / 180.0;
     // clang-format off
-    transMat << cos(-ROTATE_UNIT), 0, sin(-ROTATE_UNIT), 0,
+    transMat << cos(radianYAngle), 0, sin(radianYAngle), 0,
                 0, 1, 0, 0,
-                -sin(-ROTATE_UNIT), 0, cos(-ROTATE_UNIT), 0,
+                -sin(radianYAngle), 0, cos(radianYAngle), 0,
                 0, 0, 0, 1;
     // clang-format on
 
     Eigen::Matrix4f prodMat;
     // clang-format off
     prodMat << 1,           0,          0, 0,
-               0, cos(ROTATE_UNIT), -sin(ROTATE_UNIT), 0,
-               0, sin(ROTATE_UNIT),  cos(ROTATE_UNIT), 0,
+               0, cos(radianXAngle), -sin(radianXAngle), 0,
+               0, sin(radianXAngle),  cos(radianXAngle), 0,
                0,           0,          0, 1;
     // clang-format on
 

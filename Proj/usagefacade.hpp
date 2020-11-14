@@ -41,7 +41,7 @@ public:
     QGraphicsScene *drawScene(QRectF rect);
 
     int addTable(int xCell, int yCell);
-    void addIlluminant();
+    void addIlluminant(int xAngle, int yAngle);
 
     QGraphicsScene *moveUpScene(double value, QRectF rect);
     QGraphicsScene *moveDownScene(double value, QRectF rect);

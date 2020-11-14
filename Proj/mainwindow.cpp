@@ -18,6 +18,7 @@
 #include "sizechooser.hpp"
 #include "specialgraphicsview.hpp"
 #include "placechooser.h"
+#include "illuminantplacechooser.hpp"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -342,7 +343,13 @@ void MainWindow::on_pushButton_clicked()
         }
     }
     else
-        facade->addIlluminant();
+    {
+        IlluminantPlaceChooser placeChooserWindow(nullptr);
+        placeChooserWindow.setModal(true);
+        placeChooserWindow.exec();
+
+        facade->addIlluminant(placeChooserWindow.getXAngle(), placeChooserWindow.getYAngle());
+    }
 
     QGraphicsScene *setScene = facade->drawScene(ui->graphicsView->rect());
 
