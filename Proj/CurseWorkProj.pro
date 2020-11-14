@@ -25,6 +25,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     objects.cpp \
+    placechooser.cpp \
     sizechanger.cpp \
     sizechooser.cpp \
     specialgraphicsview.cpp \
@@ -35,6 +36,7 @@ HEADERS += \
     config.hpp \
     mainwindow.h \
     objects.hpp \
+    placechooser.h \
     sizechanger.hpp \
     sizechooser.hpp \
     specialgraphicsview.hpp \
@@ -42,6 +44,7 @@ HEADERS += \
 
 FORMS += \
     mainwindow.ui \
+    placechooser.ui \
     sizechanger.ui \
     sizechooser.ui
 
