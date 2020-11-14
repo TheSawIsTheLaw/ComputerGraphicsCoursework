@@ -20,7 +20,7 @@ void PlaceChooser::setXCell(size_t xCell_)
     xCell = xCell_;
 }
 
-size_t PlaceChooser::getXCell()
+int PlaceChooser::getXCell()
 {
     return xCell;
 }
@@ -30,7 +30,7 @@ void PlaceChooser::setYCell(size_t yCell_)
     yCell = yCell_;
 }
 
-size_t PlaceChooser::getYCell()
+int PlaceChooser::getYCell()
 {
     return yCell;
 }
@@ -38,10 +38,10 @@ size_t PlaceChooser::getYCell()
 void PlaceChooser::on_buttonBox_accepted()
 {
     QString gotText = this->ui->lineEdit->text();
-    size_t xCell_ = gotText.toUInt();
+    int xCell_ = gotText.toInt();
 
     gotText = this->ui->lineEdit_2->text();
-    size_t yCell_ = gotText.toUInt();
+    int yCell_ = gotText.toInt();
 
     if (xCell_ && yCell_)
     {
@@ -56,4 +56,5 @@ void PlaceChooser::on_buttonBox_accepted()
                          "чения являются целочисленными положите"
                          "льными числами.");
     }
+    this->close();
 }

@@ -16,11 +16,11 @@ public:
     explicit SizeChooser(QWidget *parent = nullptr);
     ~SizeChooser();
 
-    void setWidth(size_t width_);
-    size_t getWidth();
+    void setWidth(int width_);
+    int getWidth();
 
-    size_t getheight();
-    void setheight(size_t height_);
+    int getheight();
+    void setheight(int height_);
 
 private slots:
     void on_buttonBox_accepted();
@@ -28,8 +28,8 @@ private slots:
 private:
     Ui::SizeChooser *ui;
 
-    size_t width = 0;
-    size_t height = 0;
+    int width = -1;
+    int height = -1;
 };
 
 #endif // SIZECHOOSER_HPP

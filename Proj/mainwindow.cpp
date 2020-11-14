@@ -17,6 +17,7 @@
 #include "sizechanger.hpp"
 #include "sizechooser.hpp"
 #include "specialgraphicsview.hpp"
+#include "placechooser.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -286,8 +287,6 @@ void MainWindow::on_pushButton_4_clicked()
     if (!chooserWindow.getWidth() || !chooserWindow.getheight())
         return;
 
-    qDebug() << ui->graphicsView->rect();
-
     facade->setCellScene(chooserWindow.getWidth(), chooserWindow.getheight());
     QGraphicsScene *setScene = facade->drawScene(ui->graphicsView->rect());
 
@@ -324,10 +323,21 @@ void MainWindow::on_pushButton_clicked()
     if (curRow < 0)
         return;
 
-    if (curRow == 0)
-        facade->addTable();
-    else if (curRow == 11)
+    if (curRow >= 0 && curRow < 11)
+    {
+        PlaceChooser placeChooserWindow(nullptr);
+        placeChooserWindow.setModal(true);
+        placeChooserWindow.exec();
+        if (placeChooserWindow.getXCell() < 0 || placeChooserWindow.getYCell() < 0)
+            return;
+        if (curRow == 0)
+            facade->addTable(placeChooserWindow.getXCell(), placeChooserWindow.getYCell());
+
+    }
+    else
         facade->addIlluminant();
+
+
 
     QGraphicsScene *setScene = facade->drawScene(ui->graphicsView->rect());
 

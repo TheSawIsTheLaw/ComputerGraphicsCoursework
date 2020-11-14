@@ -123,7 +123,7 @@ int z4)
     facets.push_back(vec);
 }
 
-void UsageFacade::addTable()
+void UsageFacade::addTable(int xCell, int yCell)
 {
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
@@ -131,24 +131,26 @@ void UsageFacade::addTable()
     Dot3D dot;
     std::vector<size_t> vec;
 
+    int xFactor = xCell * SCALE_FACTOR;
+    int yFactor = yCell * SCALE_FACTOR;
     // Столешница
-    addQuad(vertices, facets, 20, 20, 861, 20, 100, 861, 100, 100, 861, 100, 20, 861);
+    addQuad(vertices, facets, xFactor + 20, yFactor + 20, 861, xFactor + 20, yFactor + 100, 861, xFactor + 100, yFactor + 100, 861, xFactor + 100, yFactor + 20, 861);
 
-    addQuad(vertices, facets, 20, 20, 851, 20, 100, 851, 20, 100, 861, 20, 20, 861);
-    addQuad(vertices, facets, 20, 100, 851, 100, 100, 851, 100, 100, 861, 20, 100, 861);
-    addQuad(vertices, facets, 100, 100, 851, 100, 20, 851, 100, 20, 861, 100, 100, 861);
-    addQuad(vertices, facets, 100, 100, 851, 20, 100, 851, 20, 100, 861, 100, 100, 861);
+    addQuad(vertices, facets, xFactor + 20, yFactor + 20, 851, xFactor + 20, yFactor + 100, 851, xFactor + 20, yFactor + 100, 861, xFactor + 20, yFactor + 20, 861);
+    addQuad(vertices, facets, xFactor + 20, yFactor + 100, 851, xFactor + 100, yFactor + 100, 851, xFactor + 100, yFactor + 100, 861, xFactor + 20, yFactor + 100, 861);
+    addQuad(vertices, facets, xFactor + 100, yFactor + 100, 851, xFactor + 100, yFactor + 20, 851, xFactor + 100, yFactor + 20, 861, xFactor + 100, yFactor + 100, 861);
+    addQuad(vertices, facets, xFactor + 100, yFactor + 100, 851, xFactor + 20, yFactor + 100, 851, xFactor + 20, yFactor + 100, 861, xFactor + 100, yFactor + 100, 861);
 
-    addQuad(vertices, facets, 20, 20, 851, 20, 100, 851, 100, 100, 851, 100, 20, 851);
+    addQuad(vertices, facets, xFactor + 20, yFactor + 20, 851, xFactor + 20, yFactor + 100, 851, xFactor + 100, yFactor + 100, 851, xFactor + 100, yFactor + 20, 851);
 
     // Ножка
-    addQuad(vertices, facets, 50, 50, 801, 70, 50, 801, 70, 50, 850, 50, 50, 850);
+    addQuad(vertices, facets, xFactor + 50, yFactor + 50, 801, xFactor + 70, yFactor + 50, 801, xFactor + 70, yFactor + 50, 850, xFactor + 50, yFactor + 50, 850);
 
-    addQuad(vertices, facets, 70, 50, 801, 70, 70, 801, 70, 70, 850, 70, 50, 850);
+    addQuad(vertices, facets, xFactor + 70, yFactor + 50, 801, xFactor + 70, yFactor + 70, 801, xFactor + 70, yFactor + 70, 850, xFactor + 70, yFactor + 50, 850);
 
-    addQuad(vertices, facets, 70, 70, 801, 50, 70, 801, 50, 70, 850, 70, 70, 850);
+    addQuad(vertices, facets, xFactor + 70, yFactor + 70, 801, xFactor + 50, yFactor + 70, 801, xFactor + 50, yFactor + 70, 850, xFactor + 70, yFactor + 70, 850);
 
-    addQuad(vertices, facets, 50, 70, 801, 50, 50, 801, 50, 50, 850, 50, 70, 850);
+    addQuad(vertices, facets, xFactor + 50, yFactor + 70, 801, xFactor + 50, yFactor + 50, 801, xFactor + 50, yFactor + 50, 850, xFactor + 50, yFactor + 70, 850);
 
     PolModel tableModel(vertices, facets);
     qDebug() << "Прошли через создание стола";

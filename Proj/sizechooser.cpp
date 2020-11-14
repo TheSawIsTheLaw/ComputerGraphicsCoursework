@@ -13,14 +13,12 @@ SizeChooser::~SizeChooser() { delete ui; }
 void SizeChooser::on_buttonBox_accepted()
 {
     QString gotText = this->ui->lineEdit->text();
-    size_t heightValue = gotText.toUInt();
-    qDebug("height of cellPlate: %zu\n", heightValue);
+    int heightValue = gotText.toInt();
 
     gotText = this->ui->lineEdit_2->text();
-    size_t widthValue = gotText.toUInt();
-    qDebug("Width of cellPlate: %zu\n", widthValue);
+    int widthValue = gotText.toInt();
 
-    if (heightValue && widthValue)
+    if (heightValue > 0 && widthValue > 0)
     {
         height = heightValue;
         width = widthValue;
@@ -33,12 +31,13 @@ void SizeChooser::on_buttonBox_accepted()
                          "чения являются целочисленными положите"
                          "льными числами.");
     }
+    this->close();
 }
 
-void SizeChooser::setWidth(size_t width_) { width = width_; }
+void SizeChooser::setWidth(int width_) { width = width_; }
 
-size_t SizeChooser::getWidth() { return width; }
+int SizeChooser::getWidth() { return width; }
 
-void SizeChooser::setheight(size_t height_) { height = height_; }
+void SizeChooser::setheight(int height_) { height = height_; }
 
-size_t SizeChooser::getheight() { return height; }
+int SizeChooser::getheight() { return height; }

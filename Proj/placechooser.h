@@ -16,10 +16,10 @@ public:
     ~PlaceChooser();
 
     void setXCell(size_t xCell_);
-    size_t getXCell();
+    int getXCell();
 
     void setYCell(size_t yCell_);
-    size_t getYCell();
+    int getYCell();
 
 private slots:
     void on_buttonBox_accepted();
