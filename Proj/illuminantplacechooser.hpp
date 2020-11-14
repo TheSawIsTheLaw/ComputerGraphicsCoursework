@@ -21,6 +21,9 @@ public:
     void setYAngle(int degrees);
     int getYAngle();
 
+private slots:
+    void on_buttonBox_4_accepted();
+
 private:
     Ui::IlluminantPlaceChooser *ui;
 

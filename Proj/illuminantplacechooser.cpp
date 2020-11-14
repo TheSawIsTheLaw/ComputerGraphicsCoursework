@@ -32,3 +32,18 @@ int IlluminantPlaceChooser::getYAngle()
 {
     return yAngle;
 }
+
+void IlluminantPlaceChooser::on_buttonBox_4_accepted()
+{
+    QString gotText = this->ui->XAngleInp->text();
+    int xAngle_ = gotText.toInt();
+
+    gotText = this->ui->YAngleInp->text();
+    int yAngle_ = gotText.toInt();
+
+    xAngle = xAngle_;
+    yAngle = yAngle_;
+
+
+    this->close();
+}

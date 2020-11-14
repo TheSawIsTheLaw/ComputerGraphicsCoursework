@@ -19,22 +19,22 @@
      <item>
       <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>Количество клеток в длину:</string>
+        <string>Угол по оси X (в градусах):</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_7"/>
+      <widget class="QLineEdit" name="XAngleInp"/>
      </item>
      <item>
       <widget class="QLabel" name="label_9">
        <property name="text">
-        <string>Количество клеток в ширину:</string>
+        <string>Угол по оси Y (в градусах):</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_8"/>
+      <widget class="QLineEdit" name="YAngleInp"/>
      </item>
      <item>
       <widget class="QDialogButtonBox" name="buttonBox_4">
