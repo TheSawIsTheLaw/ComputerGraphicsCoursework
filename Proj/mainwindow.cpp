@@ -330,9 +330,15 @@ void MainWindow::on_pushButton_clicked()
         placeChooserWindow.exec();
         if (placeChooserWindow.getXCell() < 0 || placeChooserWindow.getYCell() < 0)
             return;
+        int retCode = 0;
         if (curRow == 0)
-            facade->addTable(placeChooserWindow.getXCell(), placeChooserWindow.getYCell());
+            retCode = facade->addTable(placeChooserWindow.getXCell(), placeChooserWindow.getYCell());
 
+        if (retCode)
+        {
+            QErrorMessage *err = new QErrorMessage();
+            err->showMessage("Указанная ячейка уже занята.");
+        }
     }
     else
         facade->addIlluminant();

@@ -123,8 +123,10 @@ int z4)
     facets.push_back(vec);
 }
 
-void UsageFacade::addTable(int xCell, int yCell)
+int UsageFacade::addTable(int xCell, int yCell)
 {
+    if (!scene->isCellFree(xCell, yCell))
+        return 1;
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
 
@@ -155,6 +157,9 @@ void UsageFacade::addTable(int xCell, int yCell)
     PolModel tableModel(vertices, facets);
     qDebug() << "Прошли через создание стола";
     scene->addModel(tableModel);
+    scene->setCellStatus(xCell, yCell, false);
+
+    return 0;
 }
 
 void UsageFacade::addIlluminant()

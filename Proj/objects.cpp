@@ -387,6 +387,16 @@ void CellScene::addIlluminant(Illuminant &illum)
     illuminants.push_back(illum);
 }
 
+bool CellScene::isCellFree(size_t x, size_t y)
+{
+    return cells.at(x).at(y);
+}
+
+void CellScene::setCellStatus(size_t x, size_t y, bool newStatus)
+{
+    cells.at(x).at(y) = newStatus;
+}
+
 PolModel &CellScene::getPlateModel() { return *plateModel; }
 
 const Dot3D CellScene::getStartOfPlate() { return startOfPlate; }

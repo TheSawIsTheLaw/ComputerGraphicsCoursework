@@ -121,6 +121,9 @@ public:
     Eigen::Matrix4f &getTransMatrix();
     void multToTrans(Eigen::Matrix4f &newTrans);
 
+    bool isCellFree(size_t x, size_t y);
+    void setCellStatus(size_t x, size_t y, bool newStatus);
+
 private:
     void addQuad(std::vector<Vertex> &vertices, std::vector<Facet> &facets, int x1,
     int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3, int x4, int y4,
