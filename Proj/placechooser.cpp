@@ -8,6 +8,7 @@ PlaceChooser::PlaceChooser(QWidget *parent) :
     ui(new Ui::PlaceChooser)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Выбор расположения модели");
 }
 
 PlaceChooser::~PlaceChooser()

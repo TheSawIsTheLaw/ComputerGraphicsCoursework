@@ -6,6 +6,7 @@
 SizeChooser::SizeChooser(QWidget *parent) : QDialog(parent), ui(new Ui::SizeChooser)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Выбор размеров плоскости");
 }
 
 SizeChooser::~SizeChooser() { delete ui; }
