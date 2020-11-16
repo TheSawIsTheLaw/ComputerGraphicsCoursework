@@ -58,6 +58,10 @@ public:
     const std::vector<Facet> getFacets();
     void setFacets(std::vector<Facet> facets_);
 
+    void setUsedCells(int xCell_, int yCell_);
+    int getUsedXCell();
+    int getUsedYCell();
+
     QString getName();
     void setName(QString modelName_);
 
@@ -65,6 +69,7 @@ private:
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
     QString modelName;
+    int xCell, yCell;
 };
 
 class Illuminant
@@ -77,12 +82,17 @@ public:
     std::vector<std::vector<double>> &getShadowMap();
     void clearShadowMap();
 
+    void setAngles(int xAngle_, int yAngle_);
+    int getXAngle();
+    int getYAngle();
+
     void setTransMat(Eigen::Matrix4f &mat);
     Eigen::Matrix4f &getTransMat();
 
 private:
     std::vector<std::vector<double>> shadowBuffer;
     Eigen::Matrix4f transMatrix;
+    int xAngle, yAngle;
 };
 
 class CellScene

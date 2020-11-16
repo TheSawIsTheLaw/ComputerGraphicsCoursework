@@ -44,7 +44,7 @@ void PlaceChooser::on_buttonBox_accepted()
     gotText = this->ui->lineEdit_2->text();
     int yCell_ = gotText.toInt();
 
-    if (xCell_ && yCell_)
+    if (xCell_ >= 0 && yCell_ >= 0)
     {
         xCell = xCell_;
         yCell = yCell_;

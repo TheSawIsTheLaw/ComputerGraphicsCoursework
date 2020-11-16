@@ -173,6 +173,7 @@ int UsageFacade::addTable(int xCell, int yCell)
     801, xFactor + 50, yFactor + 50, 850, xFactor + 50, yFactor + 70, 850);
 
     PolModel tableModel(vertices, facets, "Table");
+    tableModel.setUsedCells(xCell, yCell);
     scene->addModel(tableModel);
     scene->setCellStatus(xCell, yCell, false);
 
@@ -202,8 +203,8 @@ void UsageFacade::addIlluminant(int xAngle, int yAngle)
     transMat *= prodMat;
 
     Illuminant illum(transMat);
+    illum.setAngles(xAngle, yAngle);
     scene->addIlluminant(illum);
-    qDebug() << "Добавили";
 }
 
 void Drawer::specBorderPut(int x, int y, double z)

@@ -50,6 +50,26 @@ void Illuminant::clearShadowMap()
     }
 }
 
+void Illuminant::setAngles(int xAngle_, int yAngle_)
+{
+    xAngle = xAngle_;
+    yAngle = yAngle_;
+}
+
+int Illuminant::getXAngle() { return xAngle; }
+
+int Illuminant::getYAngle() { return yAngle; }
+
+void PolModel::setUsedCells(int xCell_, int yCell_)
+{
+    xCell = xCell_;
+    yCell = yCell_;
+}
+
+int PolModel::getUsedXCell() { return xCell; }
+
+int PolModel::getUsedYCell() { return yCell; }
+
 Eigen::Matrix4f &Illuminant::getTransMat() { return transMatrix; }
 
 void Illuminant::setTransMat(Eigen::Matrix4f &mat) { transMatrix = mat; }
