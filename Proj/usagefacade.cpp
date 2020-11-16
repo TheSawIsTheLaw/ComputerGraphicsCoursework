@@ -127,6 +127,8 @@ int z4)
 
 int UsageFacade::addTable(int xCell, int yCell)
 {
+    if (xCell >= (int)scene->getWidth() || yCell >= (int)scene->getHeight())
+        return 2;
     if (!scene->isCellFree(xCell, yCell))
         return 1;
     std::vector<Vertex> vertices;

@@ -336,10 +336,16 @@ void MainWindow::on_pushButton_clicked()
         if (curRow == 0)
             retCode = facade->addTable(placeChooserWindow.getXCell(), placeChooserWindow.getYCell());
 
-        if (retCode)
+        if (retCode == 1)
         {
             QErrorMessage *err = new QErrorMessage();
             err->showMessage("Указанная ячейка уже занята.");
+            return;
+        }
+        else if (retCode == 2)
+        {
+            QErrorMessage *err = new QErrorMessage();
+            err->showMessage("Указанной ячейки не существует");
             return;
         }
     }

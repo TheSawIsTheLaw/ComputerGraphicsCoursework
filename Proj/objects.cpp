@@ -425,8 +425,6 @@ void CellScene::deleteModel(size_t num)
     if (num < models.size())
     {
         modelsNum--;
-        qDebug() << models.begin()->getName();
-        qDebug() << "FUCK YOU";
         models.erase(models.begin() + num);
     }
 }
