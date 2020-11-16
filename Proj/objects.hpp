@@ -53,6 +53,8 @@ public:
     {
     }
 
+    ~PolModel() {}
+
     const std::vector<Vertex> getVertices();
     void setVertices(std::vector<Vertex> &vertices_);
     const std::vector<Facet> getFacets();
@@ -131,11 +133,13 @@ public:
     size_t getModelsNum();
     PolModel &getModel(size_t num);
     void addModel(PolModel &model);
+    void deleteModel(size_t num);
 
     size_t getIllumNum();
     Illuminant &getIlluminant(size_t num);
     void setIlluminant(Illuminant &illum, size_t i);
     void addIlluminant(Illuminant &illum);
+    void deleteIlluminant(size_t num);
 
     Eigen::Matrix4f &getTransMatrix();
     void multToTrans(Eigen::Matrix4f &newTrans);

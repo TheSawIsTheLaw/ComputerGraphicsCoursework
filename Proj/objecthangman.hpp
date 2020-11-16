@@ -13,11 +13,16 @@ class ObjectHangman : public QDialog
     Q_OBJECT
 
 public:
-    explicit ObjectHangman(CellScene *scene, QWidget *parent = nullptr);
+    explicit ObjectHangman(CellScene *scene_, QWidget *parent = nullptr);
     ~ObjectHangman();
+
+private slots:
+    void on_buttonBox_accepted();
 
 private:
     Ui::ObjectHangman *ui;
+
+    CellScene *scene;
 };
 
 #endif // OBJECTHANGMAN_HPP

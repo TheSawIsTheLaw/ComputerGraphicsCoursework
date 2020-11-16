@@ -411,6 +411,26 @@ void CellScene::addIlluminant(Illuminant &illum)
     illuminants.push_back(illum);
 }
 
+void CellScene::deleteIlluminant(size_t num)
+{
+    if (num < illuminants.size())
+    {
+        illumNum--;
+        illuminants.erase(illuminants.begin() + num);
+    }
+}
+
+void CellScene::deleteModel(size_t num)
+{
+    if (num < models.size())
+    {
+        modelsNum--;
+        qDebug() << models.begin()->getName();
+        qDebug() << "FUCK YOU";
+        models.erase(models.begin() + num);
+    }
+}
+
 bool CellScene::isCellFree(size_t x, size_t y) { return cells.at(x).at(y); }
 
 void CellScene::setCellStatus(size_t x, size_t y, bool newStatus)

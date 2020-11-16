@@ -365,4 +365,10 @@ void MainWindow::on_pushButton_7_clicked()
 
     objectHangmanWindow.setModal(true);
     objectHangmanWindow.exec();
+
+    QGraphicsScene *setScene = facade->drawScene(ui->graphicsView->rect());
+
+    if (ui->graphicsView->scene())
+        delete ui->graphicsView->scene();
+    ui->graphicsView->setScene(setScene);
 }
