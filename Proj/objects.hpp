@@ -48,14 +48,23 @@ public:
     {
     }
 
+    PolModel(std::vector<Vertex> vertices_, std::vector<Facet> facets_, QString name_)
+        : vertices(vertices_), facets(facets_), modelName(name_)
+    {
+    }
+
     const std::vector<Vertex> getVertices();
     void setVertices(std::vector<Vertex> &vertices_);
     const std::vector<Facet> getFacets();
     void setFacets(std::vector<Facet> facets_);
 
+    QString getName();
+    void setName(QString modelName_);
+
 private:
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
+    QString modelName;
 };
 
 class Illuminant

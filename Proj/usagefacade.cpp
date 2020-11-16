@@ -91,6 +91,8 @@ QGraphicsScene *UsageFacade::rotateZScene(double angle, QRectF rect)
     return drawScene(rect);
 }
 
+CellScene *UsageFacade::getScene() { return scene; }
+
 void UsageFacade::addQuad(std::vector<Vertex> &vertices, std::vector<Facet> &facets,
 int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3, int x4, int y4,
 int z4)
@@ -136,26 +138,41 @@ int UsageFacade::addTable(int xCell, int yCell)
     int xFactor = xCell * SCALE_FACTOR;
     int yFactor = yCell * SCALE_FACTOR;
     // Столешница
-    addQuad(vertices, facets, xFactor + 20, yFactor + 20, 861, xFactor + 20, yFactor + 100, 861, xFactor + 100, yFactor + 100, 861, xFactor + 100, yFactor + 20, 861);
+    addQuad(vertices, facets, xFactor + 20, yFactor + 20, 861, xFactor + 20,
+    yFactor + 100, 861, xFactor + 100, yFactor + 100, 861, xFactor + 100, yFactor + 20,
+    861);
 
-    addQuad(vertices, facets, xFactor + 20, yFactor + 20, 851, xFactor + 20, yFactor + 100, 851, xFactor + 20, yFactor + 100, 861, xFactor + 20, yFactor + 20, 861);
-    addQuad(vertices, facets, xFactor + 20, yFactor + 100, 851, xFactor + 100, yFactor + 100, 851, xFactor + 100, yFactor + 100, 861, xFactor + 20, yFactor + 100, 861);
-    addQuad(vertices, facets, xFactor + 100, yFactor + 100, 851, xFactor + 100, yFactor + 20, 851, xFactor + 100, yFactor + 20, 861, xFactor + 100, yFactor + 100, 861);
-    addQuad(vertices, facets, xFactor + 100, yFactor + 100, 851, xFactor + 20, yFactor + 100, 851, xFactor + 20, yFactor + 100, 861, xFactor + 100, yFactor + 100, 861);
+    addQuad(vertices, facets, xFactor + 20, yFactor + 20, 851, xFactor + 20,
+    yFactor + 100, 851, xFactor + 20, yFactor + 100, 861, xFactor + 20, yFactor + 20,
+    861);
+    addQuad(vertices, facets, xFactor + 20, yFactor + 100, 851, xFactor + 100,
+    yFactor + 100, 851, xFactor + 100, yFactor + 100, 861, xFactor + 20, yFactor + 100,
+    861);
+    addQuad(vertices, facets, xFactor + 100, yFactor + 100, 851, xFactor + 100,
+    yFactor + 20, 851, xFactor + 100, yFactor + 20, 861, xFactor + 100, yFactor + 100,
+    861);
+    addQuad(vertices, facets, xFactor + 100, yFactor + 100, 851, xFactor + 20,
+    yFactor + 100, 851, xFactor + 20, yFactor + 100, 861, xFactor + 100, yFactor + 100,
+    861);
 
-    addQuad(vertices, facets, xFactor + 20, yFactor + 20, 851, xFactor + 20, yFactor + 100, 851, xFactor + 100, yFactor + 100, 851, xFactor + 100, yFactor + 20, 851);
+    addQuad(vertices, facets, xFactor + 20, yFactor + 20, 851, xFactor + 20,
+    yFactor + 100, 851, xFactor + 100, yFactor + 100, 851, xFactor + 100, yFactor + 20,
+    851);
 
     // Ножка
-    addQuad(vertices, facets, xFactor + 50, yFactor + 50, 801, xFactor + 70, yFactor + 50, 801, xFactor + 70, yFactor + 50, 850, xFactor + 50, yFactor + 50, 850);
+    addQuad(vertices, facets, xFactor + 50, yFactor + 50, 801, xFactor + 70, yFactor + 50,
+    801, xFactor + 70, yFactor + 50, 850, xFactor + 50, yFactor + 50, 850);
 
-    addQuad(vertices, facets, xFactor + 70, yFactor + 50, 801, xFactor + 70, yFactor + 70, 801, xFactor + 70, yFactor + 70, 850, xFactor + 70, yFactor + 50, 850);
+    addQuad(vertices, facets, xFactor + 70, yFactor + 50, 801, xFactor + 70, yFactor + 70,
+    801, xFactor + 70, yFactor + 70, 850, xFactor + 70, yFactor + 50, 850);
 
-    addQuad(vertices, facets, xFactor + 70, yFactor + 70, 801, xFactor + 50, yFactor + 70, 801, xFactor + 50, yFactor + 70, 850, xFactor + 70, yFactor + 70, 850);
+    addQuad(vertices, facets, xFactor + 70, yFactor + 70, 801, xFactor + 50, yFactor + 70,
+    801, xFactor + 50, yFactor + 70, 850, xFactor + 70, yFactor + 70, 850);
 
-    addQuad(vertices, facets, xFactor + 50, yFactor + 70, 801, xFactor + 50, yFactor + 50, 801, xFactor + 50, yFactor + 50, 850, xFactor + 50, yFactor + 70, 850);
+    addQuad(vertices, facets, xFactor + 50, yFactor + 70, 801, xFactor + 50, yFactor + 50,
+    801, xFactor + 50, yFactor + 50, 850, xFactor + 50, yFactor + 70, 850);
 
-    PolModel tableModel(vertices, facets);
-    qDebug() << "Прошли через создание стола";
+    PolModel tableModel(vertices, facets, "Table");
     scene->addModel(tableModel);
     scene->setCellStatus(xCell, yCell, false);
 
@@ -165,8 +182,8 @@ int UsageFacade::addTable(int xCell, int yCell)
 void UsageFacade::addIlluminant(int xAngle, int yAngle)
 {
     Eigen::Matrix4f transMat;
-    double radianXAngle = (double)xAngle * M_PI / 180.0;
-    double radianYAngle = (double)yAngle * M_PI / 180.0;
+    double radianXAngle = (double) xAngle * M_PI / 180.0;
+    double radianYAngle = (double) yAngle * M_PI / 180.0;
     // clang-format off
     transMat << cos(radianYAngle), 0, sin(radianYAngle), 0,
                 0, 1, 0, 0,
@@ -323,7 +340,8 @@ Eigen::Matrix4f &transMat, Illuminant *illum, size_t bufWidth, size_t bufHeight)
         int y2 = round(dotsArr[1].getYCoordinate());
         int y3 = round(dotsArr[2].getYCoordinate());
 #pragma omp parallel for
-        for (int curY = (y1 < 0) ? 0 : y1; curY < ((y2 >= (int)bufHeight) ? (int)bufHeight - 1 : y2); curY++)
+        for (int curY = (y1 < 0) ? 0 : y1;
+             curY < ((y2 >= (int) bufHeight) ? (int) bufHeight - 1 : y2); curY++)
         {
             double aInc = 0;
             if (y1 != y2)
@@ -346,14 +364,15 @@ Eigen::Matrix4f &transMat, Illuminant *illum, size_t bufWidth, size_t bufHeight)
 
             if (xA < 0)
                 xA = 0;
-            if (xB >= (int)bufWidth)
-                xB = (int)bufWidth - 1;
+            if (xB >= (int) bufWidth)
+                xB = (int) bufWidth - 1;
 
             interpolateRowIntoShadowMap(
             shadowMap, xA, xB, zA, zB, curY, illumDotTransMat);
         }
 #pragma omp parallel for
-        for (int curY = (y2 < 0) ? 0 : y2; curY <= ((y3 >= (int)bufHeight) ? (int)bufHeight - 1 : y3); curY++)
+        for (int curY = (y2 < 0) ? 0 : y2;
+             curY <= ((y3 >= (int) bufHeight) ? (int) bufHeight - 1 : y3); curY++)
         {
             double aInc = 0;
             if (y2 != y3)
@@ -376,8 +395,8 @@ Eigen::Matrix4f &transMat, Illuminant *illum, size_t bufWidth, size_t bufHeight)
 
             if (xA < 0)
                 xA = 0;
-            if (xB >= (int)bufWidth)
-                xB = (int)bufWidth - 1;
+            if (xB >= (int) bufWidth)
+                xB = (int) bufWidth - 1;
 
             interpolateRowIntoShadowMap(
             shadowMap, xA, xB, zA, zB, curY, illumDotTransMat);
@@ -386,7 +405,8 @@ Eigen::Matrix4f &transMat, Illuminant *illum, size_t bufWidth, size_t bufHeight)
 }
 
 void Drawer::zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices,
-Eigen::Matrix4f &transMat, size_t color, CellScene *scene, size_t bufWidth, size_t bufHeight)
+Eigen::Matrix4f &transMat, size_t color, CellScene *scene, size_t bufWidth,
+size_t bufHeight)
 {
     std::array<Dot3D, 3> dotsArr;
     Eigen::Matrix4f toCenter;
@@ -451,7 +471,8 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene, size_t bufWidth, size
         int y2 = round(dotsArr[1].getYCoordinate());
         int y3 = round(dotsArr[2].getYCoordinate());
 #pragma omp parallel for
-        for (int curY = (y1 < 0) ? 0 : y1; curY < ((y2 >= (int)bufHeight) ? (int)bufHeight - 1 : y2); curY++)
+        for (int curY = (y1 < 0) ? 0 : y1;
+             curY < ((y2 >= (int) bufHeight) ? (int) bufHeight - 1 : y2); curY++)
         {
             double aInc = 0;
             if (y1 != y2)
@@ -474,8 +495,8 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene, size_t bufWidth, size
 
             if (xA < 0)
                 xA = 0;
-            if (xB >= (int)bufWidth)
-                xB = (int)bufWidth - 1;
+            if (xB >= (int) bufWidth)
+                xB = (int) bufWidth - 1;
 
             for (int curX = xA; curX <= xB; curX++)
             {
@@ -512,7 +533,8 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene, size_t bufWidth, size
             }
         }
 #pragma omp parallel for
-        for (int curY = (y2 < 0) ? 0 : y2; curY <= ((y3 >= (int)bufHeight) ? (int)bufHeight - 1 : y3); curY++)
+        for (int curY = (y2 < 0) ? 0 : y2;
+             curY <= ((y3 >= (int) bufHeight) ? (int) bufHeight - 1 : y3); curY++)
         {
             double aInc = 0;
             if (y2 != y3)
@@ -535,15 +557,15 @@ Eigen::Matrix4f &transMat, size_t color, CellScene *scene, size_t bufWidth, size
 
             if (xA < 0)
                 xA = 0;
-            if (xB >= (int)bufWidth)
-                xB = (int)bufWidth - 1;
+            if (xB >= (int) bufWidth)
+                xB = (int) bufWidth - 1;
 
             for (int curX = xA; curX <= xB; curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
-//                if (curX >= (int) depthBuffer.size() || curX < 0 ||
-//                    curY >= (int) depthBuffer.at(0).size() || curY < 0)
-//                    continue;
+                //                if (curX >= (int) depthBuffer.size() || curX < 0 ||
+                //                    curY >= (int) depthBuffer.at(0).size() || curY < 0)
+                //                    continue;
                 if (curZ > depthBuffer.at(curX).at(curY))
                 {
                     short visible = 0;
@@ -598,28 +620,30 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufHeight, size_t bufWidth)
         facets = model.getFacets();
         vertices = model.getVertices();
         for (size_t j = 0; j < scene->getIllumNum(); j++)
-            shadowMapForModel(
-            facets, vertices, scene->getTransMatrix(), &scene->getIlluminant(j), bufWidth, bufHeight);
+            shadowMapForModel(facets, vertices, scene->getTransMatrix(),
+            &scene->getIlluminant(j), bufWidth, bufHeight);
     }
 
     model = scene->getPlateModel();
     facets = model.getFacets();
     vertices = model.getVertices();
     for (size_t j = 0; j < scene->getIllumNum(); j++)
-        shadowMapForModel(
-        facets, vertices, scene->getTransMatrix(), &scene->getIlluminant(j), bufWidth, bufHeight);
+        shadowMapForModel(facets, vertices, scene->getTransMatrix(),
+        &scene->getIlluminant(j), bufWidth, bufHeight);
 
     for (size_t i = 0; i < scene->getModelsNum(); i++)
     {
         model = scene->getModel(i);
         facets = model.getFacets();
         vertices = model.getVertices();
-        zBufForModel(facets, vertices, scene->getTransMatrix(), 3, scene, bufWidth, bufHeight);
+        zBufForModel(
+        facets, vertices, scene->getTransMatrix(), 3, scene, bufWidth, bufHeight);
     }
     model = scene->getPlateModel();
     facets = model.getFacets();
     vertices = model.getVertices();
-    zBufForModel(facets, vertices, scene->getTransMatrix(), 1, scene, bufWidth, bufHeight);
+    zBufForModel(
+    facets, vertices, scene->getTransMatrix(), 1, scene, bufWidth, bufHeight);
 
     for (size_t i = 0; i < scene->getIllumNum(); i++)
         scene->getIlluminant(i).clearShadowMap();

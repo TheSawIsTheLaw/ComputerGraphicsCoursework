@@ -23,6 +23,10 @@ const std::vector<Facet> PolModel::getFacets() { return facets; }
 
 void PolModel::setFacets(std::vector<Facet> facets_) { facets = facets_; }
 
+QString PolModel::getName() { return modelName; }
+
+void PolModel::setName(QString modelName_) { modelName = modelName_; }
+
 std::vector<std::vector<double>> &Illuminant::getShadowMap() { return shadowBuffer; }
 
 Illuminant::Illuminant(Eigen::Matrix4f &transMatrix_)
@@ -387,10 +391,7 @@ void CellScene::addIlluminant(Illuminant &illum)
     illuminants.push_back(illum);
 }
 
-bool CellScene::isCellFree(size_t x, size_t y)
-{
-    return cells.at(x).at(y);
-}
+bool CellScene::isCellFree(size_t x, size_t y) { return cells.at(x).at(y); }
 
 void CellScene::setCellStatus(size_t x, size_t y, bool newStatus)
 {

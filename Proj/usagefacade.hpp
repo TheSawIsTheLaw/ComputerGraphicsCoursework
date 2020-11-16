@@ -54,6 +54,8 @@ public:
     QGraphicsScene *rotateYScene(double angle, QRectF rect);
     QGraphicsScene *rotateZScene(double angle, QRectF rect);
 
+    CellScene *getScene();
+
 private:
     CellScene *scene = nullptr;
 

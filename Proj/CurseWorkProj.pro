@@ -25,6 +25,7 @@ SOURCES += \
     illuminantplacechooser.cpp \
     main.cpp \
     mainwindow.cpp \
+    objecthangman.cpp \
     objects.cpp \
     placechooser.cpp \
     sizechanger.cpp \
@@ -37,6 +38,7 @@ HEADERS += \
     config.hpp \
     illuminantplacechooser.hpp \
     mainwindow.h \
+    objecthangman.hpp \
     objects.hpp \
     placechooser.h \
     sizechanger.hpp \
@@ -47,6 +49,7 @@ HEADERS += \
 FORMS += \
     illuminantplacechooser.ui \
     mainwindow.ui \
+    objecthangman.ui \
     placechooser.ui \
     sizechanger.ui \
     sizechooser.ui

@@ -190,7 +190,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Удалить выделенный объект</string>
+     <string>Удалить объект</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">

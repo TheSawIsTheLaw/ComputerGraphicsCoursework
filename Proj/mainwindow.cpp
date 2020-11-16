@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#define FLEX
+//#define FLEX
 
 #include "QDebug"
 #include <QErrorMessage>
@@ -19,6 +19,7 @@
 #include "specialgraphicsview.hpp"
 #include "placechooser.h"
 #include "illuminantplacechooser.hpp"
+#include "objecthangman.hpp"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -356,4 +357,12 @@ void MainWindow::on_pushButton_clicked()
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
     ui->graphicsView->setScene(setScene);
+}
+
+void MainWindow::on_pushButton_7_clicked()
+{
+    ObjectHangman objectHangmanWindow(facade->getScene(), nullptr);
+
+    objectHangmanWindow.setModal(true);
+    objectHangmanWindow.exec();
 }
