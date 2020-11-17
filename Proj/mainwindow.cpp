@@ -286,7 +286,7 @@ void MainWindow::on_pushButton_4_clicked()
     chooserWindow.setModal(true);
     chooserWindow.exec();
 
-    if (!chooserWindow.getWidth() || !chooserWindow.getheight())
+    if (chooserWindow.getWidth() == -1 || chooserWindow.getheight() == -1)
         return;
 
     facade->setCellScene(chooserWindow.getWidth(), chooserWindow.getheight());
