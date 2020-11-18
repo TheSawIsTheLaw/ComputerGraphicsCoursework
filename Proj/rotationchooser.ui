@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>240</width>
-    <height>320</height>
+    <height>144</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,16 +17,12 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Угол поворота по оси X (в градусах):</string>
+      <string>Угол поворота (в градусах):</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Угол поворота по оси Y (в градусах):</string>
-     </property>
-    </widget>
+    <widget class="QLineEdit" name="lineEdit"/>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
@@ -51,12 +47,6 @@
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QLineEdit" name="lineEdit"/>
-   </item>
-   <item>
-    <widget class="QLineEdit" name="lineEdit_2"/>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
