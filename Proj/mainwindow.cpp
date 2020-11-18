@@ -330,11 +330,10 @@ void MainWindow::on_pushButton_clicked()
         PlaceChooser placeChooserWindow(nullptr);
         placeChooserWindow.setModal(true);
         placeChooserWindow.exec();
-        if (placeChooserWindow.getXCell() < 0 || placeChooserWindow.getYCell() < 0)
-            return;
         int retCode = 0;
         if (curRow == 0)
-            retCode = facade->addTable(placeChooserWindow.getXCell(), placeChooserWindow.getYCell());
+            retCode = facade->addTable(placeChooserWindow.getXCell(), placeChooserWindow.getYCell(),
+                                       placeChooserWindow.getModelLength(), placeChooserWindow.getModelHeight(), placeChooserWindow.getDirection());
 
         if (retCode == 1)
         {

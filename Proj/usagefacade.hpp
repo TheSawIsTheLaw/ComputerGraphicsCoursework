@@ -3,6 +3,9 @@
 
 #include "objects.hpp"
 #include <QGraphicsScene>
+
+#include "placechooser.h"
+
 #include <omp.h>
 
 class Drawer
@@ -39,7 +42,7 @@ public:
 
     QGraphicsScene *drawScene(QRectF rect);
 
-    int addTable(int xCell, int yCell);
+    int addTable(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
     int addBarTable(int xCell, int yCell);
     void addIlluminant(int xAngle, int yAngle);
 

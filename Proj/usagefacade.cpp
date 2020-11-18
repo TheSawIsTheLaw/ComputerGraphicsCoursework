@@ -125,8 +125,10 @@ int z4)
     facets.push_back(vec);
 }
 
-int UsageFacade::addTable(int xCell, int yCell)
+int UsageFacade::addTable(
+int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction)
 {
+    qDebug() << xCell << yCell;
     if (xCell >= (int) scene->getWidth() || yCell >= (int) scene->getHeight())
         return 2;
     if (!scene->isCellFree(xCell, yCell))
@@ -262,14 +264,14 @@ int xStart, int yStart, double zStart, int xEnd, int yEnd, double zEnd)
     }
 }
 
-void Drawer::interpolateRowIntoShadowMap(std::vector<std::vector<double>> *map, int xA,
-int xB, double zA, double zB, int curY)
+void Drawer::interpolateRowIntoShadowMap(
+std::vector<std::vector<double>> *map, int xA, int xB, double zA, double zB, int curY)
 {
     for (int curX = xA; curX <= xB; curX++)
     {
         double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
-        if (curX >= (int) map->size() || curX < 0 ||
-            curY >= (int) map->at(0).size() || curY < 0)
+        if (curX >= (int) map->size() || curX < 0 || curY >= (int) map->at(0).size() ||
+            curY < 0)
             continue;
 
         if (curZ > map->at(curX).at(curY))
@@ -369,8 +371,7 @@ Eigen::Matrix4f &transMat, Illuminant *illum, size_t bufWidth, size_t bufHeight)
             if (xB >= (int) bufWidth)
                 xB = (int) bufWidth - 1;
 
-            interpolateRowIntoShadowMap(
-            shadowMap, xA, xB, zA, zB, curY);
+            interpolateRowIntoShadowMap(shadowMap, xA, xB, zA, zB, curY);
         }
 #pragma omp parallel for
         for (int curY = (y2 < 0) ? 0 : y2;
@@ -400,8 +401,7 @@ Eigen::Matrix4f &transMat, Illuminant *illum, size_t bufWidth, size_t bufHeight)
             if (xB >= (int) bufWidth)
                 xB = (int) bufWidth - 1;
 
-            interpolateRowIntoShadowMap(
-            shadowMap, xA, xB, zA, zB, curY);
+            interpolateRowIntoShadowMap(shadowMap, xA, xB, zA, zB, curY);
         }
     }
 }
@@ -503,9 +503,9 @@ size_t bufHeight)
             for (int curX = xA; curX <= xB; curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
-//                if (curX >= (int) depthBuffer.size() || curX < 0 ||
-//                    curY >= (int) depthBuffer.at(0).size() || curY < 0)
-//                    continue;
+                //                if (curX >= (int) depthBuffer.size() || curX < 0 ||
+                //                    curY >= (int) depthBuffer.at(0).size() || curY < 0)
+                //                    continue;
                 if (curZ >= depthBuffer.at(curX).at(curY))
                 {
                     short visible = 0;
@@ -565,9 +565,11 @@ size_t bufHeight)
             for (int curX = xA; curX <= xB; curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
-//                                if (curX >= (int) depthBuffer.size() || curX < 0 ||
-//                                    curY >= (int) depthBuffer.at(0).size() || curY < 0)
-//                                    continue;
+                //                                if (curX >= (int) depthBuffer.size() ||
+                //                                curX < 0 ||
+                //                                    curY >= (int)
+                //                                    depthBuffer.at(0).size() || curY <
+                //                                    0) continue;
                 if (curZ >= depthBuffer.at(curX).at(curY))
                 {
                     short visible = 0;
