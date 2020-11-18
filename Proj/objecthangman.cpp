@@ -50,7 +50,10 @@ int ObjectHangman::changeModel(int num)
     else if (rotationChooserWindow.stat == rotationChooser::status::NO_ACTIONS)
         return 2;
 
-
+    PolModel curMod = scene->getModel(num);
+    curMod.rotateZ(rotationChooserWindow.getAngle());
+    scene->setModel(num, curMod);
+    return 0;
 }
 
 void ObjectHangman::on_pushButton_2_clicked()

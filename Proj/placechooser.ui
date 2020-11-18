@@ -70,7 +70,7 @@
      <item>
       <widget class="QRadioButton" name="radioButton">
        <property name="text">
-        <string>Направлен вдоль оси x плоскости положительно</string>
+        <string>Направлен вдоль оси x плоскости</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -83,21 +83,7 @@
      <item>
       <widget class="QRadioButton" name="radioButton_2">
        <property name="text">
-        <string>Направлен вдоль оси x плоскости отрицательно</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="radioButton_3">
-       <property name="text">
-        <string>Направлен вдоль оси y плоскости положительно</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="radioButton_4">
-       <property name="text">
-        <string>Направлен вдоль оси y плоскости отрицательно</string>
+        <string>Направлен вдоль оси y плоскости</string>
        </property>
       </widget>
      </item>

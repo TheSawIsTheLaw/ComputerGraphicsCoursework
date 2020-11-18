@@ -60,6 +60,8 @@ public:
     const std::vector<Facet> getFacets();
     void setFacets(std::vector<Facet> facets_);
 
+    void rotateZ(int angle);
+
     void addUsedCell(int xCell, int yCell);
     std::vector<std::array<int, 2>> getUsedCells();
 
@@ -131,6 +133,7 @@ public:
 
     size_t getModelsNum();
     PolModel &getModel(size_t num);
+    void setModel(size_t num, PolModel &newModel);
     void addModel(PolModel &model);
     void deleteModel(size_t num);
 

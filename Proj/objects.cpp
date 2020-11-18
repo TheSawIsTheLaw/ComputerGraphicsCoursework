@@ -27,6 +27,21 @@ QString PolModel::getName() { return modelName; }
 
 void PolModel::setName(QString modelName_) { modelName = modelName_; }
 
+void PolModel::rotateZ(int angle)
+{
+    double radianAngle = (double)angle * M_PI / 180.0;
+
+    double xCenter = usedCells[0][0] * SCALE_FACTOR + SCALE_FACTOR / 2;
+    double yCenter = usedCells[0][1] * SCALE_FACTOR + SCALE_FACTOR / 2;
+
+    for (size_t i = 0; i < vertices.size(); i++)
+    {
+        Dot3D curDot = vertices.at(i).getPosition();
+        curDot.rotateZ(radianAngle, xCenter, yCenter, 0);
+        vertices.at(i).setPosition(curDot);
+    }
+}
+
 std::vector<std::vector<double>> &Illuminant::getShadowMap() { return shadowBuffer; }
 
 Illuminant::Illuminant(Eigen::Matrix4f &transMatrix_)
@@ -392,6 +407,11 @@ void CellScene::rotateZ(double angle)
 size_t CellScene::getModelsNum() { return modelsNum; }
 
 PolModel &CellScene::getModel(size_t num) { return models.at(num); }
+
+void CellScene::setModel(size_t num, PolModel &newModel)
+{
+    models.at(num) = newModel;
+}
 
 void CellScene::addModel(PolModel &model)
 {
