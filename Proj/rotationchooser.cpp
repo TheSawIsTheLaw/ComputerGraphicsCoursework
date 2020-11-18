@@ -23,58 +23,44 @@ int rotationChooser::getNewYCell()
     return newYCell;
 }
 
-int rotationChooser::getXAngle()
+int rotationChooser::getAngle()
 {
-    return xAngle;
-}
-
-int rotationChooser::getYAngle()
-{
-    return yAngle;
+    return angle;
 }
 
 void rotationChooser::on_buttonBox_accepted()
 {
-//    QString gotText = this->ui->lineEdit->text();
-//    if (gotText == "")
-//    {
-//        stat = ERROR_WAS_ACCURED;
-//        this->close();
-//        return;
-//    }
-//    xAngle = gotText.toInt();
+    QString gotText = this->ui->lineEdit->text();
+    if (gotText == "")
+    {
+        stat = ERROR_WAS_ACCURED;
+        this->close();
+        return;
+    }
+    angle = gotText.toInt();
 
-//    gotText = this->ui->lineEdit_2->text();
-//    if (gotText == "")
-//    {
-//        stat = ERROR_WAS_ACCURED;
-//        this->close();
-//        return;
-//    }
-//    yAngle = gotText.toInt();
+    gotText = this->ui->lineEdit_3->text();
+    if (gotText == "")
+    {
+        stat = ERROR_WAS_ACCURED;
+        this->close();
+        return;
+    }
+    newXCell = gotText.toInt();
 
-//    gotText = this->ui->lineEdit_3->text();
-//    if (gotText == "")
-//    {
-//        stat = ERROR_WAS_ACCURED;
-//        this->close();
-//        return;
-//    }
-//    newXCell = gotText.toInt();
+    gotText = this->ui->lineEdit_4->text();
+    if (gotText == "0")
+    {
+        stat = ERROR_WAS_ACCURED;
+        this->close();
+        return;
+    }
 
-//    gotText = this->ui->lineEdit_4->text();
-//    if (gotText == "0")
-//    {
-//        stat = ERROR_WAS_ACCURED;
-//        this->close();
-//        return;
-//    }
-
-//    stat = ACTIONS_WERE_DONE;
+    stat = ACTIONS_WERE_DONE;
 }
 
-//void rotationChooser::on_buttonBox_rejected()
-//{
-//    stat = NO_ACTIONS;
-//    this->close();
-//}
+void rotationChooser::on_buttonBox_rejected()
+{
+    stat = NO_ACTIONS;
+    this->close();
+}

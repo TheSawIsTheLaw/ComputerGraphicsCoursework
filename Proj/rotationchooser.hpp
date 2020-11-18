@@ -21,8 +21,7 @@ public:
         ERROR_WAS_ACCURED
     };
 
-    int getXAngle();
-    int getYAngle();
+    int getAngle();
 
     int getNewXCell();
     int getNewYCell();
@@ -32,10 +31,12 @@ public:
 private slots:
     void on_buttonBox_accepted();
 
+    void on_buttonBox_rejected();
+
 private:
     Ui::rotationChooser *ui;
 
-    int xAngle = 0, yAngle = 0;
+    int angle = 0;
     int newXCell = 0, newYCell = 0;
 };
 

@@ -24,6 +24,8 @@ private slots:
 private:
     Ui::ObjectHangman *ui;
 
+    int changeModel(int num);
+
     CellScene *scene;
 };
 

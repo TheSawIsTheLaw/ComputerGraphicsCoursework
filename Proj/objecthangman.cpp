@@ -1,8 +1,10 @@
 #include "objecthangman.hpp"
 #include "ui_objecthangman.h"
 
-// Возможно тут стоит добавлять информацию о том, на какой клетке находится объект.
-// Ну ещё и источники света с их градусами выводить!
+#include "rotationchooser.hpp"
+
+#include <QErrorMessage>
+
 ObjectHangman::ObjectHangman(CellScene *scene_, QWidget *parent)
 : QDialog(parent), ui(new Ui::ObjectHangman)
 {
@@ -36,8 +38,39 @@ void ObjectHangman::on_pushButton_clicked()
         scene->deleteIlluminant(curRow - scene->getModelsNum());
 }
 
+int ObjectHangman::changeModel(int num)
+{
+    rotationChooser rotationChooserWindow(nullptr);
+
+    rotationChooserWindow.setModal(true);
+    rotationChooserWindow.exec();
+
+    if (rotationChooserWindow.stat == rotationChooser::status::ERROR_WAS_ACCURED)
+        return 1;
+    else if (rotationChooserWindow.stat == rotationChooser::status::NO_ACTIONS)
+        return 2;
+
+
+}
 
 void ObjectHangman::on_pushButton_2_clicked()
 {
+    int curRow = this->ui->listWidget->currentRow();
+    if (curRow < 0)
+        return;
 
+    if (curRow < (int)scene->getModelsNum())
+    {
+        int ret = changeModel(curRow);
+        if (ret == 1)
+        {
+            QErrorMessage *err = new QErrorMessage();
+            err->showMessage("Были переданы неверные значения.");
+        }
+    }
+    else
+    {
+        QErrorMessage *err = new QErrorMessage();
+        err->showMessage("Был выбран источник света. Его изменения не предусмотрены.");
+    }
 }
