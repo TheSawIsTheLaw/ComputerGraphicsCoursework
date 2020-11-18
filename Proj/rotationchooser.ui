@@ -1,9 +1,7 @@
-<ui version="4.0">
- <class>rotationChooser</class>
- <widget class="QDialog" name="rotationChooser">
+<ui version="RotationChooserotationChooser</class>
+ <widgetRotationChooser" name="rotationChooser">
   <property name="geometry">
-   <rect>
-    <x>0</x>
+  RotationChooser0</x>
     <y>0</y>
     <width>240</width>
     <height>320</height>

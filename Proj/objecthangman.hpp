@@ -19,10 +19,14 @@ public:
 private slots:
     void on_pushButton_clicked();
 
+    void on_pushButton_2_clicked();
+
 private:
     Ui::ObjectHangman *ui;
 
     CellScene *scene;
+
+    void changeModel(int index);
 };
 
 #endif // OBJECTHANGMAN_HPP
