@@ -22,7 +22,7 @@ int PlaceChooser::getYCell() { return yCell; }
 
 double PlaceChooser::getModelLength() { return modelLength; }
 
-double PlaceChooser::getModelHeight() { return modelLength; }
+double PlaceChooser::getModelHeight() { return modelHeight; }
 
 PlaceChooser::checkBox PlaceChooser::getDirection() { return direction; }
 

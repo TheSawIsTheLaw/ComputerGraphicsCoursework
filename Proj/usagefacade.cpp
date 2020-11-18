@@ -128,7 +128,7 @@ int z4)
 int UsageFacade::addTable(
 int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction)
 {
-    qDebug() << xCell << yCell;
+    qDebug() << modelHeight;
     if (xCell >= (int) scene->getWidth() || yCell >= (int) scene->getHeight())
         return 2;
     if (!scene->isCellFree(xCell, yCell))
@@ -141,44 +141,48 @@ int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::chec
 
     int xFactor = xCell * SCALE_FACTOR;
     int yFactor = yCell * SCALE_FACTOR;
+
+    int magickZ = PLATE_Z + 50 * modelHeight + 1;
+    int magickX = (direction == PlaceChooser::checkBox::XAXIS) ? modelLength : xFactor;
+    int magickY = (direction == PlaceChooser::checkBox::YAXIS) ? modelLength : yFactor;
     // Столешница
-    addQuad(vertices, facets, xFactor + 20, yFactor + 20, PLATE_Z + 61, xFactor + 20,
-    yFactor + 100, PLATE_Z + 61, xFactor + 100, yFactor + 100, PLATE_Z + 61,
-    xFactor + 100, yFactor + 20, PLATE_Z + 61);
+    addQuad(vertices, facets, xFactor + 20, yFactor + 20, magickZ + 10, xFactor + 20,
+    yFactor + 100, magickZ + 10, xFactor + 100, yFactor + 100, magickZ + 10,
+    xFactor + 100, yFactor + 20, magickZ + 10);
 
-    addQuad(vertices, facets, xFactor + 20, yFactor + 20, PLATE_Z + 51, xFactor + 20,
-    yFactor + 100, PLATE_Z + 51, xFactor + 20, yFactor + 100, PLATE_Z + 61, xFactor + 20,
-    yFactor + 20, PLATE_Z + 61);
-    addQuad(vertices, facets, xFactor + 20, yFactor + 100, PLATE_Z + 51, xFactor + 100,
-    yFactor + 100, PLATE_Z + 51, xFactor + 100, yFactor + 100, PLATE_Z + 61, xFactor + 20,
-    yFactor + 100, PLATE_Z + 61);
-    addQuad(vertices, facets, xFactor + 100, yFactor + 100, PLATE_Z + 51, xFactor + 100,
-    yFactor + 20, PLATE_Z + 51, xFactor + 100, yFactor + 20, PLATE_Z + 61, xFactor + 100,
-    yFactor + 100, PLATE_Z + 61);
-    addQuad(vertices, facets, xFactor + 100, yFactor + 100, PLATE_Z + 51, xFactor + 20,
-    yFactor + 100, PLATE_Z + 51, xFactor + 20, yFactor + 100, PLATE_Z + 61, xFactor + 100,
-    yFactor + 100, PLATE_Z + 61);
+    addQuad(vertices, facets, xFactor + 20, yFactor + 20, magickZ, xFactor + 20,
+    yFactor + 100, magickZ, xFactor + 20, yFactor + 100, magickZ + 10, xFactor + 20,
+    yFactor + 20, magickZ + 10);
+    addQuad(vertices, facets, xFactor + 20, yFactor + 100, magickZ, xFactor + 100,
+    yFactor + 100, magickZ, xFactor + 100, yFactor + 100, magickZ + 10, xFactor + 20,
+    yFactor + 100, magickZ + 10);
+    addQuad(vertices, facets, xFactor + 100, yFactor + 100, magickZ, xFactor + 100,
+    yFactor + 20, magickZ, xFactor + 100, yFactor + 20, magickZ + 10, xFactor + 100,
+    yFactor + 100, magickZ + 10);
+    addQuad(vertices, facets, xFactor + 100, yFactor + 100, magickZ, xFactor + 20,
+    yFactor + 100, magickZ, xFactor + 20, yFactor + 100, magickZ + 10, xFactor + 100,
+    yFactor + 100, magickZ + 10);
 
-    addQuad(vertices, facets, xFactor + 20, yFactor + 20, PLATE_Z + 51, xFactor + 20,
-    yFactor + 100, PLATE_Z + 51, xFactor + 100, yFactor + 100, PLATE_Z + 51,
-    xFactor + 100, yFactor + 20, PLATE_Z + 51);
+    addQuad(vertices, facets, xFactor + 20, yFactor + 20, magickZ, xFactor + 20,
+    yFactor + 100, magickZ, xFactor + 100, yFactor + 100, magickZ,
+    xFactor + 100, yFactor + 20, magickZ);
 
     // Ножка
     addQuad(vertices, facets, xFactor + 50, yFactor + 50, PLATE_Z + 1, xFactor + 70,
-    yFactor + 50, PLATE_Z + 1, xFactor + 70, yFactor + 50, PLATE_Z + 50, xFactor + 50,
-    yFactor + 50, PLATE_Z + 50);
+    yFactor + 50, PLATE_Z + 1, xFactor + 70, yFactor + 50, magickZ - 1, xFactor + 50,
+    yFactor + 50, magickZ - 1);
 
     addQuad(vertices, facets, xFactor + 70, yFactor + 50, PLATE_Z + 1, xFactor + 70,
-    yFactor + 70, PLATE_Z + 1, xFactor + 70, yFactor + 70, PLATE_Z + 50, xFactor + 70,
-    yFactor + 50, PLATE_Z + 50);
+    yFactor + 70, PLATE_Z + 1, xFactor + 70, yFactor + 70, magickZ - 1, xFactor + 70,
+    yFactor + 50, magickZ - 1);
 
     addQuad(vertices, facets, xFactor + 70, yFactor + 70, PLATE_Z + 1, xFactor + 50,
-    yFactor + 70, PLATE_Z + 1, xFactor + 50, yFactor + 70, PLATE_Z + 50, xFactor + 70,
-    yFactor + 70, PLATE_Z + 50);
+    yFactor + 70, PLATE_Z + 1, xFactor + 50, yFactor + 70, magickZ - 1, xFactor + 70,
+    yFactor + 70, magickZ - 1);
 
     addQuad(vertices, facets, xFactor + 50, yFactor + 70, PLATE_Z + 1, xFactor + 50,
-    yFactor + 50, PLATE_Z + 1, xFactor + 50, yFactor + 50, PLATE_Z + 50, xFactor + 50,
-    yFactor + 70, PLATE_Z + 50);
+    yFactor + 50, PLATE_Z + 1, xFactor + 50, yFactor + 50, magickZ - 1, xFactor + 50,
+    yFactor + 70, magickZ - 1);
 
     PolModel tableModel(vertices, facets, "Table");
     tableModel.setUsedCells(xCell, yCell);

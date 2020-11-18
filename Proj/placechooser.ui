@@ -46,6 +46,9 @@
      <item>
       <widget class="QLineEdit" name="lineEdit_3">
        <property name="inputMask">
+        <string/>
+       </property>
+       <property name="text">
         <string>1</string>
        </property>
       </widget>
