@@ -27,7 +27,7 @@ ObjectHangman::ObjectHangman(CellScene *scene_, QWidget *parent)
 
 ObjectHangman::~ObjectHangman() { delete ui; }
 
-void ObjectHangman::on_pushButton_clicked()
+void ObjectHangman::on_buttonBox_accepted()
 {
     int curRow = this->ui->listWidget->currentRow();
     if (curRow < 0)
@@ -38,6 +38,7 @@ void ObjectHangman::on_pushButton_clicked()
     else
         scene->deleteIlluminant(curRow - scene->getModelsNum());
 }
+<<<<<<< HEAD
 
 void ObjectHangman::changeModel(int index)
 {
@@ -59,3 +60,5 @@ void ObjectHangman::on_pushButton_2_clicked()
     else
         changeModel(curRow);
 }
+=======
+>>>>>>> parent of 8fe8aa3... ADD: new hangman for models

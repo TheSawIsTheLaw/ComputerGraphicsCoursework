@@ -14,12 +14,12 @@
 
 #include "config.hpp"
 
-#include "illuminantplacechooser.hpp"
-#include "objecthangman.hpp"
-#include "placechooser.h"
 #include "sizechanger.hpp"
 #include "sizechooser.hpp"
 #include "specialgraphicsview.hpp"
+#include "placechooser.h"
+#include "illuminantplacechooser.hpp"
+#include "objecthangman.hpp"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -84,8 +84,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    QWidget::connect(ui->graphicsView, SIGNAL(sendMouse(size_t, size_t)), this,
-    SLOT(getMouseEvent(size_t, size_t)));
+    QWidget::connect(ui->graphicsView, SIGNAL(sendMouse(size_t, size_t)), this, SLOT(getMouseEvent(size_t, size_t)));
 
     QShortcut *shortcutDown = new QShortcut(QKeySequence("down"), this);
     QObject::connect(shortcutDown, SIGNAL(activated()), this, SLOT(pictureDown()));
@@ -103,35 +102,28 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     QObject::connect(shortcutScaleUp, SIGNAL(activated()), this, SLOT(pictureScaleUp()));
 
     QShortcut *shortcutScaleDown = new QShortcut(QKeySequence("x"), this);
-    QObject::connect(
-    shortcutScaleDown, SIGNAL(activated()), this, SLOT(pictureScaleDown()));
+    QObject::connect(shortcutScaleDown, SIGNAL(activated()), this, SLOT(pictureScaleDown()));
 
     QShortcut *shortcutRotateXRight = new QShortcut(QKeySequence("s"), this);
-    QObject::connect(
-    shortcutRotateXRight, SIGNAL(activated()), this, SLOT(pictureRotateXRight()));
+    QObject::connect(shortcutRotateXRight, SIGNAL(activated()), this, SLOT(pictureRotateXRight()));
 
     QShortcut *shortcutRotateXLeft = new QShortcut(QKeySequence("w"), this);
-    QObject::connect(
-    shortcutRotateXLeft, SIGNAL(activated()), this, SLOT(pictureRotateXLeft()));
+    QObject::connect(shortcutRotateXLeft, SIGNAL(activated()), this, SLOT(pictureRotateXLeft()));
 
     QShortcut *shortcutRotateYRight = new QShortcut(QKeySequence("d"), this);
-    QObject::connect(
-    shortcutRotateYRight, SIGNAL(activated()), this, SLOT(pictureRotateYRight()));
+    QObject::connect(shortcutRotateYRight, SIGNAL(activated()), this, SLOT(pictureRotateYRight()));
 
     QShortcut *shortcutRotateYLeft = new QShortcut(QKeySequence("a"), this);
-    QObject::connect(
-    shortcutRotateYLeft, SIGNAL(activated()), this, SLOT(pictureRotateYLeft()));
+    QObject::connect(shortcutRotateYLeft, SIGNAL(activated()), this, SLOT(pictureRotateYLeft()));
 
     QShortcut *shortcutRotateZLeft = new QShortcut(QKeySequence("q"), this);
-    QObject::connect(
-    shortcutRotateZLeft, SIGNAL(activated()), this, SLOT(pictureRotateZLeft()));
+    QObject::connect(shortcutRotateZLeft, SIGNAL(activated()), this, SLOT(pictureRotateZLeft()));
 
     QShortcut *shortcutRotateZRight = new QShortcut(QKeySequence("e"), this);
-    QObject::connect(
-    shortcutRotateZRight, SIGNAL(activated()), this, SLOT(pictureRotateZRight()));
+    QObject::connect(shortcutRotateZRight, SIGNAL(activated()), this, SLOT(pictureRotateZRight()));
 }
 
-// void MainWindow::updateScene()
+//void MainWindow::updateScene()
 //{
 //    ui->graphicsView->scene()->clear();
 //    ui->graphicsView->scene()->addPixmap(QPixmap("img.bmp"));
@@ -190,8 +182,7 @@ void MainWindow::pictureRight()
     qDebug() << "Крутим вправо";
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
-    QGraphicsScene *setScene =
-    facade->moveRightScene(MOVE_UNIT, ui->graphicsView->rect());
+    QGraphicsScene *setScene = facade->moveRightScene(MOVE_UNIT, ui->graphicsView->rect());
     ui->graphicsView->setScene(setScene);
 }
 
@@ -202,8 +193,7 @@ void MainWindow::pictureScaleUp()
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
 
-    QGraphicsScene *setScene =
-    facade->scaleScene(SCALE_VALUE + 1, ui->graphicsView->rect());
+    QGraphicsScene *setScene = facade->scaleScene(SCALE_VALUE + 1, ui->graphicsView->rect());
     ui->graphicsView->setScene(setScene);
 }
 
@@ -214,8 +204,7 @@ void MainWindow::pictureScaleDown()
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
 
-    QGraphicsScene *setScene =
-    facade->scaleScene(1 - SCALE_VALUE, ui->graphicsView->rect());
+    QGraphicsScene *setScene = facade->scaleScene(1 - SCALE_VALUE, ui->graphicsView->rect());
     ui->graphicsView->setScene(setScene);
 }
 
@@ -226,8 +215,7 @@ void MainWindow::pictureRotateXRight()
     qDebug() << "Вертим по Х вниз";
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
-    QGraphicsScene *setScene =
-    facade->rotateXScene(ROTATE_UNIT, ui->graphicsView->rect());
+    QGraphicsScene * setScene = facade->rotateXScene(ROTATE_UNIT, ui->graphicsView->rect());
 
     ui->graphicsView->setScene(setScene);
 }
@@ -239,8 +227,7 @@ void MainWindow::pictureRotateXLeft()
     qDebug() << "Вертим по Х";
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
-    QGraphicsScene *setScene =
-    facade->rotateXScene(-ROTATE_UNIT, ui->graphicsView->rect());
+    QGraphicsScene *setScene = facade->rotateXScene(-ROTATE_UNIT, ui->graphicsView->rect());
 
     ui->graphicsView->setScene(setScene);
 }
@@ -252,8 +239,7 @@ void MainWindow::pictureRotateYRight()
     qDebug() << "Вертим по Y";
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
-    QGraphicsScene *setScene =
-    facade->rotateYScene(ROTATE_UNIT, ui->graphicsView->rect());
+    QGraphicsScene *setScene = facade->rotateYScene(ROTATE_UNIT, ui->graphicsView->rect());
 
     ui->graphicsView->setScene(setScene);
 }
@@ -265,8 +251,7 @@ void MainWindow::pictureRotateYLeft()
     qDebug() << "Вертим по Y влево";
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
-    QGraphicsScene *setScene =
-    facade->rotateYScene(-ROTATE_UNIT, ui->graphicsView->rect());
+    QGraphicsScene *setScene = facade->rotateYScene(-ROTATE_UNIT, ui->graphicsView->rect());
 
     ui->graphicsView->setScene(setScene);
 }
@@ -278,8 +263,7 @@ void MainWindow::pictureRotateZRight()
     qDebug() << "Вертим по z";
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
-    QGraphicsScene *setScene =
-    facade->rotateZScene(ROTATE_UNIT, ui->graphicsView->rect());
+    QGraphicsScene *setScene = facade->rotateZScene(ROTATE_UNIT, ui->graphicsView->rect());
 
     ui->graphicsView->setScene(setScene);
 }
@@ -291,8 +275,7 @@ void MainWindow::pictureRotateZLeft()
     qDebug() << "Вертим по z";
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
-    QGraphicsScene *setScene =
-    facade->rotateZScene(-ROTATE_UNIT, ui->graphicsView->rect());
+    QGraphicsScene *setScene = facade->rotateZScene(-ROTATE_UNIT, ui->graphicsView->rect());
 
     ui->graphicsView->setScene(setScene);
 }
@@ -312,7 +295,7 @@ void MainWindow::on_pushButton_4_clicked()
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
     ui->graphicsView->setScene(setScene);
-    //    QTimer::singleShot(26, this, SLOT(updateScene()));
+//    QTimer::singleShot(26, this, SLOT(updateScene()));
 }
 
 void MainWindow::on_pushButton_5_clicked()
@@ -349,9 +332,8 @@ void MainWindow::on_pushButton_clicked()
         placeChooserWindow.exec();
         int retCode = 0;
         if (curRow == 0)
-            retCode = facade->addTable(placeChooserWindow.getXCell(),
-            placeChooserWindow.getYCell(), placeChooserWindow.getModelLength(),
-            placeChooserWindow.getModelHeight(), placeChooserWindow.getDirection());
+            retCode = facade->addTable(placeChooserWindow.getXCell(), placeChooserWindow.getYCell(),
+                                       placeChooserWindow.getModelLength(), placeChooserWindow.getModelHeight(), placeChooserWindow.getDirection());
 
         if (retCode == 1)
         {
@@ -372,8 +354,7 @@ void MainWindow::on_pushButton_clicked()
         placeChooserWindow.setModal(true);
         placeChooserWindow.exec();
 
-        facade->addIlluminant(
-        placeChooserWindow.getXAngle(), placeChooserWindow.getYAngle());
+        facade->addIlluminant(placeChooserWindow.getXAngle(), placeChooserWindow.getYAngle());
     }
 
     QGraphicsScene *setScene = facade->drawScene(ui->graphicsView->rect());
