@@ -127,7 +127,7 @@ int z4)
 
 int UsageFacade::addTable(int xCell, int yCell)
 {
-    if (xCell >= (int)scene->getWidth() || yCell >= (int)scene->getHeight())
+    if (xCell >= (int) scene->getWidth() || yCell >= (int) scene->getHeight())
         return 2;
     if (!scene->isCellFree(xCell, yCell))
         return 1;
@@ -140,39 +140,43 @@ int UsageFacade::addTable(int xCell, int yCell)
     int xFactor = xCell * SCALE_FACTOR;
     int yFactor = yCell * SCALE_FACTOR;
     // Столешница
-    addQuad(vertices, facets, xFactor + 20, yFactor + 20, 861, xFactor + 20,
-    yFactor + 100, 861, xFactor + 100, yFactor + 100, 861, xFactor + 100, yFactor + 20,
-    861);
+    addQuad(vertices, facets, xFactor + 20, yFactor + 20, PLATE_Z + 61, xFactor + 20,
+    yFactor + 100, PLATE_Z + 61, xFactor + 100, yFactor + 100, PLATE_Z + 61,
+    xFactor + 100, yFactor + 20, PLATE_Z + 61);
 
-    addQuad(vertices, facets, xFactor + 20, yFactor + 20, 851, xFactor + 20,
-    yFactor + 100, 851, xFactor + 20, yFactor + 100, 861, xFactor + 20, yFactor + 20,
-    861);
-    addQuad(vertices, facets, xFactor + 20, yFactor + 100, 851, xFactor + 100,
-    yFactor + 100, 851, xFactor + 100, yFactor + 100, 861, xFactor + 20, yFactor + 100,
-    861);
-    addQuad(vertices, facets, xFactor + 100, yFactor + 100, 851, xFactor + 100,
-    yFactor + 20, 851, xFactor + 100, yFactor + 20, 861, xFactor + 100, yFactor + 100,
-    861);
-    addQuad(vertices, facets, xFactor + 100, yFactor + 100, 851, xFactor + 20,
-    yFactor + 100, 851, xFactor + 20, yFactor + 100, 861, xFactor + 100, yFactor + 100,
-    861);
+    addQuad(vertices, facets, xFactor + 20, yFactor + 20, PLATE_Z + 51, xFactor + 20,
+    yFactor + 100, PLATE_Z + 51, xFactor + 20, yFactor + 100, PLATE_Z + 61, xFactor + 20,
+    yFactor + 20, PLATE_Z + 61);
+    addQuad(vertices, facets, xFactor + 20, yFactor + 100, PLATE_Z + 51, xFactor + 100,
+    yFactor + 100, PLATE_Z + 51, xFactor + 100, yFactor + 100, PLATE_Z + 61, xFactor + 20,
+    yFactor + 100, PLATE_Z + 61);
+    addQuad(vertices, facets, xFactor + 100, yFactor + 100, PLATE_Z + 51, xFactor + 100,
+    yFactor + 20, PLATE_Z + 51, xFactor + 100, yFactor + 20, PLATE_Z + 61, xFactor + 100,
+    yFactor + 100, PLATE_Z + 61);
+    addQuad(vertices, facets, xFactor + 100, yFactor + 100, PLATE_Z + 51, xFactor + 20,
+    yFactor + 100, PLATE_Z + 51, xFactor + 20, yFactor + 100, PLATE_Z + 61, xFactor + 100,
+    yFactor + 100, PLATE_Z + 61);
 
-    addQuad(vertices, facets, xFactor + 20, yFactor + 20, 851, xFactor + 20,
-    yFactor + 100, 851, xFactor + 100, yFactor + 100, 851, xFactor + 100, yFactor + 20,
-    851);
+    addQuad(vertices, facets, xFactor + 20, yFactor + 20, PLATE_Z + 51, xFactor + 20,
+    yFactor + 100, PLATE_Z + 51, xFactor + 100, yFactor + 100, PLATE_Z + 51,
+    xFactor + 100, yFactor + 20, PLATE_Z + 51);
 
     // Ножка
-    addQuad(vertices, facets, xFactor + 50, yFactor + 50, 801, xFactor + 70, yFactor + 50,
-    801, xFactor + 70, yFactor + 50, 850, xFactor + 50, yFactor + 50, 850);
+    addQuad(vertices, facets, xFactor + 50, yFactor + 50, PLATE_Z + 1, xFactor + 70,
+    yFactor + 50, PLATE_Z + 1, xFactor + 70, yFactor + 50, PLATE_Z + 50, xFactor + 50,
+    yFactor + 50, PLATE_Z + 50);
 
-    addQuad(vertices, facets, xFactor + 70, yFactor + 50, 801, xFactor + 70, yFactor + 70,
-    801, xFactor + 70, yFactor + 70, 850, xFactor + 70, yFactor + 50, 850);
+    addQuad(vertices, facets, xFactor + 70, yFactor + 50, PLATE_Z + 1, xFactor + 70,
+    yFactor + 70, PLATE_Z + 1, xFactor + 70, yFactor + 70, PLATE_Z + 50, xFactor + 70,
+    yFactor + 50, PLATE_Z + 50);
 
-    addQuad(vertices, facets, xFactor + 70, yFactor + 70, 801, xFactor + 50, yFactor + 70,
-    801, xFactor + 50, yFactor + 70, 850, xFactor + 70, yFactor + 70, 850);
+    addQuad(vertices, facets, xFactor + 70, yFactor + 70, PLATE_Z + 1, xFactor + 50,
+    yFactor + 70, PLATE_Z + 1, xFactor + 50, yFactor + 70, PLATE_Z + 50, xFactor + 70,
+    yFactor + 70, PLATE_Z + 50);
 
-    addQuad(vertices, facets, xFactor + 50, yFactor + 70, 801, xFactor + 50, yFactor + 50,
-    801, xFactor + 50, yFactor + 50, 850, xFactor + 50, yFactor + 70, 850);
+    addQuad(vertices, facets, xFactor + 50, yFactor + 70, PLATE_Z + 1, xFactor + 50,
+    yFactor + 50, PLATE_Z + 1, xFactor + 50, yFactor + 50, PLATE_Z + 50, xFactor + 50,
+    yFactor + 70, PLATE_Z + 50);
 
     PolModel tableModel(vertices, facets, "Table");
     tableModel.setUsedCells(xCell, yCell);
@@ -187,19 +191,20 @@ void UsageFacade::addIlluminant(int xAngle, int yAngle)
     Eigen::Matrix4f transMat;
     double radianXAngle = (double) xAngle * M_PI / 180.0;
     double radianYAngle = (double) yAngle * M_PI / 180.0;
+
     // clang-format off
-    transMat << cos(radianYAngle), 0, sin(radianYAngle), 0,
-                0, 1, 0, 0,
-                -sin(radianYAngle), 0, cos(radianYAngle), 0,
-                0, 0, 0, 1;
+    transMat << 1,           0,          0, 0,
+               0, cos(radianXAngle), -sin(radianXAngle), 0,
+               0, sin(radianXAngle),  cos(radianXAngle), 0,
+               0,           0,          0, 1;
     // clang-format on
 
     Eigen::Matrix4f prodMat;
     // clang-format off
-    prodMat << 1,           0,          0, 0,
-               0, cos(radianXAngle), -sin(radianXAngle), 0,
-               0, sin(radianXAngle),  cos(radianXAngle), 0,
-               0,           0,          0, 1;
+    prodMat << cos(radianYAngle), 0, sin(radianYAngle), 0,
+                0, 1, 0, 0,
+                -sin(radianYAngle), 0, cos(radianYAngle), 0,
+                0, 0, 0, 1;
     // clang-format on
 
     transMat *= prodMat;
@@ -258,22 +263,17 @@ int xStart, int yStart, double zStart, int xEnd, int yEnd, double zEnd)
 }
 
 void Drawer::interpolateRowIntoShadowMap(std::vector<std::vector<double>> *map, int xA,
-int xB, double zA, double zB, int curY, Eigen::Matrix4f &illumDotTransMat)
+int xB, double zA, double zB, int curY)
 {
     for (int curX = xA; curX <= xB; curX++)
     {
         double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
-        Eigen::MatrixXf newCoordinates(1, 4);
-        newCoordinates << curX, curY, curZ, 1;
-        newCoordinates *= illumDotTransMat;
-        int x = round(newCoordinates(0, 0));
-        int y = round(newCoordinates(0, 1));
-        if (x >= (int) depthBuffer.size() || x < 0 ||
-            y >= (int) depthBuffer.at(0).size() || y < 0)
+        if (curX >= (int) map->size() || curX < 0 ||
+            curY >= (int) map->at(0).size() || curY < 0)
             continue;
 
-        if (curZ > map->at(x).at(y))
-            map->at(x).at(y) = newCoordinates(0, 2);
+        if (curZ > map->at(curX).at(curY))
+            map->at(curX).at(curY) = curZ;
     }
 }
 
@@ -298,8 +298,7 @@ Eigen::Matrix4f &transMat, Illuminant *illum, size_t bufWidth, size_t bufHeight)
     std::vector<std::vector<double>> *shadowMap = &illum->getShadowMap();
     Eigen::Matrix4f illumMat = illum->getTransMat();
 
-    Eigen::Matrix4f dotTransMat = toCenter * transMat * backToStart;
-    Eigen::Matrix4f illumDotTransMat = toCenter * illumMat * backToStart;
+    Eigen::Matrix4f dotTransMat = toCenter * transMat * illumMat * backToStart;
 
     for (size_t curFaceNum = 0; curFaceNum < facets.size(); curFaceNum++)
     {
@@ -371,7 +370,7 @@ Eigen::Matrix4f &transMat, Illuminant *illum, size_t bufWidth, size_t bufHeight)
                 xB = (int) bufWidth - 1;
 
             interpolateRowIntoShadowMap(
-            shadowMap, xA, xB, zA, zB, curY, illumDotTransMat);
+            shadowMap, xA, xB, zA, zB, curY);
         }
 #pragma omp parallel for
         for (int curY = (y2 < 0) ? 0 : y2;
@@ -402,7 +401,7 @@ Eigen::Matrix4f &transMat, Illuminant *illum, size_t bufWidth, size_t bufHeight)
                 xB = (int) bufWidth - 1;
 
             interpolateRowIntoShadowMap(
-            shadowMap, xA, xB, zA, zB, curY, illumDotTransMat);
+            shadowMap, xA, xB, zA, zB, curY);
         }
     }
 }
@@ -504,10 +503,10 @@ size_t bufHeight)
             for (int curX = xA; curX <= xB; curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
-                if (curX >= (int) depthBuffer.size() || curX < 0 ||
-                    curY >= (int) depthBuffer.at(0).size() || curY < 0)
-                    continue;
-                if (curZ > depthBuffer.at(curX).at(curY))
+//                if (curX >= (int) depthBuffer.size() || curX < 0 ||
+//                    curY >= (int) depthBuffer.at(0).size() || curY < 0)
+//                    continue;
+                if (curZ >= depthBuffer.at(curX).at(curY))
                 {
                     short visible = 0;
                     Eigen::MatrixXf newCoordinates(1, 4);
@@ -520,9 +519,9 @@ size_t bufHeight)
                         &scene->getIlluminant(i).getShadowMap();
                         int x = round(newCoordinates(0, 0));
                         int y = round(newCoordinates(0, 1));
-                        if (x < (int) shadowMap->size() && x > 0 &&
-                            y < (int) shadowMap->at(0).size() && y > 0 &&
-                            std::fabs(shadowMap->at(x).at(y) - newCoordinates(0, 2)) < 1)
+                        if (x < (int) shadowMap->size() && x >= 0 &&
+                            y < (int) shadowMap->at(0).size() && y >= 0 &&
+                            std::fabs(shadowMap->at(x).at(y) - newCoordinates(0, 2)) < 2)
                             visible = 1;
                     }
                     depthBuffer.at(curX).at(curY) = curZ;
@@ -566,10 +565,10 @@ size_t bufHeight)
             for (int curX = xA; curX <= xB; curX++)
             {
                 double curZ = zA + (zB - zA) * (curX - xA) / (xB - xA);
-                //                if (curX >= (int) depthBuffer.size() || curX < 0 ||
-                //                    curY >= (int) depthBuffer.at(0).size() || curY < 0)
-                //                    continue;
-                if (curZ > depthBuffer.at(curX).at(curY))
+//                                if (curX >= (int) depthBuffer.size() || curX < 0 ||
+//                                    curY >= (int) depthBuffer.at(0).size() || curY < 0)
+//                                    continue;
+                if (curZ >= depthBuffer.at(curX).at(curY))
                 {
                     short visible = 0;
                     Eigen::MatrixXf newCoordinates(1, 4);
@@ -582,9 +581,9 @@ size_t bufHeight)
                         &scene->getIlluminant(i).getShadowMap();
                         int x = round(newCoordinates(0, 0));
                         int y = round(newCoordinates(0, 1));
-                        if (x < (int) shadowMap->size() && x > 0 &&
-                            y < (int) shadowMap->at(0).size() && y > 0 &&
-                            std::fabs(shadowMap->at(x).at(y) - newCoordinates(0, 2)) < 1)
+                        if (x < (int) shadowMap->size() && x >= 0 &&
+                            y < (int) shadowMap->at(0).size() && y >= 0 &&
+                            std::fabs(shadowMap->at(x).at(y) - newCoordinates(0, 2)) < 2)
                             visible = 1;
                     }
                     depthBuffer.at(curX).at(curY) = curZ;
@@ -751,7 +750,7 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     uint darkPlateCol = qRgb(190, 130, 190);
     uint blackCol = qRgb(0, 0, 0);
     uint goldCol = qRgb(255, 215, 0);
-    uint darkGoldCol = qRgb(235, 200, 0);
+    uint darkGoldCol = qRgb(205, 170, 0);
 
     for (size_t i = 0; i < rect.size().width() - 1; i++)
         for (size_t j = 0; j < rect.size().height() - 1; j++)

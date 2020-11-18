@@ -460,6 +460,31 @@ void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
              x += SCALE_FACTOR)
             addQuad(vertices, facets, x, y, PLATE_Z, x + SCALE_FACTOR, y, PLATE_Z,
             x + SCALE_FACTOR, y + SCALE_FACTOR, PLATE_Z, x, y + SCALE_FACTOR, PLATE_Z);
+
+    addQuad(vertices, facets, startOfPlate_.getXCoordinate(), startOfPlate_.getYCoordinate(), PLATE_Z - 10,
+                              startOfPlate_.getXCoordinate(), endOfPlate_.getYCoordinate() + 10, PLATE_Z - 10,
+                              endOfPlate_.getXCoordinate() + 10, endOfPlate_.getYCoordinate() + 10, PLATE_Z - 10,
+                              endOfPlate_.getXCoordinate() + 10, startOfPlate_.getYCoordinate(), PLATE_Z - 10);
+
+    addQuad(vertices, facets, startOfPlate_.getXCoordinate(), startOfPlate_.getYCoordinate(), PLATE_Z - 10,
+                              startOfPlate_.getXCoordinate(), endOfPlate_.getYCoordinate() + 10, PLATE_Z - 10,
+                              startOfPlate_.getXCoordinate(), endOfPlate_.getYCoordinate() + 10, PLATE_Z,
+                              startOfPlate_.getXCoordinate(), startOfPlate_.getYCoordinate(), PLATE_Z);
+
+    addQuad(vertices, facets, startOfPlate_.getXCoordinate(), endOfPlate_.getYCoordinate() + 10, PLATE_Z - 10,
+                              endOfPlate_.getXCoordinate() + 10, endOfPlate_.getYCoordinate() + 10, PLATE_Z - 10,
+                              endOfPlate_.getXCoordinate() + 10, endOfPlate_.getYCoordinate() + 10, PLATE_Z,
+                              startOfPlate_.getXCoordinate(), endOfPlate_.getYCoordinate() + 10, PLATE_Z);
+
+    addQuad(vertices, facets, endOfPlate_.getXCoordinate() + 10, endOfPlate_.getYCoordinate() + 10, PLATE_Z - 10,
+                              endOfPlate_.getXCoordinate() + 10, startOfPlate_.getYCoordinate(), PLATE_Z - 10,
+                              endOfPlate_.getXCoordinate() + 10, startOfPlate_.getYCoordinate(), PLATE_Z,
+                              endOfPlate_.getXCoordinate() + 10, endOfPlate_.getYCoordinate() + 10, PLATE_Z);
+
+    addQuad(vertices, facets, endOfPlate_.getXCoordinate() + 10, startOfPlate_.getYCoordinate(), PLATE_Z - 10,
+                              startOfPlate_.getXCoordinate(), startOfPlate_.getYCoordinate(), PLATE_Z - 10,
+                              startOfPlate_.getXCoordinate(), startOfPlate_.getYCoordinate(), PLATE_Z,
+                              endOfPlate_.getXCoordinate() + 10, startOfPlate_.getYCoordinate(), PLATE_Z);
     if (plateModel)
         delete plateModel;
     plateModel = new PolModel(vertices, facets);

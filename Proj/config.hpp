@@ -2,8 +2,8 @@
 #define CONFIG_HPP
 
 #define SCALE_FACTOR 100
-#define PLATE_START 10, 10, 800
-#define PLATE_Z 800
+#define PLATE_Z 10000
+#define PLATE_START 10, 10, PLATE_Z
 
 #define X_CENTER 785
 #define Y_CENTER 520
