@@ -125,14 +125,21 @@ int z4)
     facets.push_back(vec);
 }
 
-int UsageFacade::addTable(
-int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction)
+int UsageFacade::addTable(int xCell, int yCell, double modelLength, double modelHeight,
+PlaceChooser::checkBox direction)
 {
     qDebug() << modelHeight;
     if (xCell >= (int) scene->getWidth() || yCell >= (int) scene->getHeight())
         return 2;
     if (!scene->isCellFree(xCell, yCell))
         return 1;
+    for (int x = xCell, y = yCell, i = 0; i < modelLength; i++,
+             x += (direction == PlaceChooser::checkBox::XAXIS) ? 1 : 0,
+             y += (direction == PlaceChooser::checkBox::YAXIS) ? 1 : 0)
+    {
+        if (!scene->isCellFree(x, y))
+            return 1;
+    }
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
 
@@ -142,52 +149,61 @@ int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::chec
     int xFactor = xCell * SCALE_FACTOR;
     int yFactor = yCell * SCALE_FACTOR;
 
-    int magickZ = PLATE_Z + 50 * modelHeight + 1;
-    int magickX = (direction == PlaceChooser::checkBox::XAXIS) ? modelLength : xFactor;
-    int magickY = (direction == PlaceChooser::checkBox::YAXIS) ? modelLength : yFactor;
+    int magicZ = PLATE_Z + 50 * modelHeight + 1;
+    int magicX = (direction == PlaceChooser::checkBox::XAXIS)
+                 ? SCALE_FACTOR * (xCell + modelLength - 1)
+                 : xFactor;
+    int magicY = (direction == PlaceChooser::checkBox::YAXIS)
+                 ? SCALE_FACTOR * (yCell + modelLength - 1)
+                 : yFactor;
     // Столешница
-    addQuad(vertices, facets, xFactor + 20, yFactor + 20, magickZ + 10, xFactor + 20,
-    yFactor + 100, magickZ + 10, xFactor + 100, yFactor + 100, magickZ + 10,
-    xFactor + 100, yFactor + 20, magickZ + 10);
+    addQuad(vertices, facets, xFactor + 20, yFactor + 20, magicZ + 10, xFactor + 20,
+    magicY + 100, magicZ + 10, magicX + 100, magicY + 100, magicZ + 10, magicX + 100,
+    yFactor + 20, magicZ + 10);
 
-    addQuad(vertices, facets, xFactor + 20, yFactor + 20, magickZ, xFactor + 20,
-    yFactor + 100, magickZ, xFactor + 20, yFactor + 100, magickZ + 10, xFactor + 20,
-    yFactor + 20, magickZ + 10);
-    addQuad(vertices, facets, xFactor + 20, yFactor + 100, magickZ, xFactor + 100,
-    yFactor + 100, magickZ, xFactor + 100, yFactor + 100, magickZ + 10, xFactor + 20,
-    yFactor + 100, magickZ + 10);
-    addQuad(vertices, facets, xFactor + 100, yFactor + 100, magickZ, xFactor + 100,
-    yFactor + 20, magickZ, xFactor + 100, yFactor + 20, magickZ + 10, xFactor + 100,
-    yFactor + 100, magickZ + 10);
-    addQuad(vertices, facets, xFactor + 100, yFactor + 100, magickZ, xFactor + 20,
-    yFactor + 100, magickZ, xFactor + 20, yFactor + 100, magickZ + 10, xFactor + 100,
-    yFactor + 100, magickZ + 10);
+    addQuad(vertices, facets, xFactor + 20, yFactor + 20, magicZ, xFactor + 20,
+    magicY + 100, magicZ, xFactor + 20, magicY + 100, magicZ + 10, xFactor + 20,
+    yFactor + 20, magicZ + 10);
+    addQuad(vertices, facets, xFactor + 20, magicY + 100, magicZ, magicX + 100,
+    magicY + 100, magicZ, magicX + 100, magicY + 100, magicZ + 10, xFactor + 20,
+    magicY + 100, magicZ + 10);
+    addQuad(vertices, facets, magicX + 100, magicY + 100, magicZ, magicX + 100,
+    yFactor + 20, magicZ, magicX + 100, yFactor + 20, magicZ + 10, magicX + 100,
+    magicY + 100, magicZ + 10);
+    addQuad(vertices, facets, magicX + 100, magicY + 100, magicZ, xFactor + 20,
+    magicY + 100, magicZ, xFactor + 20, magicY + 100, magicZ + 10, magicX + 100,
+    magicY + 100, magicZ + 10);
 
-    addQuad(vertices, facets, xFactor + 20, yFactor + 20, magickZ, xFactor + 20,
-    yFactor + 100, magickZ, xFactor + 100, yFactor + 100, magickZ,
-    xFactor + 100, yFactor + 20, magickZ);
+    addQuad(vertices, facets, xFactor + 20, yFactor + 20, magicZ, xFactor + 20,
+    magicY + 100, magicZ, magicX + 100, magicY + 100, magicZ, magicX + 100, yFactor + 20,
+    magicZ);
 
     // Ножка
-    addQuad(vertices, facets, xFactor + 50, yFactor + 50, PLATE_Z + 1, xFactor + 70,
-    yFactor + 50, PLATE_Z + 1, xFactor + 70, yFactor + 50, magickZ - 1, xFactor + 50,
-    yFactor + 50, magickZ - 1);
+    addQuad(vertices, facets, xFactor + 50, yFactor + 50, PLATE_Z + 1, magicX + 70,
+    yFactor + 50, PLATE_Z + 1, magicX + 70, yFactor + 50, magicZ - 1, xFactor + 50,
+    yFactor + 50, magicZ - 1);
 
-    addQuad(vertices, facets, xFactor + 70, yFactor + 50, PLATE_Z + 1, xFactor + 70,
-    yFactor + 70, PLATE_Z + 1, xFactor + 70, yFactor + 70, magickZ - 1, xFactor + 70,
-    yFactor + 50, magickZ - 1);
+    addQuad(vertices, facets, magicX + 70, yFactor + 50, PLATE_Z + 1, magicX + 70,
+    magicY + 70, PLATE_Z + 1, magicX + 70, magicY + 70, magicZ - 1, magicX + 70,
+    yFactor + 50, magicZ - 1);
 
-    addQuad(vertices, facets, xFactor + 70, yFactor + 70, PLATE_Z + 1, xFactor + 50,
-    yFactor + 70, PLATE_Z + 1, xFactor + 50, yFactor + 70, magickZ - 1, xFactor + 70,
-    yFactor + 70, magickZ - 1);
+    addQuad(vertices, facets, magicX + 70, magicY + 70, PLATE_Z + 1, xFactor + 50,
+    magicY + 70, PLATE_Z + 1, xFactor + 50, magicY + 70, magicZ - 1, magicX + 70,
+    magicY + 70, magicZ - 1);
 
-    addQuad(vertices, facets, xFactor + 50, yFactor + 70, PLATE_Z + 1, xFactor + 50,
-    yFactor + 50, PLATE_Z + 1, xFactor + 50, yFactor + 50, magickZ - 1, xFactor + 50,
-    yFactor + 70, magickZ - 1);
+    addQuad(vertices, facets, xFactor + 50, magicY + 70, PLATE_Z + 1, xFactor + 50,
+    yFactor + 50, PLATE_Z + 1, xFactor + 50, yFactor + 50, magicZ - 1, xFactor + 50,
+    magicY + 70, magicZ - 1);
 
     PolModel tableModel(vertices, facets, "Table");
-    tableModel.setUsedCells(xCell, yCell);
+    for (int x = xCell, y = yCell, i = 0; i < modelLength; i++,
+             x += (direction == PlaceChooser::checkBox::XAXIS) ? 1 : 0,
+             y += (direction == PlaceChooser::checkBox::YAXIS) ? 1 : 0)
+    {
+        tableModel.addUsedCell(x, y);
+        scene->setCellStatus(x, y, false);
+    }
     scene->addModel(tableModel);
-    scene->setCellStatus(xCell, yCell, false);
 
     return 0;
 }

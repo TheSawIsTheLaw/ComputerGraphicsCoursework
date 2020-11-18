@@ -60,15 +60,15 @@ int Illuminant::getXAngle() { return xAngle; }
 
 int Illuminant::getYAngle() { return yAngle; }
 
-void PolModel::setUsedCells(int xCell_, int yCell_)
+void PolModel::addUsedCell(int xCell, int yCell)
 {
-    xCell = xCell_;
-    yCell = yCell_;
+    std::array<int, 2> addArray;
+    addArray[0] = xCell;
+    addArray[1] = yCell;
+    usedCells.push_back(addArray);
 }
 
-int PolModel::getUsedXCell() { return xCell; }
-
-int PolModel::getUsedYCell() { return yCell; }
+std::vector<std::array<int, 2>> PolModel::getUsedCells() { return usedCells; }
 
 Eigen::Matrix4f &Illuminant::getTransMat() { return transMatrix; }
 
@@ -425,6 +425,8 @@ void CellScene::deleteModel(size_t num)
     if (num < models.size())
     {
         modelsNum--;
+        for (int i = 0; i < (int)models.at(num).getUsedCells().size(); i++)
+            setCellStatus(models.at(num).getUsedCells()[i][0], models.at(num).getUsedCells()[i][0], true);
         models.erase(models.begin() + num);
     }
 }

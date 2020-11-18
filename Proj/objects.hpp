@@ -60,9 +60,8 @@ public:
     const std::vector<Facet> getFacets();
     void setFacets(std::vector<Facet> facets_);
 
-    void setUsedCells(int xCell_, int yCell_);
-    int getUsedXCell();
-    int getUsedYCell();
+    void addUsedCell(int xCell, int yCell);
+    std::vector<std::array<int, 2>> getUsedCells();
 
     QString getName();
     void setName(QString modelName_);
@@ -71,7 +70,7 @@ private:
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
     QString modelName;
-    int xCell, yCell;
+    std::vector<std::array<int, 2>> usedCells;
 };
 
 class Illuminant
