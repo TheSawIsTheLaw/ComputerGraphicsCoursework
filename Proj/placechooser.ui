@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Количество клеток в длину:</string>
+        <string>Положение по длине плоскости (номер ячейки):</string>
        </property>
       </widget>
      </item>
@@ -29,7 +29,7 @@
      <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Количество клеток в ширину:</string>
+        <string>Положение по ширине плоскости (номер ячейки):</string>
        </property>
       </widget>
      </item>
