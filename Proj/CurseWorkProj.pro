@@ -28,6 +28,7 @@ SOURCES += \
     objecthangman.cpp \
     objects.cpp \
     placechooser.cpp \
+    rotationchooser.cpp \
     sizechanger.cpp \
     sizechooser.cpp \
     specialgraphicsview.cpp \
@@ -41,6 +42,7 @@ HEADERS += \
     objecthangman.hpp \
     objects.hpp \
     placechooser.h \
+    rotationchooser.hpp \
     sizechanger.hpp \
     sizechooser.hpp \
     specialgraphicsview.hpp \
@@ -51,6 +53,7 @@ FORMS += \
     mainwindow.ui \
     objecthangman.ui \
     placechooser.ui \
+    rotationchooser.ui \
     sizechanger.ui \
     sizechooser.ui
 

@@ -24,7 +24,7 @@ ObjectHangman::ObjectHangman(CellScene *scene_, QWidget *parent)
 
 ObjectHangman::~ObjectHangman() { delete ui; }
 
-void ObjectHangman::on_buttonBox_accepted()
+void ObjectHangman::on_pushButton_clicked()
 {
     int curRow = this->ui->listWidget->currentRow();
     if (curRow < 0)
@@ -34,4 +34,9 @@ void ObjectHangman::on_buttonBox_accepted()
         scene->deleteModel(curRow);
     else
         scene->deleteIlluminant(curRow - scene->getModelsNum());
+}
+
+void ObjectHangman::on_pushButton_2_clicked()
+{
+
 }
