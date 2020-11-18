@@ -28,10 +28,7 @@ SOURCES += \
     objecthangman.cpp \
     objects.cpp \
     placechooser.cpp \
-<<<<<<< HEAD
-    RotationChooser.cpp \
-=======
->>>>>>> parent of 8fe8aa3... ADD: new hangman for models
+    rotationchooser.cpp \
     sizechanger.cpp \
     sizechooser.cpp \
     specialgraphicsview.cpp \
@@ -45,10 +42,7 @@ HEADERS += \
     objecthangman.hpp \
     objects.hpp \
     placechooser.h \
-<<<<<<< HEAD
-    RotationChooser.hpp \
-=======
->>>>>>> parent of 8fe8aa3... ADD: new hangman for models
+    rotationchooser.hpp \
     sizechanger.hpp \
     sizechooser.hpp \
     specialgraphicsview.hpp \
@@ -59,10 +53,7 @@ FORMS += \
     mainwindow.ui \
     objecthangman.ui \
     placechooser.ui \
-<<<<<<< HEAD
-    RotationChooser.ui \
-=======
->>>>>>> parent of 8fe8aa3... ADD: new hangman for models
+    rotationchooser.ui \
     sizechanger.ui \
     sizechooser.ui
 
