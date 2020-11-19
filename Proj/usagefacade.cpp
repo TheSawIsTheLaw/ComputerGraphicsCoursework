@@ -284,7 +284,7 @@ int UsageFacade::addBarTable(int xCell, int yCell, double modelLength, double mo
     curY = magicY + 90;
     addQuad(vertices, facets, magicX + 100, curY, PLATE_Z + 1, magicX + 90, curY,
             PLATE_Z + 1, magicX + 90, curY, magicZ - 1, magicX + 100, curY, magicZ - 1);
-    curY = yFactor + 100;
+    curY = magicY + 100;
     addQuad(vertices, facets, magicX + 100, curY, PLATE_Z + 1, magicX + 90, curY,
             PLATE_Z + 1, magicX + 90, curY, magicZ - 1, magicX + 100, curY, magicZ - 1);
 
