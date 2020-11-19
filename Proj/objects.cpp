@@ -461,18 +461,10 @@ void CellScene::deleteModel(size_t num)
 
 PolModel &CellScene::getPlateModel() { return *plateModel; }
 
-const Dot3D CellScene::getStartOfPlate() { return startOfPlate; }
-
-void CellScene::setStartOfPlate(Dot3D dot_) { startOfPlate = dot_; }
-
-const Dot3D CellScene::getEndOfPlate() { return endOfPlate; }
-
 void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
 {
     if (plateModel)
         return;
-    setStartOfPlate(startOfPlate_);
-    setEndOfPlate(endOfPlate_);
 
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
@@ -517,8 +509,6 @@ void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
         delete plateModel;
     plateModel = new PolModel(vertices, facets);
 }
-
-void CellScene::setEndOfPlate(Dot3D dot_) { endOfPlate = dot_; }
 
 void CellScene::changeSize(size_t newWidth, size_t newheight)
 {

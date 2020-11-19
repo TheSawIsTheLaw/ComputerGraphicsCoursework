@@ -114,12 +114,6 @@ public:
     size_t getWidth();
     size_t getHeight();
 
-    const Dot3D getStartOfPlate();
-    void setStartOfPlate(Dot3D dot_);
-
-    const Dot3D getEndOfPlate();
-    void setEndOfPlate(Dot3D dot_);
-
     void buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_);
     PolModel &getPlateModel();
 
@@ -158,7 +152,6 @@ private:
 
     size_t width, height;
 
-    Dot3D startOfPlate, endOfPlate;
     PolModel *plateModel = nullptr;
 
     Eigen::Matrix4f transMatrix;
