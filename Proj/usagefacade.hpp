@@ -45,6 +45,14 @@ public:
     int addTable(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
     int addBarTable(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
     int addChair(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
+    int addBarChair(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
+    int addSofa(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
+    int addPlant(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
+    int addPodium(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
+    int addScreen(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
+    int addTV(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
+    int addCupboard(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
+    int rack(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
 
     void addIlluminant(int xAngle, int yAngle);
 

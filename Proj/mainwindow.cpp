@@ -360,6 +360,10 @@ void MainWindow::on_pushButton_clicked()
             facade->addChair(placeChooserWindow.getXCell(), placeChooserWindow.getYCell(),
                 placeChooserWindow.getModelLength(), placeChooserWindow.getModelHeight(),
                 placeChooserWindow.getDirection());
+        else if (curRow == 3)
+            facade->addBarChair(placeChooserWindow.getXCell(),
+                placeChooserWindow.getYCell(), placeChooserWindow.getModelLength(),
+                placeChooserWindow.getModelHeight(), placeChooserWindow.getDirection());
 
         if (retCode == 1)
         {
