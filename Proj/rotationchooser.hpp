@@ -12,7 +12,7 @@ class rotationChooser : public QDialog
     Q_OBJECT
 
 public:
-    explicit rotationChooser(QWidget *parent = nullptr);
+    explicit rotationChooser(int curXCell, int curYCell, QWidget *parent = nullptr);
     ~rotationChooser();
 
     enum status {

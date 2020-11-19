@@ -42,7 +42,7 @@ void ObjectHangman::on_pushButton_clicked()
 
 int ObjectHangman::changeModel(int num)
 {
-    rotationChooser rotationChooserWindow(nullptr);
+    rotationChooser rotationChooserWindow(scene->getModel(num).getUsedXCell(), scene->getModel(num).getUsedYCell(), nullptr);
 
     rotationChooserWindow.setModal(true);
     rotationChooserWindow.exec();

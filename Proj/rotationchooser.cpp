@@ -1,11 +1,14 @@
 #include "rotationchooser.hpp"
 #include "ui_rotationchooser.h"
 
-rotationChooser::rotationChooser(QWidget *parent) :
+rotationChooser::rotationChooser(int curXCell, int curYCell, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::rotationChooser)
 {
     ui->setupUi(this);
+
+    ui->lineEdit_4->setText(QString::number(curXCell));
+    ui->lineEdit_3->setText(QString::number(curYCell));
 }
 
 rotationChooser::~rotationChooser()
