@@ -43,6 +43,24 @@ void PolModel::rotateZ(int angle)
     }
 }
 
+void PolModel::moveTo(int newXCell, int newYCell)
+{
+    Dot3D start(PLATE_START);
+
+    int xInc = SCALE_FACTOR * newXCell - SCALE_FACTOR * xCell;
+    int yInc = SCALE_FACTOR * newYCell - SCALE_FACTOR * yCell;
+
+    for (size_t i = 0; i < vertices.size(); i++)
+    {
+        Dot3D curDot = vertices.at(i).getPosition();
+        curDot.move(xInc, yInc, 0);
+        vertices.at(i).setPosition(curDot);
+    }
+
+    xCell = newXCell;
+    yCell = newYCell;
+}
+
 void PolModel::setUsedCell(int xCell_, int yCell_)
 {
     xCell = xCell_;

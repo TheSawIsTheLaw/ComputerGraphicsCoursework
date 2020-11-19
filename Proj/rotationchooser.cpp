@@ -39,7 +39,7 @@ void rotationChooser::on_buttonBox_accepted()
     }
     angle = gotText.toInt();
 
-    gotText = this->ui->lineEdit_3->text();
+    gotText = this->ui->lineEdit_4->text();
     if (gotText == "")
     {
         stat = ERROR_WAS_ACCURED;
@@ -48,13 +48,14 @@ void rotationChooser::on_buttonBox_accepted()
     }
     newXCell = gotText.toInt();
 
-    gotText = this->ui->lineEdit_4->text();
+    gotText = this->ui->lineEdit_3->text();
     if (gotText == "0")
     {
         stat = ERROR_WAS_ACCURED;
         this->close();
         return;
     }
+    newYCell = gotText.toInt();
 
     stat = ACTIONS_WERE_DONE;
 }

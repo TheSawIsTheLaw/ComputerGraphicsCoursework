@@ -54,6 +54,7 @@ int ObjectHangman::changeModel(int num)
 
     PolModel curMod = scene->getModel(num);
     curMod.rotateZ(rotationChooserWindow.getAngle());
+    curMod.moveTo(rotationChooserWindow.getNewXCell(), rotationChooserWindow.getNewYCell());
     scene->setModel(num, curMod);
     return 0;
 }

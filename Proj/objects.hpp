@@ -60,6 +60,7 @@ public:
     const std::vector<Facet> getFacets();
     void setFacets(std::vector<Facet> facets_);
 
+    void moveTo(int newXCell, int newYCell);
     void rotateZ(int angle);
 
 //    void addUsedCell(int xCell, int yCell);
