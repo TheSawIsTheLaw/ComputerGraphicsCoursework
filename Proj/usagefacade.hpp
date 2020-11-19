@@ -52,7 +52,7 @@ public:
     int addScreen(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
     int addTV(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
     int addCupboard(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
-    int rack(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
+    int addRack(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
 
     void addIlluminant(int xAngle, int yAngle);
 

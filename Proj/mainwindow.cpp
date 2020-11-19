@@ -364,6 +364,34 @@ void MainWindow::on_pushButton_clicked()
             facade->addBarChair(placeChooserWindow.getXCell(),
                 placeChooserWindow.getYCell(), placeChooserWindow.getModelLength(),
                 placeChooserWindow.getModelHeight(), placeChooserWindow.getDirection());
+        else if (curRow == 4)
+            facade->addSofa(placeChooserWindow.getXCell(), placeChooserWindow.getYCell(),
+                placeChooserWindow.getModelLength(), placeChooserWindow.getModelHeight(),
+                placeChooserWindow.getDirection());
+        else if (curRow == 5)
+            facade->addPlant(placeChooserWindow.getXCell(), placeChooserWindow.getYCell(),
+                placeChooserWindow.getModelLength(), placeChooserWindow.getModelHeight(),
+                placeChooserWindow.getDirection());
+        else if (curRow == 6)
+            facade->addPodium(placeChooserWindow.getXCell(),
+                placeChooserWindow.getYCell(), placeChooserWindow.getModelLength(),
+                placeChooserWindow.getModelHeight(), placeChooserWindow.getDirection());
+        else if (curRow == 7)
+            facade->addScreen(placeChooserWindow.getXCell(),
+                placeChooserWindow.getYCell(), placeChooserWindow.getModelLength(),
+                placeChooserWindow.getModelHeight(), placeChooserWindow.getDirection());
+        else if (curRow == 8)
+            facade->addTV(placeChooserWindow.getXCell(), placeChooserWindow.getYCell(),
+                placeChooserWindow.getModelLength(), placeChooserWindow.getModelHeight(),
+                placeChooserWindow.getDirection());
+        else if (curRow == 9)
+            facade->addCupboard(placeChooserWindow.getXCell(),
+                placeChooserWindow.getYCell(), placeChooserWindow.getModelLength(),
+                placeChooserWindow.getModelHeight(), placeChooserWindow.getDirection());
+        else if (curRow == 10)
+            facade->addRack(placeChooserWindow.getXCell(), placeChooserWindow.getYCell(),
+                placeChooserWindow.getModelLength(), placeChooserWindow.getModelHeight(),
+                placeChooserWindow.getDirection());
 
         if (retCode == 1)
         {
