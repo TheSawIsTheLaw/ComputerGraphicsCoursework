@@ -29,10 +29,10 @@ void PolModel::setName(QString modelName_) { modelName = modelName_; }
 
 void PolModel::rotateZ(int angle)
 {
-    double radianAngle = (double)angle * M_PI / 180.0;
+    double radianAngle = (double) angle * M_PI / 180.0;
 
-    double xCenter = usedCells[0][0] * SCALE_FACTOR + SCALE_FACTOR / 2;
-    double yCenter = usedCells[0][1] * SCALE_FACTOR + SCALE_FACTOR / 2;
+    double xCenter = xCell * SCALE_FACTOR + SCALE_FACTOR / 2;
+    double yCenter = yCell * SCALE_FACTOR + SCALE_FACTOR / 2;
 
     for (size_t i = 0; i < vertices.size(); i++)
     {
@@ -41,6 +41,16 @@ void PolModel::rotateZ(int angle)
         vertices.at(i).setPosition(curDot);
     }
 }
+
+void PolModel::setUsedCell(int xCell_, int yCell_)
+{
+    xCell = xCell_;
+    yCell = yCell_;
+}
+
+int PolModel::getUsedXCell() { return xCell; }
+
+int PolModel::getUsedYCell() { return yCell; }
 
 std::vector<std::vector<double>> &Illuminant::getShadowMap() { return shadowBuffer; }
 
@@ -75,16 +85,6 @@ int Illuminant::getXAngle() { return xAngle; }
 
 int Illuminant::getYAngle() { return yAngle; }
 
-void PolModel::addUsedCell(int xCell, int yCell)
-{
-    std::array<int, 2> addArray;
-    addArray[0] = xCell;
-    addArray[1] = yCell;
-    usedCells.push_back(addArray);
-}
-
-std::vector<std::array<int, 2>> PolModel::getUsedCells() { return usedCells; }
-
 Eigen::Matrix4f &Illuminant::getTransMat() { return transMatrix; }
 
 void Illuminant::setTransMat(Eigen::Matrix4f &mat) { transMatrix = mat; }
@@ -95,12 +95,6 @@ CellScene::CellScene(size_t width_, size_t height_)
 {
     width = width_;
     height = height_;
-
-    for (size_t i = 0; i < height_; i++)
-    {
-        cells.push_back(std::vector<bool>(width_));
-        for (size_t j = 0; j < width_; j++) cells[i][j] = true;
-    }
 
     modelsNum = 0;
     illumNum = 0;
@@ -408,10 +402,7 @@ size_t CellScene::getModelsNum() { return modelsNum; }
 
 PolModel &CellScene::getModel(size_t num) { return models.at(num); }
 
-void CellScene::setModel(size_t num, PolModel &newModel)
-{
-    models.at(num) = newModel;
-}
+void CellScene::setModel(size_t num, PolModel &newModel) { models.at(num) = newModel; }
 
 void CellScene::addModel(PolModel &model)
 {
@@ -445,17 +436,8 @@ void CellScene::deleteModel(size_t num)
     if (num < models.size())
     {
         modelsNum--;
-        for (int i = 0; i < (int)models.at(num).getUsedCells().size(); i++)
-            setCellStatus(models.at(num).getUsedCells()[i][0], models.at(num).getUsedCells()[i][0], true);
         models.erase(models.begin() + num);
     }
-}
-
-bool CellScene::isCellFree(size_t x, size_t y) { return cells.at(x).at(y); }
-
-void CellScene::setCellStatus(size_t x, size_t y, bool newStatus)
-{
-    cells.at(x).at(y) = newStatus;
 }
 
 PolModel &CellScene::getPlateModel() { return *plateModel; }
@@ -483,30 +465,35 @@ void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
             addQuad(vertices, facets, x, y, PLATE_Z, x + SCALE_FACTOR, y, PLATE_Z,
             x + SCALE_FACTOR, y + SCALE_FACTOR, PLATE_Z, x, y + SCALE_FACTOR, PLATE_Z);
 
-    addQuad(vertices, facets, startOfPlate_.getXCoordinate(), startOfPlate_.getYCoordinate(), PLATE_Z - 10,
-                              startOfPlate_.getXCoordinate(), endOfPlate_.getYCoordinate() + 10, PLATE_Z - 10,
-                              endOfPlate_.getXCoordinate() + 10, endOfPlate_.getYCoordinate() + 10, PLATE_Z - 10,
-                              endOfPlate_.getXCoordinate() + 10, startOfPlate_.getYCoordinate(), PLATE_Z - 10);
+    addQuad(vertices, facets, startOfPlate_.getXCoordinate(),
+    startOfPlate_.getYCoordinate(), PLATE_Z - 10, startOfPlate_.getXCoordinate(),
+    endOfPlate_.getYCoordinate() + 10, PLATE_Z - 10, endOfPlate_.getXCoordinate() + 10,
+    endOfPlate_.getYCoordinate() + 10, PLATE_Z - 10, endOfPlate_.getXCoordinate() + 10,
+    startOfPlate_.getYCoordinate(), PLATE_Z - 10);
 
-    addQuad(vertices, facets, startOfPlate_.getXCoordinate(), startOfPlate_.getYCoordinate(), PLATE_Z - 10,
-                              startOfPlate_.getXCoordinate(), endOfPlate_.getYCoordinate() + 10, PLATE_Z - 10,
-                              startOfPlate_.getXCoordinate(), endOfPlate_.getYCoordinate() + 10, PLATE_Z,
-                              startOfPlate_.getXCoordinate(), startOfPlate_.getYCoordinate(), PLATE_Z);
+    addQuad(vertices, facets, startOfPlate_.getXCoordinate(),
+    startOfPlate_.getYCoordinate(), PLATE_Z - 10, startOfPlate_.getXCoordinate(),
+    endOfPlate_.getYCoordinate() + 10, PLATE_Z - 10, startOfPlate_.getXCoordinate(),
+    endOfPlate_.getYCoordinate() + 10, PLATE_Z, startOfPlate_.getXCoordinate(),
+    startOfPlate_.getYCoordinate(), PLATE_Z);
 
-    addQuad(vertices, facets, startOfPlate_.getXCoordinate(), endOfPlate_.getYCoordinate() + 10, PLATE_Z - 10,
-                              endOfPlate_.getXCoordinate() + 10, endOfPlate_.getYCoordinate() + 10, PLATE_Z - 10,
-                              endOfPlate_.getXCoordinate() + 10, endOfPlate_.getYCoordinate() + 10, PLATE_Z,
-                              startOfPlate_.getXCoordinate(), endOfPlate_.getYCoordinate() + 10, PLATE_Z);
+    addQuad(vertices, facets, startOfPlate_.getXCoordinate(),
+    endOfPlate_.getYCoordinate() + 10, PLATE_Z - 10, endOfPlate_.getXCoordinate() + 10,
+    endOfPlate_.getYCoordinate() + 10, PLATE_Z - 10, endOfPlate_.getXCoordinate() + 10,
+    endOfPlate_.getYCoordinate() + 10, PLATE_Z, startOfPlate_.getXCoordinate(),
+    endOfPlate_.getYCoordinate() + 10, PLATE_Z);
 
-    addQuad(vertices, facets, endOfPlate_.getXCoordinate() + 10, endOfPlate_.getYCoordinate() + 10, PLATE_Z - 10,
-                              endOfPlate_.getXCoordinate() + 10, startOfPlate_.getYCoordinate(), PLATE_Z - 10,
-                              endOfPlate_.getXCoordinate() + 10, startOfPlate_.getYCoordinate(), PLATE_Z,
-                              endOfPlate_.getXCoordinate() + 10, endOfPlate_.getYCoordinate() + 10, PLATE_Z);
+    addQuad(vertices, facets, endOfPlate_.getXCoordinate() + 10,
+    endOfPlate_.getYCoordinate() + 10, PLATE_Z - 10, endOfPlate_.getXCoordinate() + 10,
+    startOfPlate_.getYCoordinate(), PLATE_Z - 10, endOfPlate_.getXCoordinate() + 10,
+    startOfPlate_.getYCoordinate(), PLATE_Z, endOfPlate_.getXCoordinate() + 10,
+    endOfPlate_.getYCoordinate() + 10, PLATE_Z);
 
-    addQuad(vertices, facets, endOfPlate_.getXCoordinate() + 10, startOfPlate_.getYCoordinate(), PLATE_Z - 10,
-                              startOfPlate_.getXCoordinate(), startOfPlate_.getYCoordinate(), PLATE_Z - 10,
-                              startOfPlate_.getXCoordinate(), startOfPlate_.getYCoordinate(), PLATE_Z,
-                              endOfPlate_.getXCoordinate() + 10, startOfPlate_.getYCoordinate(), PLATE_Z);
+    addQuad(vertices, facets, endOfPlate_.getXCoordinate() + 10,
+    startOfPlate_.getYCoordinate(), PLATE_Z - 10, startOfPlate_.getXCoordinate(),
+    startOfPlate_.getYCoordinate(), PLATE_Z - 10, startOfPlate_.getXCoordinate(),
+    startOfPlate_.getYCoordinate(), PLATE_Z, endOfPlate_.getXCoordinate() + 10,
+    startOfPlate_.getYCoordinate(), PLATE_Z);
     if (plateModel)
         delete plateModel;
     plateModel = new PolModel(vertices, facets);

@@ -131,15 +131,6 @@ PlaceChooser::checkBox direction)
     qDebug() << modelHeight;
     if (xCell >= (int) scene->getWidth() || yCell >= (int) scene->getHeight())
         return 2;
-    if (!scene->isCellFree(xCell, yCell))
-        return 1;
-    for (int x = xCell, y = yCell, i = 0; i < modelLength; i++,
-             x += (direction == PlaceChooser::checkBox::XAXIS) ? 1 : 0,
-             y += (direction == PlaceChooser::checkBox::YAXIS) ? 1 : 0)
-    {
-        if (!scene->isCellFree(x, y))
-            return 1;
-    }
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
 
@@ -196,13 +187,6 @@ PlaceChooser::checkBox direction)
     magicY + 70, magicZ - 1);
 
     PolModel tableModel(vertices, facets, "Table");
-    for (int x = xCell, y = yCell, i = 0; i < modelLength; i++,
-             x += (direction == PlaceChooser::checkBox::XAXIS) ? 1 : 0,
-             y += (direction == PlaceChooser::checkBox::YAXIS) ? 1 : 0)
-    {
-        tableModel.addUsedCell(x, y);
-        scene->setCellStatus(x, y, false);
-    }
     scene->addModel(tableModel);
 
     return 0;
@@ -750,8 +734,6 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     //    bmpinfoheader[11] = (unsigned char) (h >> 24);
 
     //    f = fopen("img.bmp", "wt");
-    //    if (f)
-    //        qDebug() << "ОНО ОТКРЫЛОСЬ";
     //    fwrite(bmpfileheader, 1, 14, f);
     //    fwrite(bmpinfoheader, 1, 40, f);
     //    for (int i = 0; i < h; i++)

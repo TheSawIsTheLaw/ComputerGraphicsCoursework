@@ -14,8 +14,8 @@ ObjectHangman::ObjectHangman(CellScene *scene_, QWidget *parent)
 
     for (size_t i = 0; i < scene->getModelsNum(); i++)
         ui->listWidget->addItem(QString::number(i) + ". " + scene->getModel(i).getName() +
-                                " on cell (" + QString::number(scene->getModel(i).getUsedCells()[0][0]) +
-                                "; " + QString::number(scene->getModel(i).getUsedCells()[0][1]) + ")");
+                                " on cell (" + QString::number(scene->getModel(i).getUsedXCell()) +
+                                "; " + QString::number(scene->getModel(i).getUsedYCell()) + ")");
 
     for (size_t i = 0; i < scene->getIllumNum(); i++)
         ui->listWidget->addItem(

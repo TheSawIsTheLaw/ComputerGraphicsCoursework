@@ -62,8 +62,11 @@ public:
 
     void rotateZ(int angle);
 
-    void addUsedCell(int xCell, int yCell);
-    std::vector<std::array<int, 2>> getUsedCells();
+//    void addUsedCell(int xCell, int yCell);
+//    std::vector<std::array<int, 2>> getUsedCells();
+    void setUsedCell(int xCell_, int yCell_);
+    int getUsedXCell();
+    int getUsedYCell();
 
     QString getName();
     void setName(QString modelName_);
@@ -72,7 +75,8 @@ private:
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
     QString modelName;
-    std::vector<std::array<int, 2>> usedCells;
+//    std::vector<std::array<int, 2>> usedCells;
+    int xCell, yCell;
 };
 
 class Illuminant
@@ -146,9 +150,6 @@ public:
     Eigen::Matrix4f &getTransMatrix();
     void multToTrans(Eigen::Matrix4f &newTrans);
 
-    bool isCellFree(size_t x, size_t y);
-    void setCellStatus(size_t x, size_t y, bool newStatus);
-
 private:
     void addQuad(std::vector<Vertex> &vertices, std::vector<Facet> &facets, int x1,
     int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3, int x4, int y4,
@@ -168,8 +169,6 @@ private:
     std::vector<Illuminant> illuminants;
 
     Dot3D centerDot;
-
-    std::vector<std::vector<bool>> cells;
 };
 
 #endif // OBJS_HPP
