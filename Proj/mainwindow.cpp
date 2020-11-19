@@ -352,6 +352,10 @@ void MainWindow::on_pushButton_clicked()
             retCode = facade->addTable(placeChooserWindow.getXCell(),
             placeChooserWindow.getYCell(), placeChooserWindow.getModelLength(),
             placeChooserWindow.getModelHeight(), placeChooserWindow.getDirection());
+        else if (curRow == 1)
+            retCode = facade->addBarTable(placeChooserWindow.getXCell(),
+            placeChooserWindow.getYCell(), placeChooserWindow.getModelLength(),
+            placeChooserWindow.getModelHeight(), placeChooserWindow.getDirection());
 
         if (retCode == 1)
         {

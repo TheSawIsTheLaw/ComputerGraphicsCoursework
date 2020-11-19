@@ -94,8 +94,8 @@ QGraphicsScene *UsageFacade::rotateZScene(double angle, QRectF rect)
 CellScene *UsageFacade::getScene() { return scene; }
 
 void UsageFacade::addQuad(std::vector<Vertex> &vertices, std::vector<Facet> &facets,
-int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3, int x4, int y4,
-int z4)
+    int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3, int x4,
+    int y4, int z4)
 {
     Dot3D dot;
     std::vector<size_t> vec;
@@ -126,9 +126,8 @@ int z4)
 }
 
 int UsageFacade::addTable(int xCell, int yCell, double modelLength, double modelHeight,
-PlaceChooser::checkBox direction)
+    PlaceChooser::checkBox direction)
 {
-    qDebug() << modelHeight;
     if (xCell >= (int) scene->getWidth() || yCell >= (int) scene->getHeight())
         return 2;
     std::vector<Vertex> vertices;
@@ -142,53 +141,165 @@ PlaceChooser::checkBox direction)
 
     int magicZ = PLATE_Z + 50 * modelHeight + 1;
     int magicX = (direction == PlaceChooser::checkBox::XAXIS)
-                 ? SCALE_FACTOR * (xCell + modelLength - 1)
-                 : xFactor;
+                     ? SCALE_FACTOR * (xCell + modelLength - 1)
+                     : xFactor;
     int magicY = (direction == PlaceChooser::checkBox::YAXIS)
-                 ? SCALE_FACTOR * (yCell + modelLength - 1)
-                 : yFactor;
+                     ? SCALE_FACTOR * (yCell + modelLength - 1)
+                     : yFactor;
     // Столешница
     addQuad(vertices, facets, xFactor + 20, yFactor + 20, magicZ + 10, xFactor + 20,
-    magicY + 100, magicZ + 10, magicX + 100, magicY + 100, magicZ + 10, magicX + 100,
-    yFactor + 20, magicZ + 10);
+        magicY + 100, magicZ + 10, magicX + 100, magicY + 100, magicZ + 10, magicX + 100,
+        yFactor + 20, magicZ + 10);
 
     addQuad(vertices, facets, xFactor + 20, yFactor + 20, magicZ, xFactor + 20,
-    magicY + 100, magicZ, xFactor + 20, magicY + 100, magicZ + 10, xFactor + 20,
-    yFactor + 20, magicZ + 10);
+        magicY + 100, magicZ, xFactor + 20, magicY + 100, magicZ + 10, xFactor + 20,
+        yFactor + 20, magicZ + 10);
     addQuad(vertices, facets, xFactor + 20, magicY + 100, magicZ, magicX + 100,
-    magicY + 100, magicZ, magicX + 100, magicY + 100, magicZ + 10, xFactor + 20,
-    magicY + 100, magicZ + 10);
+        magicY + 100, magicZ, magicX + 100, magicY + 100, magicZ + 10, xFactor + 20,
+        magicY + 100, magicZ + 10);
     addQuad(vertices, facets, magicX + 100, magicY + 100, magicZ, magicX + 100,
-    yFactor + 20, magicZ, magicX + 100, yFactor + 20, magicZ + 10, magicX + 100,
-    magicY + 100, magicZ + 10);
+        yFactor + 20, magicZ, magicX + 100, yFactor + 20, magicZ + 10, magicX + 100,
+        magicY + 100, magicZ + 10);
     addQuad(vertices, facets, magicX + 100, magicY + 100, magicZ, xFactor + 20,
-    magicY + 100, magicZ, xFactor + 20, magicY + 100, magicZ + 10, magicX + 100,
-    magicY + 100, magicZ + 10);
+        magicY + 100, magicZ, xFactor + 20, magicY + 100, magicZ + 10, magicX + 100,
+        magicY + 100, magicZ + 10);
 
     addQuad(vertices, facets, xFactor + 20, yFactor + 20, magicZ, xFactor + 20,
-    magicY + 100, magicZ, magicX + 100, magicY + 100, magicZ, magicX + 100, yFactor + 20,
-    magicZ);
+        magicY + 100, magicZ, magicX + 100, magicY + 100, magicZ, magicX + 100,
+        yFactor + 20, magicZ);
 
     // Ножка
     addQuad(vertices, facets, xFactor + 50, yFactor + 50, PLATE_Z + 1, magicX + 70,
-    yFactor + 50, PLATE_Z + 1, magicX + 70, yFactor + 50, magicZ - 1, xFactor + 50,
-    yFactor + 50, magicZ - 1);
+        yFactor + 50, PLATE_Z + 1, magicX + 70, yFactor + 50, magicZ - 1, xFactor + 50,
+        yFactor + 50, magicZ - 1);
 
     addQuad(vertices, facets, magicX + 70, yFactor + 50, PLATE_Z + 1, magicX + 70,
-    magicY + 70, PLATE_Z + 1, magicX + 70, magicY + 70, magicZ - 1, magicX + 70,
-    yFactor + 50, magicZ - 1);
+        magicY + 70, PLATE_Z + 1, magicX + 70, magicY + 70, magicZ - 1, magicX + 70,
+        yFactor + 50, magicZ - 1);
 
     addQuad(vertices, facets, magicX + 70, magicY + 70, PLATE_Z + 1, xFactor + 50,
-    magicY + 70, PLATE_Z + 1, xFactor + 50, magicY + 70, magicZ - 1, magicX + 70,
-    magicY + 70, magicZ - 1);
+        magicY + 70, PLATE_Z + 1, xFactor + 50, magicY + 70, magicZ - 1, magicX + 70,
+        magicY + 70, magicZ - 1);
 
     addQuad(vertices, facets, xFactor + 50, magicY + 70, PLATE_Z + 1, xFactor + 50,
-    yFactor + 50, PLATE_Z + 1, xFactor + 50, yFactor + 50, magicZ - 1, xFactor + 50,
-    magicY + 70, magicZ - 1);
+        yFactor + 50, PLATE_Z + 1, xFactor + 50, yFactor + 50, magicZ - 1, xFactor + 50,
+        magicY + 70, magicZ - 1);
 
     PolModel tableModel(vertices, facets, "Table");
     tableModel.setUsedCell(xCell, yCell);
     scene->addModel(tableModel);
+
+    return 0;
+}
+
+int UsageFacade::addBarTable(int xCell, int yCell, double modelLength, double modelHeight,
+    PlaceChooser::checkBox direction)
+{
+    if (xCell >= (int) scene->getWidth() || yCell >= (int) scene->getHeight())
+        return 2;
+    std::vector<Vertex> vertices;
+    std::vector<Facet> facets;
+
+    Dot3D dot;
+    std::vector<size_t> vec;
+
+    int xFactor = xCell * SCALE_FACTOR;
+    int yFactor = yCell * SCALE_FACTOR;
+
+    int magicZ = PLATE_Z + 80 * modelHeight + 1;
+    int magicX = (direction == PlaceChooser::checkBox::XAXIS)
+                     ? SCALE_FACTOR * (xCell + modelLength - 1)
+                     : xFactor;
+    int magicY = (direction == PlaceChooser::checkBox::YAXIS)
+                     ? SCALE_FACTOR * (yCell + modelLength - 1)
+                     : yFactor;
+    // Столешница
+    addQuad(vertices, facets, xFactor + 20, yFactor + 20, magicZ + 10, xFactor + 20,
+        magicY + 100, magicZ + 10, magicX + 100, magicY + 100, magicZ + 10, magicX + 100,
+        yFactor + 20, magicZ + 10);
+
+    addQuad(vertices, facets, xFactor + 20, yFactor + 20, magicZ, xFactor + 20,
+        magicY + 100, magicZ, xFactor + 20, magicY + 100, magicZ + 10, xFactor + 20,
+        yFactor + 20, magicZ + 10);
+    addQuad(vertices, facets, xFactor + 20, magicY + 100, magicZ, magicX + 100,
+        magicY + 100, magicZ, magicX + 100, magicY + 100, magicZ + 10, xFactor + 20,
+        magicY + 100, magicZ + 10);
+    addQuad(vertices, facets, magicX + 100, magicY + 100, magicZ, magicX + 100,
+        yFactor + 20, magicZ, magicX + 100, yFactor + 20, magicZ + 10, magicX + 100,
+        magicY + 100, magicZ + 10);
+    addQuad(vertices, facets, magicX + 100, magicY + 100, magicZ, xFactor + 20,
+        magicY + 100, magicZ, xFactor + 20, magicY + 100, magicZ + 10, magicX + 100,
+        magicY + 100, magicZ + 10);
+
+    addQuad(vertices, facets, xFactor + 20, yFactor + 20, magicZ, xFactor + 20,
+        magicY + 100, magicZ, magicX + 100, magicY + 100, magicZ, magicX + 100,
+        yFactor + 20, magicZ);
+
+    // Левый верхний
+    int curY = yFactor + 20;
+    addQuad(vertices, facets, xFactor + 30, curY, PLATE_Z + 1, xFactor + 20, curY,
+        PLATE_Z + 1, xFactor + 20, curY, magicZ - 1, xFactor + 30, curY, magicZ - 1);
+    curY = yFactor + 30;
+    addQuad(vertices, facets, xFactor + 30, curY, PLATE_Z + 1, xFactor + 20, curY,
+        PLATE_Z + 1, xFactor + 20, curY, magicZ - 1, xFactor + 30, curY, magicZ - 1);
+
+    int curX = xFactor + 20;
+    addQuad(vertices, facets, curX, curY, PLATE_Z + 1, curX, curY - 10,
+            PLATE_Z + 1, curX, curY - 10, magicZ - 1, curX, curY, magicZ - 1);
+    curX = xFactor + 30;
+    addQuad(vertices, facets, curX, curY, PLATE_Z + 1, curX, curY - 10,
+            PLATE_Z + 1, curX, curY - 10, magicZ - 1, curX, curY, magicZ - 1);
+
+    // Правый верхний
+    curY = yFactor + 20;
+    addQuad(vertices, facets, magicX + 100, curY, PLATE_Z + 1, magicX + 90, curY,
+            PLATE_Z + 1, magicX + 90, curY, magicZ - 1, magicX + 100, curY, magicZ - 1);
+    curY = yFactor + 30;
+    addQuad(vertices, facets, magicX + 100, curY, PLATE_Z + 1, magicX + 90, curY,
+            PLATE_Z + 1, magicX + 90, curY, magicZ - 1, magicX + 100, curY, magicZ - 1);
+
+    curX = magicX + 90;
+    addQuad(vertices, facets, curX, curY, PLATE_Z + 1, curX, curY - 10,
+            PLATE_Z + 1, curX, curY - 10, magicZ - 1, curX, curY, magicZ - 1);
+    curX = magicX + 100;
+    addQuad(vertices, facets, curX, curY, PLATE_Z + 1, curX, curY - 10,
+            PLATE_Z + 1, curX, curY - 10, magicZ - 1, curX, curY, magicZ - 1);
+
+    // Левый нижний
+    curY = magicY + 90;
+    addQuad(vertices, facets, xFactor + 30, curY, PLATE_Z + 1, xFactor + 20, curY,
+            PLATE_Z + 1, xFactor + 20, curY, magicZ - 1, xFactor + 30, curY, magicZ - 1);
+    curY = magicY + 100;
+    addQuad(vertices, facets, xFactor + 30, curY, PLATE_Z + 1, xFactor + 20, curY,
+            PLATE_Z + 1, xFactor + 20, curY, magicZ - 1, xFactor + 30, curY, magicZ - 1);
+
+    curX = xFactor + 20;
+    addQuad(vertices, facets, curX, curY, PLATE_Z + 1, curX, curY - 10,
+            PLATE_Z + 1, curX, curY - 10, magicZ - 1, curX, curY, magicZ - 1);
+    curX = xFactor + 30;
+    addQuad(vertices, facets, curX, curY, PLATE_Z + 1, curX, curY - 10,
+            PLATE_Z + 1, curX, curY - 10, magicZ - 1, curX, curY, magicZ - 1);
+
+    // Правый нижний
+    curY = magicY + 90;
+    addQuad(vertices, facets, magicX + 100, curY, PLATE_Z + 1, magicX + 90, curY,
+            PLATE_Z + 1, magicX + 90, curY, magicZ - 1, magicX + 100, curY, magicZ - 1);
+    curY = yFactor + 100;
+    addQuad(vertices, facets, magicX + 100, curY, PLATE_Z + 1, magicX + 90, curY,
+            PLATE_Z + 1, magicX + 90, curY, magicZ - 1, magicX + 100, curY, magicZ - 1);
+
+    curX = magicX + 90;
+    addQuad(vertices, facets, curX, curY, PLATE_Z + 1, curX, curY - 10,
+            PLATE_Z + 1, curX, curY - 10, magicZ - 1, curX, curY, magicZ - 1);
+    curX = magicX + 100;
+    addQuad(vertices, facets, curX, curY, PLATE_Z + 1, curX, curY - 10,
+            PLATE_Z + 1, curX, curY - 10, magicZ - 1, curX, curY, magicZ - 1);
+
+
+
+    PolModel barTableModel(vertices, facets, "Bar table");
+    barTableModel.setUsedCell(xCell, yCell);
+    scene->addModel(barTableModel);
 
     return 0;
 }
@@ -231,7 +342,7 @@ void Drawer::specBorderPut(int x, int y, double z)
 }
 
 void Drawer::DDABordersForPolygon(
-int xStart, int yStart, double zStart, int xEnd, int yEnd, double zEnd)
+    int xStart, int yStart, double zStart, int xEnd, int yEnd, double zEnd)
 {
     if (xStart == xEnd && yStart == yEnd)
     {
@@ -270,7 +381,7 @@ int xStart, int yStart, double zStart, int xEnd, int yEnd, double zEnd)
 }
 
 void Drawer::interpolateRowIntoShadowMap(
-std::vector<std::vector<double>> *map, int xA, int xB, double zA, double zB, int curY)
+    std::vector<std::vector<double>> *map, int xA, int xB, double zA, double zB, int curY)
 {
     for (int curX = xA; curX <= xB; curX++)
     {
@@ -285,7 +396,7 @@ std::vector<std::vector<double>> *map, int xA, int xB, double zA, double zB, int
 }
 
 void Drawer::shadowMapForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices,
-Eigen::Matrix4f &transMat, Illuminant *illum, size_t bufWidth, size_t bufHeight)
+    Eigen::Matrix4f &transMat, Illuminant *illum, size_t bufWidth, size_t bufHeight)
 {
     std::array<Dot3D, 3> dotsArr;
     Eigen::Matrix4f toCenter;
@@ -317,18 +428,18 @@ Eigen::Matrix4f &transMat, Illuminant *illum, size_t bufWidth, size_t bufHeight)
         dotsArr[2] = vertices.at(curDots.at(2)).getPosition();
 
         coordinatesVec << dotsArr[0].getXCoordinate(), dotsArr[0].getYCoordinate(),
-        dotsArr[0].getZCoordinate(), 1, dotsArr[1].getXCoordinate(),
-        dotsArr[1].getYCoordinate(), dotsArr[1].getZCoordinate(), 1,
-        dotsArr[2].getXCoordinate(), dotsArr[2].getYCoordinate(),
-        dotsArr[2].getZCoordinate(), 1;
+            dotsArr[0].getZCoordinate(), 1, dotsArr[1].getXCoordinate(),
+            dotsArr[1].getYCoordinate(), dotsArr[1].getZCoordinate(), 1,
+            dotsArr[2].getXCoordinate(), dotsArr[2].getYCoordinate(),
+            dotsArr[2].getZCoordinate(), 1;
 
         coordinatesVec *= dotTransMat;
         dotsArr[0] =
-        Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
+            Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
         dotsArr[1] =
-        Dot3D(coordinatesVec(1, 0), coordinatesVec(1, 1), coordinatesVec(1, 2));
+            Dot3D(coordinatesVec(1, 0), coordinatesVec(1, 1), coordinatesVec(1, 2));
         dotsArr[2] =
-        Dot3D(coordinatesVec(2, 0), coordinatesVec(2, 1), coordinatesVec(2, 2));
+            Dot3D(coordinatesVec(2, 0), coordinatesVec(2, 1), coordinatesVec(2, 2));
 
         if (dotsArr[0].getYCoordinate() > dotsArr[1].getYCoordinate())
             std::swap(dotsArr[0], dotsArr[1]);
@@ -412,8 +523,8 @@ Eigen::Matrix4f &transMat, Illuminant *illum, size_t bufWidth, size_t bufHeight)
 }
 
 void Drawer::zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &vertices,
-Eigen::Matrix4f &transMat, size_t color, CellScene *scene, size_t bufWidth,
-size_t bufHeight)
+    Eigen::Matrix4f &transMat, size_t color, CellScene *scene, size_t bufWidth,
+    size_t bufHeight)
 {
     std::array<Dot3D, 3> dotsArr;
     Eigen::Matrix4f toCenter;
@@ -436,7 +547,7 @@ size_t bufHeight)
     std::vector<Eigen::Matrix4f> illumDotMatrices;
     for (size_t i = 0; i < scene->getIllumNum(); i++)
         illumDotMatrices.push_back(
-        toCenter * scene->getIlluminant(i).getTransMat() * backToStart);
+            toCenter * scene->getIlluminant(i).getTransMat() * backToStart);
     for (size_t curFaceNum = 0; curFaceNum < facets.size(); curFaceNum++)
     {
         Eigen::MatrixXf coordinatesVec(3, 4);
@@ -447,17 +558,17 @@ size_t bufHeight)
         dotsArr[2] = vertices.at(curDots.at(2)).getPosition();
 
         coordinatesVec << dotsArr[0].getXCoordinate(), dotsArr[0].getYCoordinate(),
-        dotsArr[0].getZCoordinate(), 1, dotsArr[1].getXCoordinate(),
-        dotsArr[1].getYCoordinate(), dotsArr[1].getZCoordinate(), 1,
-        dotsArr[2].getXCoordinate(), dotsArr[2].getYCoordinate(),
-        dotsArr[2].getZCoordinate(), 1;
+            dotsArr[0].getZCoordinate(), 1, dotsArr[1].getXCoordinate(),
+            dotsArr[1].getYCoordinate(), dotsArr[1].getZCoordinate(), 1,
+            dotsArr[2].getXCoordinate(), dotsArr[2].getYCoordinate(),
+            dotsArr[2].getZCoordinate(), 1;
         coordinatesVec *= dotTransMat;
         dotsArr[0] =
-        Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
+            Dot3D(coordinatesVec(0, 0), coordinatesVec(0, 1), coordinatesVec(0, 2));
         dotsArr[1] =
-        Dot3D(coordinatesVec(1, 0), coordinatesVec(1, 1), coordinatesVec(1, 2));
+            Dot3D(coordinatesVec(1, 0), coordinatesVec(1, 1), coordinatesVec(1, 2));
         dotsArr[2] =
-        Dot3D(coordinatesVec(2, 0), coordinatesVec(2, 1), coordinatesVec(2, 2));
+            Dot3D(coordinatesVec(2, 0), coordinatesVec(2, 1), coordinatesVec(2, 2));
 
         if (dotsArr[0].getYCoordinate() > dotsArr[1].getYCoordinate())
             std::swap(dotsArr[0], dotsArr[1]);
@@ -521,7 +632,7 @@ size_t bufHeight)
 
                         newCoordinates *= illumDotMatrices.at(i);
                         std::vector<std::vector<double>> *shadowMap =
-                        &scene->getIlluminant(i).getShadowMap();
+                            &scene->getIlluminant(i).getShadowMap();
                         int x = round(newCoordinates(0, 0));
                         int y = round(newCoordinates(0, 1));
                         if (x < (int) shadowMap->size() && x >= 0 &&
@@ -585,7 +696,7 @@ size_t bufHeight)
 
                         newCoordinates *= illumDotMatrices.at(i);
                         std::vector<std::vector<double>> *shadowMap =
-                        &scene->getIlluminant(i).getShadowMap();
+                            &scene->getIlluminant(i).getShadowMap();
                         int x = round(newCoordinates(0, 0));
                         int y = round(newCoordinates(0, 1));
                         if (x < (int) shadowMap->size() && x >= 0 &&
@@ -630,7 +741,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufHeight, size_t bufWidth)
         vertices = model.getVertices();
         for (size_t j = 0; j < scene->getIllumNum(); j++)
             shadowMapForModel(facets, vertices, scene->getTransMatrix(),
-            &scene->getIlluminant(j), bufWidth, bufHeight);
+                &scene->getIlluminant(j), bufWidth, bufHeight);
     }
 
     model = scene->getPlateModel();
@@ -638,7 +749,7 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufHeight, size_t bufWidth)
     vertices = model.getVertices();
     for (size_t j = 0; j < scene->getIllumNum(); j++)
         shadowMapForModel(facets, vertices, scene->getTransMatrix(),
-        &scene->getIlluminant(j), bufWidth, bufHeight);
+            &scene->getIlluminant(j), bufWidth, bufHeight);
 
     for (size_t i = 0; i < scene->getModelsNum(); i++)
     {
@@ -646,13 +757,13 @@ void Drawer::zBufferAlg(CellScene *scene, size_t bufHeight, size_t bufWidth)
         facets = model.getFacets();
         vertices = model.getVertices();
         zBufForModel(
-        facets, vertices, scene->getTransMatrix(), 3, scene, bufWidth, bufHeight);
+            facets, vertices, scene->getTransMatrix(), 3, scene, bufWidth, bufHeight);
     }
     model = scene->getPlateModel();
     facets = model.getFacets();
     vertices = model.getVertices();
     zBufForModel(
-    facets, vertices, scene->getTransMatrix(), 1, scene, bufWidth, bufHeight);
+        facets, vertices, scene->getTransMatrix(), 1, scene, bufWidth, bufHeight);
 
     for (size_t i = 0; i < scene->getIllumNum(); i++)
         scene->getIlluminant(i).clearShadowMap();
@@ -667,10 +778,10 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
 
     using namespace std::chrono;
     milliseconds start =
-    duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+        duration_cast<milliseconds>(system_clock::now().time_since_epoch());
     zBufferAlg(scene, rect.size().height(), rect.size().width());
     milliseconds end =
-    duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+        duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 
     qDebug() << "Time for zBuf" << (end - start).count();
 
@@ -749,7 +860,7 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     //    qDebug() << rect.size().height() << rect.size().width();
 
     QImage *image =
-    new QImage(rect.size().width(), rect.size().height(), QImage::Format_RGB32);
+        new QImage(rect.size().width(), rect.size().height(), QImage::Format_RGB32);
     image->fill(Qt::white);
     uint plateCol = qRgb(255, 150, 255);
     uint darkPlateCol = qRgb(190, 130, 190);
@@ -778,7 +889,7 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
             }
             else if (frameBuffer.at(i).at(j) == 5)
             {
-                image->setPixel(i, j, blackCol);
+                image->setPixel(i, j, blackCol /*qRgb(190, 130, 210)*/);
             }
         }
     end = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
