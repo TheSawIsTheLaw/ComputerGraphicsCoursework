@@ -139,7 +139,7 @@ int UsageFacade::addTable(int xCell, int yCell, double modelLength, double model
     int xFactor = xCell * SCALE_FACTOR;
     int yFactor = yCell * SCALE_FACTOR;
 
-    int magicZ = PLATE_Z + 50 * modelHeight + 1;
+    int magicZ = PLATE_Z + 70 * modelHeight + 1;
     int magicX = (direction == PlaceChooser::checkBox::XAXIS)
                      ? SCALE_FACTOR * (xCell + modelLength - 1)
                      : xFactor;
@@ -206,7 +206,7 @@ int UsageFacade::addBarTable(int xCell, int yCell, double modelLength, double mo
     int xFactor = xCell * SCALE_FACTOR;
     int yFactor = yCell * SCALE_FACTOR;
 
-    int magicZ = PLATE_Z + 80 * modelHeight + 1;
+    int magicZ = PLATE_Z + 120 * modelHeight + 1;
     int magicX = (direction == PlaceChooser::checkBox::XAXIS)
                      ? SCALE_FACTOR * (xCell + modelLength - 1)
                      : xFactor;
@@ -295,11 +295,146 @@ int UsageFacade::addBarTable(int xCell, int yCell, double modelLength, double mo
     addQuad(vertices, facets, curX, curY, PLATE_Z + 1, curX, curY - 10,
             PLATE_Z + 1, curX, curY - 10, magicZ - 1, curX, curY, magicZ - 1);
 
-
-
     PolModel barTableModel(vertices, facets, "Bar table");
     barTableModel.setUsedCell(xCell, yCell);
     scene->addModel(barTableModel);
+
+    return 0;
+}
+
+int UsageFacade::addChair(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction)
+{
+    if (xCell >= (int) scene->getWidth() || yCell >= (int) scene->getHeight())
+        return 2;
+    std::vector<Vertex> vertices;
+    std::vector<Facet> facets;
+
+    Dot3D dot;
+    std::vector<size_t> vec;
+
+    int xFactor = xCell * SCALE_FACTOR;
+    int yFactor = yCell * SCALE_FACTOR;
+
+    int magicZ = PLATE_Z + 40 * modelHeight + 1;
+    int magicX = (direction == PlaceChooser::checkBox::XAXIS)
+                     ? SCALE_FACTOR * (xCell + modelLength - 1)
+                     : xFactor;
+    int magicY = (direction == PlaceChooser::checkBox::YAXIS)
+                     ? SCALE_FACTOR * (yCell + modelLength - 1)
+                     : yFactor;
+
+    int xFactorStart = xFactor + 30;
+    int yFactorStart = yFactor + 30;
+    int xMagicEnd = magicX + 90;
+    int yMagicEnd = magicY + 90;
+    // Седушка
+    addQuad(vertices, facets, xFactorStart, yFactorStart, magicZ + 10, xFactorStart,
+            yMagicEnd, magicZ + 10, xMagicEnd, yMagicEnd, magicZ + 10, xMagicEnd,
+            yFactorStart, magicZ + 10);
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, magicZ, xFactorStart,
+            yMagicEnd, magicZ, xFactorStart, yMagicEnd, magicZ + 10, xFactorStart,
+            yFactorStart, magicZ + 10);
+    addQuad(vertices, facets, xFactorStart, yMagicEnd, magicZ, xMagicEnd,
+            yMagicEnd, magicZ, xMagicEnd, yMagicEnd, magicZ + 10, xFactorStart,
+            yMagicEnd, magicZ + 10);
+    addQuad(vertices, facets, xMagicEnd, yMagicEnd, magicZ, xMagicEnd,
+            yFactorStart, magicZ, xMagicEnd, yFactorStart, magicZ + 10, xMagicEnd,
+            yMagicEnd, magicZ + 10);
+    addQuad(vertices, facets, xMagicEnd, yFactorStart, magicZ, xFactorStart,
+            yFactorStart, magicZ, xFactorStart, yFactorStart, magicZ + 10, xMagicEnd,
+            yFactorStart, magicZ + 10);
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, magicZ, xFactorStart,
+            yMagicEnd, magicZ, xMagicEnd, yMagicEnd, magicZ, xMagicEnd,
+            yFactorStart, magicZ);
+
+    yMagicEnd = magicY + 40;
+    // Спинка
+    addQuad(vertices, facets, xFactorStart, yFactorStart, magicZ + 70, xFactorStart,
+            yMagicEnd, magicZ + 70, xMagicEnd, yMagicEnd, magicZ + 70, xMagicEnd,
+            yFactorStart, magicZ + 70);
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, magicZ + 10, xFactorStart,
+            yMagicEnd, magicZ + 10, xFactorStart, yMagicEnd, magicZ + 70, xFactorStart,
+            yFactorStart, magicZ + 70);
+    addQuad(vertices, facets, xFactorStart, yMagicEnd, magicZ + 10, xMagicEnd,
+            yMagicEnd, magicZ + 10, xMagicEnd, yMagicEnd, magicZ + 70, xFactorStart,
+            yMagicEnd, magicZ + 70);
+    addQuad(vertices, facets, xMagicEnd, yMagicEnd, magicZ + 10, xMagicEnd,
+            yFactorStart, magicZ + 10, xMagicEnd, yFactorStart, magicZ + 70, xMagicEnd,
+            yMagicEnd, magicZ + 70);
+    addQuad(vertices, facets, xMagicEnd, yFactorStart, magicZ + 10, xFactorStart,
+            yFactorStart, magicZ + 10, xFactorStart, yFactorStart, magicZ + 70, xMagicEnd,
+            yFactorStart, magicZ + 70);
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, magicZ + 10, xFactorStart,
+            yMagicEnd, magicZ + 10, xMagicEnd, yMagicEnd, magicZ + 10, xMagicEnd,
+            yFactorStart, magicZ + 10);
+
+    // Левый верхний
+    int curY = yFactor + 30;
+    addQuad(vertices, facets, xFactor + 40, curY, PLATE_Z + 1, xFactor + 30, curY,
+            PLATE_Z + 1, xFactor + 30, curY, magicZ - 1, xFactor + 40, curY, magicZ - 1);
+    curY = yFactor + 40;
+    addQuad(vertices, facets, xFactor + 40, curY, PLATE_Z + 1, xFactor + 30, curY,
+            PLATE_Z + 1, xFactor + 30, curY, magicZ - 1, xFactor + 40, curY, magicZ - 1);
+
+    int curX = xFactor + 30;
+    addQuad(vertices, facets, curX, curY, PLATE_Z + 1, curX, curY - 10,
+            PLATE_Z + 1, curX, curY - 10, magicZ - 1, curX, curY, magicZ - 1);
+    curX = xFactor + 40;
+    addQuad(vertices, facets, curX, curY, PLATE_Z + 1, curX, curY - 10,
+            PLATE_Z + 1, curX, curY - 10, magicZ - 1, curX, curY, magicZ - 1);
+
+    // Правый верхний
+    curY = yFactor + 30;
+    addQuad(vertices, facets, magicX + 90, curY, PLATE_Z + 1, magicX + 80, curY,
+            PLATE_Z + 1, magicX + 80, curY, magicZ - 1, magicX + 90, curY, magicZ - 1);
+    curY = yFactor + 40;
+    addQuad(vertices, facets, magicX + 90, curY, PLATE_Z + 1, magicX + 80, curY,
+            PLATE_Z + 1, magicX + 80, curY, magicZ - 1, magicX + 90, curY, magicZ - 1);
+
+    curX = magicX + 80;
+    addQuad(vertices, facets, curX, curY, PLATE_Z + 1, curX, curY - 10,
+            PLATE_Z + 1, curX, curY - 10, magicZ - 1, curX, curY, magicZ - 1);
+    curX = magicX + 90;
+    addQuad(vertices, facets, curX, curY, PLATE_Z + 1, curX, curY - 10,
+            PLATE_Z + 1, curX, curY - 10, magicZ - 1, curX, curY, magicZ - 1);
+
+    // Левый нижний
+    curY = magicY + 80;
+    addQuad(vertices, facets, xFactor + 40, curY, PLATE_Z + 1, xFactor + 30, curY,
+            PLATE_Z + 1, xFactor + 30, curY, magicZ - 1, xFactor + 40, curY, magicZ - 1);
+    curY = magicY + 90;
+    addQuad(vertices, facets, xFactor + 40, curY, PLATE_Z + 1, xFactor + 30, curY,
+            PLATE_Z + 1, xFactor + 30, curY, magicZ - 1, xFactor + 40, curY, magicZ - 1);
+
+    curX = xFactor + 30;
+    addQuad(vertices, facets, curX, curY, PLATE_Z + 1, curX, curY - 10,
+            PLATE_Z + 1, curX, curY - 10, magicZ - 1, curX, curY, magicZ - 1);
+    curX = xFactor + 40;
+    addQuad(vertices, facets, curX, curY, PLATE_Z + 1, curX, curY - 10,
+            PLATE_Z + 1, curX, curY - 10, magicZ - 1, curX, curY, magicZ - 1);
+
+    // Правый нижний
+    curY = magicY + 80;
+    addQuad(vertices, facets, magicX + 90, curY, PLATE_Z + 1, magicX + 80, curY,
+            PLATE_Z + 1, magicX + 80, curY, magicZ - 1, magicX + 90, curY, magicZ - 1);
+    curY = magicY + 90;
+    addQuad(vertices, facets, magicX + 90, curY, PLATE_Z + 1, magicX + 80, curY,
+            PLATE_Z + 1, magicX + 80, curY, magicZ - 1, magicX + 90, curY, magicZ - 1);
+
+    curX = magicX + 80;
+    addQuad(vertices, facets, curX, curY, PLATE_Z + 1, curX, curY - 10,
+            PLATE_Z + 1, curX, curY - 10, magicZ - 1, curX, curY, magicZ - 1);
+    curX = magicX + 90;
+    addQuad(vertices, facets, curX, curY, PLATE_Z + 1, curX, curY - 10,
+            PLATE_Z + 1, curX, curY - 10, magicZ - 1, curX, curY, magicZ - 1);
+
+    PolModel chairModel(vertices, facets, "Chair");
+    chairModel.setUsedCell(xCell, yCell);
+    scene->addModel(chairModel);
 
     return 0;
 }
@@ -337,7 +472,7 @@ void Drawer::specBorderPut(int x, int y, double z)
     if (x < 0 || x >= (int) depthBuffer.size() || y < 0 ||
         y >= (int) depthBuffer.at(0).size())
         return;
-    if (std::fabs(z - depthBuffer.at(x).at(y)) < 5 || z > depthBuffer.at(x).at(y))
+    if (std::fabs(z - depthBuffer.at(x).at(y)) < 1 || z > depthBuffer.at(x).at(y))
         frameBuffer.at(x).at(y) = 5;
 }
 

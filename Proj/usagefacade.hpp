@@ -44,6 +44,8 @@ public:
 
     int addTable(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
     int addBarTable(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
+    int addChair(int xCell, int yCell, double modelLength, double modelHeight, PlaceChooser::checkBox direction);
+
     void addIlluminant(int xAngle, int yAngle);
 
     QGraphicsScene *moveUpScene(double value, QRectF rect);
