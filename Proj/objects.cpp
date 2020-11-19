@@ -31,8 +31,9 @@ void PolModel::rotateZ(int angle)
 {
     double radianAngle = (double) angle * M_PI / 180.0;
 
-    double xCenter = xCell * SCALE_FACTOR + SCALE_FACTOR / 2;
-    double yCenter = yCell * SCALE_FACTOR + SCALE_FACTOR / 2;
+    Dot3D start(PLATE_START);
+    double xCenter = start.getXCoordinate() + xCell * SCALE_FACTOR + SCALE_FACTOR / 2;
+    double yCenter = start.getYCoordinate() + yCell * SCALE_FACTOR + SCALE_FACTOR / 2;
 
     for (size_t i = 0; i < vertices.size(); i++)
     {

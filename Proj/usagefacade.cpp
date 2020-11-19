@@ -187,6 +187,7 @@ PlaceChooser::checkBox direction)
     magicY + 70, magicZ - 1);
 
     PolModel tableModel(vertices, facets, "Table");
+    tableModel.setUsedCell(xCell, yCell);
     scene->addModel(tableModel);
 
     return 0;

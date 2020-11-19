@@ -36,6 +36,8 @@ void ObjectHangman::on_pushButton_clicked()
         scene->deleteModel(curRow);
     else
         scene->deleteIlluminant(curRow - scene->getModelsNum());
+
+    close();
 }
 
 int ObjectHangman::changeModel(int num)
@@ -76,4 +78,6 @@ void ObjectHangman::on_pushButton_2_clicked()
         QErrorMessage *err = new QErrorMessage();
         err->showMessage("Был выбран источник света. Его изменения не предусмотрены.");
     }
+
+    close();
 }
