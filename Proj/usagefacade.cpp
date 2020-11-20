@@ -870,6 +870,98 @@ int UsageFacade::addPodium(int xCell, int yCell, double modelLength, double mode
 int UsageFacade::addScreen(int xCell, int yCell, double modelLength, double modelHeight,
     PlaceChooser::checkBox direction)
 {
+    if (xCell >= (int) scene->getWidth() || yCell >= (int) scene->getHeight())
+        return 2;
+    std::vector<Vertex> vertices;
+    std::vector<Facet> facets;
+
+    Dot3D dot;
+    std::vector<size_t> vec;
+
+    int xFactor = xCell * SCALE_FACTOR;
+    int yFactor = yCell * SCALE_FACTOR;
+    Dot3D start(PLATE_START);
+
+    int xFactorStart = xFactor + start.getXCoordinate() + (SCALE_FACTOR * modelLength) / 2 - 10;
+    int yFactorStart = yFactor + 50;
+    int xMagicEnd = xFactor + start.getXCoordinate() + (SCALE_FACTOR * modelLength) / 2 + 10;
+    int yMagicEnd = yFactor + 70;
+
+    // Основание
+    int magicZ = PLATE_Z + 5;
+
+    int xCenter = xFactorStart + (xMagicEnd - xFactorStart) / 2;
+    int yCenter = yFactorStart + (yMagicEnd - yFactorStart) / 2;
+    addTriangle(vertices, facets, xFactorStart, yFactorStart, PLATE_Z + 1,
+                xFactorStart, yMagicEnd, PLATE_Z + 1, xCenter, yCenter, magicZ);
+    addTriangle(vertices, facets, xFactorStart, yMagicEnd, PLATE_Z + 1,
+                xMagicEnd, yMagicEnd, PLATE_Z + 1, xCenter, yCenter, magicZ);
+    addTriangle(vertices, facets, xMagicEnd, yMagicEnd, PLATE_Z + 1,
+                xMagicEnd, yFactorStart, PLATE_Z + 1, xCenter, yCenter, magicZ);
+    addTriangle(vertices, facets, xMagicEnd, yFactorStart, PLATE_Z + 1,
+                xFactorStart, yFactorStart, PLATE_Z + 1, xCenter, yCenter, magicZ);
+
+    // Стойка
+    magicZ = PLATE_Z + 3;
+    int zEnd = magicZ + 100 * modelHeight;
+    xFactorStart = xFactor + start.getXCoordinate() + (SCALE_FACTOR * modelLength) / 2 - 3;
+    yFactorStart = yFactor + 57;
+    xMagicEnd = xFactor + start.getXCoordinate() + (SCALE_FACTOR * modelLength) / 2 + 3;
+    yMagicEnd = yFactor + 63;
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, magicZ, xFactorStart, yMagicEnd,
+            magicZ, xMagicEnd, yMagicEnd, magicZ, xMagicEnd, yFactorStart, magicZ);
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, zEnd, xFactorStart,
+            yMagicEnd, zEnd, xFactorStart, yMagicEnd, magicZ, xFactorStart,
+            yFactorStart, magicZ);
+    addQuad(vertices, facets, xFactorStart, yMagicEnd, zEnd, xMagicEnd, yMagicEnd,
+            zEnd, xMagicEnd, yMagicEnd, magicZ, xFactorStart, yMagicEnd, magicZ);
+    addQuad(vertices, facets, xMagicEnd, yMagicEnd, zEnd, xMagicEnd, yFactorStart,
+            zEnd, xMagicEnd, yFactorStart, magicZ, xMagicEnd, yMagicEnd, magicZ);
+    addQuad(vertices, facets, xMagicEnd, yFactorStart, zEnd, xFactorStart,
+            yFactorStart, zEnd, xFactorStart, yFactorStart, magicZ, xMagicEnd,
+            yFactorStart, magicZ);
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, zEnd, xFactorStart,
+            yMagicEnd, zEnd, xMagicEnd, yMagicEnd, zEnd, xMagicEnd,
+            yFactorStart, zEnd);
+
+    // Экран
+    magicZ = zEnd + 1;
+    zEnd += 100;
+    xFactorStart = xFactor + 10;
+    yFactorStart = yFactor + 57;
+    xMagicEnd = SCALE_FACTOR * (xCell + modelLength - 1) + 110;
+    yMagicEnd = yFactor + 63;
+    addQuad(vertices, facets, xFactorStart, yFactorStart, magicZ, xFactorStart, yMagicEnd,
+            magicZ, xMagicEnd, yMagicEnd, magicZ, xMagicEnd, yFactorStart, magicZ);
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, zEnd, xFactorStart,
+            yMagicEnd, zEnd, xFactorStart, yMagicEnd, magicZ, xFactorStart,
+            yFactorStart, magicZ);
+    addQuad(vertices, facets, xFactorStart, yMagicEnd, zEnd, xMagicEnd, yMagicEnd,
+            zEnd, xMagicEnd, yMagicEnd, magicZ, xFactorStart, yMagicEnd, magicZ);
+    addQuad(vertices, facets, xMagicEnd, yMagicEnd, zEnd, xMagicEnd, yFactorStart,
+            zEnd, xMagicEnd, yFactorStart, magicZ, xMagicEnd, yMagicEnd, magicZ);
+    addQuad(vertices, facets, xMagicEnd, yFactorStart, zEnd, xFactorStart,
+            yFactorStart, zEnd, xFactorStart, yFactorStart, magicZ, xMagicEnd,
+            yFactorStart, magicZ);
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, zEnd, xFactorStart,
+            yMagicEnd, zEnd, xMagicEnd, yMagicEnd, zEnd, xMagicEnd,
+            yFactorStart, zEnd);
+
+
+    PolModel screenModel(vertices, facets, "Screen");
+    screenModel.setUsedCell(xCell, yCell);
+
+    if (direction == PlaceChooser::checkBox::YAXIS)
+        screenModel.rotateZ(-90);
+
+    scene->addModel(screenModel);
+
+    return 0;
 }
 
 int UsageFacade::addTV(int xCell, int yCell, double modelLength, double modelHeight,
