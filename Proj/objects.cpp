@@ -417,6 +417,15 @@ void CellScene::rotateZ(double angle)
     transMatrix *= rotateMatrix;
 }
 
+void CellScene::toCenter()
+{
+    Dot3D start(PLATE_START);
+
+    transMatrix(3, 0) = X_CENTER - start.getXCoordinate() - getWidth() * SCALE_FACTOR / 2;
+    transMatrix(3, 1) = Y_CENTER - start.getYCoordinate() - getHeight() * SCALE_FACTOR / 2;
+    transMatrix(3, 2) = 0;
+}
+
 size_t CellScene::getModelsNum() { return modelsNum; }
 
 PolModel &CellScene::getModel(size_t num) { return models.at(num); }

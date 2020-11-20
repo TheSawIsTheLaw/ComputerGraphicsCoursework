@@ -297,6 +297,18 @@ void MainWindow::pictureRotateZLeft()
     ui->graphicsView->setScene(setScene);
 }
 
+void MainWindow::pictureToCenter()
+{
+    if (!facade->isSceneSet())
+        return;
+
+    if (ui->graphicsView->scene())
+        delete ui->graphicsView->scene();
+    QGraphicsScene *setScene = facade->toCenter(ui->graphicsView->rect());
+
+    ui->graphicsView->setScene(setScene);
+}
+
 void MainWindow::on_pushButton_4_clicked()
 {
     SizeChooser chooserWindow(nullptr);
@@ -434,5 +446,17 @@ void MainWindow::on_pushButton_7_clicked()
 
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
+    ui->graphicsView->setScene(setScene);
+}
+
+void MainWindow::on_pushButton_8_clicked()
+{
+    if (!facade->isSceneSet())
+        return;
+    if (ui->graphicsView->scene())
+        delete ui->graphicsView->scene();
+    QGraphicsScene *setScene =
+        facade->toCenter(ui->graphicsView->rect());
+
     ui->graphicsView->setScene(setScene);
 }

@@ -130,6 +130,8 @@ public:
     void rotateY(double angle);
     void rotateZ(double angle);
 
+    void toCenter();
+
     size_t getModelsNum();
     PolModel &getModel(size_t num);
     void setModel(size_t num, PolModel &newModel);

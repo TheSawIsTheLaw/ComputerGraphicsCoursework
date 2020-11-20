@@ -91,6 +91,13 @@ QGraphicsScene *UsageFacade::rotateZScene(double angle, QRectF rect)
     return drawScene(rect);
 }
 
+QGraphicsScene *UsageFacade::toCenter(QRectF rect)
+{
+    scene->toCenter();
+
+    return drawScene(rect);
+}
+
 CellScene *UsageFacade::getScene() { return scene; }
 
 void UsageFacade::addQuad(std::vector<Vertex> &vertices, std::vector<Facet> &facets,
@@ -865,14 +872,14 @@ void Drawer::shadowMapForModel(std::vector<Facet> &facets, std::vector<Vertex> &
     toCenter << 1, 0, 0, 0,
                 0, 1, 0, 0,
                 0, 0, 1, 0,
-                -X_CENTER, -Y_CENTER, -PLATE_Z, 1;
+                -X_CENTER, -Y_CENTER, -PLATE_Z - 5, 1;
     // clang-format on
     Eigen::Matrix4f backToStart;
     // clang-format off
     backToStart << 1, 0, 0, 0,
                    0, 1, 0, 0,
                    0, 0, 1, 0,
-                   X_CENTER, Y_CENTER, PLATE_Z, 1;
+                   X_CENTER, Y_CENTER, PLATE_Z + 5, 1;
     // clang-format on
     std::vector<std::vector<double>> *shadowMap = &illum->getShadowMap();
     Eigen::Matrix4f illumMat = illum->getTransMat();
@@ -993,14 +1000,14 @@ void Drawer::zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &verti
     toCenter << 1, 0, 0, 0,
                 0, 1, 0, 0,
                 0, 0, 1, 0,
-                -X_CENTER, -Y_CENTER, -PLATE_Z, 1;
+                -X_CENTER, -Y_CENTER, -PLATE_Z - 5, 1;
     // clang-format on
     Eigen::Matrix4f backToStart;
     // clang-format off
     backToStart << 1, 0, 0, 0,
                    0, 1, 0, 0,
                    0, 0, 1, 0,
-                   X_CENTER, Y_CENTER, PLATE_Z, 1;
+                   X_CENTER, Y_CENTER, PLATE_Z + 5, 1;
     // clang-format on
 
     Eigen::Matrix4f dotTransMat;
@@ -1353,6 +1360,7 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
                 image->setPixel(i, j, blackCol /*qRgb(190, 130, 210)*/);
             }
         }
+
     end = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
     qDebug() << "Time for drawing" << (end - start).count();
     outScene->addPixmap(QPixmap::fromImage(*image));
