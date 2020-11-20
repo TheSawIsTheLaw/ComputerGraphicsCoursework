@@ -778,8 +778,6 @@ int UsageFacade::addPlant(int xCell, int yCell, double modelLength, double model
     addTriangle(vertices, facets, xMagicEnd, yFactorStart, PLATE_Z + 30,
                 xFactorStart, yFactorStart, PLATE_Z + 30, xCenter, yCenter, magicZ);
 
-
-
     // Стебель
     magicZ = PLATE_Z + 30;
     xFactorStart = xFactor + 57;

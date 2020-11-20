@@ -118,7 +118,7 @@ CellScene::CellScene(size_t width_, size_t height_)
     modelsNum = 0;
     illumNum = 0;
 
-    transMatrix << 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1;
+    toCenter();
 }
 
 void CellScene::addQuad(std::vector<Vertex> &vertices, std::vector<Facet> &facets, int x1,
@@ -421,9 +421,18 @@ void CellScene::toCenter()
 {
     Dot3D start(PLATE_START);
 
-    transMatrix(3, 0) = X_CENTER - start.getXCoordinate() - getWidth() * SCALE_FACTOR / 2;
-    transMatrix(3, 1) = Y_CENTER - start.getYCoordinate() - getHeight() * SCALE_FACTOR / 2;
-    transMatrix(3, 2) = 0;
+    Eigen::Matrix4f newMat;
+    // clang-format off
+    newMat << 1,  0, 0, 0,
+              0,  1, 0, 0,
+              0,  0, 1, 0,
+              0,  0, 0, 1;
+    // clang-format on
+    newMat(3, 0) = X_CENTER - start.getXCoordinate() - getWidth() * SCALE_FACTOR / 2;
+    newMat(3, 1) = Y_CENTER - start.getYCoordinate() - getHeight() * SCALE_FACTOR / 2;
+    newMat(3, 2) = 0;
+
+    transMatrix = newMat;
 }
 
 size_t CellScene::getModelsNum() { return modelsNum; }
