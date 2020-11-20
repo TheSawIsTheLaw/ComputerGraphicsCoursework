@@ -359,6 +359,8 @@ void MainWindow::on_pushButton_clicked()
         PlaceChooser placeChooserWindow(nullptr);
         placeChooserWindow.setModal(true);
         placeChooserWindow.exec();
+        if (placeChooserWindow.status == PlaceChooser::CANCEL)
+            return;
         int retCode = 0;
         if (curRow == 0)
             retCode = facade->addTable(placeChooserWindow.getXCell(),
@@ -369,48 +371,42 @@ void MainWindow::on_pushButton_clicked()
                 placeChooserWindow.getYCell(), placeChooserWindow.getModelLength(),
                 placeChooserWindow.getModelHeight(), placeChooserWindow.getDirection());
         else if (curRow == 2)
-            facade->addChair(placeChooserWindow.getXCell(), placeChooserWindow.getYCell(),
+            retCode = facade->addChair(placeChooserWindow.getXCell(), placeChooserWindow.getYCell(),
                 placeChooserWindow.getModelLength(), placeChooserWindow.getModelHeight(),
                 placeChooserWindow.getDirection());
         else if (curRow == 3)
-            facade->addBarChair(placeChooserWindow.getXCell(),
+            retCode = facade->addBarChair(placeChooserWindow.getXCell(),
                 placeChooserWindow.getYCell(), placeChooserWindow.getModelLength(),
                 placeChooserWindow.getModelHeight(), placeChooserWindow.getDirection());
         else if (curRow == 4)
-            facade->addSofa(placeChooserWindow.getXCell(), placeChooserWindow.getYCell(),
+            retCode = facade->addSofa(placeChooserWindow.getXCell(), placeChooserWindow.getYCell(),
                 placeChooserWindow.getModelLength(), placeChooserWindow.getModelHeight(),
                 placeChooserWindow.getDirection());
         else if (curRow == 5)
-            facade->addPlant(placeChooserWindow.getXCell(), placeChooserWindow.getYCell(),
+            retCode = facade->addPlant(placeChooserWindow.getXCell(), placeChooserWindow.getYCell(),
                 placeChooserWindow.getModelHeight(), placeChooserWindow.getDirection());
         else if (curRow == 6)
-            facade->addPodium(placeChooserWindow.getXCell(),
+            retCode = facade->addPodium(placeChooserWindow.getXCell(),
                 placeChooserWindow.getYCell(), placeChooserWindow.getModelLength(),
                 placeChooserWindow.getModelHeight(), placeChooserWindow.getDirection());
         else if (curRow == 7)
-            facade->addScreen(placeChooserWindow.getXCell(),
+            retCode = facade->addScreen(placeChooserWindow.getXCell(),
                 placeChooserWindow.getYCell(), placeChooserWindow.getModelLength(),
                 placeChooserWindow.getModelHeight(), placeChooserWindow.getDirection());
         else if (curRow == 8)
-            facade->addTV(placeChooserWindow.getXCell(), placeChooserWindow.getYCell(),
+            retCode = facade->addTV(placeChooserWindow.getXCell(), placeChooserWindow.getYCell(),
                 placeChooserWindow.getModelLength(), placeChooserWindow.getModelHeight(),
                 placeChooserWindow.getDirection());
         else if (curRow == 9)
-            facade->addCupboard(placeChooserWindow.getXCell(),
+            retCode = facade->addCupboard(placeChooserWindow.getXCell(),
                 placeChooserWindow.getYCell(), placeChooserWindow.getModelLength(),
                 placeChooserWindow.getModelHeight(), placeChooserWindow.getDirection());
         else if (curRow == 10)
-            facade->addRack(placeChooserWindow.getXCell(), placeChooserWindow.getYCell(),
+            retCode = facade->addRack(placeChooserWindow.getXCell(), placeChooserWindow.getYCell(),
                 placeChooserWindow.getModelLength(), placeChooserWindow.getModelHeight(),
                 placeChooserWindow.getDirection());
 
-        if (retCode == 1)
-        {
-            QErrorMessage *err = new QErrorMessage();
-            err->showMessage("Указанная ячейка уже занята.");
-            return;
-        }
-        else if (retCode == 2)
+        if (retCode == 2)
         {
             QErrorMessage *err = new QErrorMessage();
             err->showMessage("Указанной ячейки не существует");

@@ -81,4 +81,5 @@ void ObjectHangman::on_pushButton_2_clicked()
     }
 
     close();
+    return;
 }

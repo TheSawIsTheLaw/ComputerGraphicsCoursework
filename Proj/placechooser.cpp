@@ -29,6 +29,7 @@ PlaceChooser::checkBox PlaceChooser::getDirection() { return direction; }
 void PlaceChooser::on_buttonBox_accepted()
 {
     QString gotText = this->ui->lineEdit->text();
+    status = CANCEL;
     if (gotText == "")
     {
         this->close();
@@ -75,5 +76,12 @@ void PlaceChooser::on_buttonBox_accepted()
                          "передано положительное вещественное значение.");
     }
 
+    status = OK;
     this->close();
+}
+
+void PlaceChooser::on_buttonBox_rejected()
+{
+    this->close();
+    status = CANCEL;
 }

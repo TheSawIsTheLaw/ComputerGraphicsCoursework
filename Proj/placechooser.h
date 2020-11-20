@@ -19,6 +19,12 @@ public:
         YAXIS
     };
 
+    enum stat
+    {
+        CANCEL,
+        OK
+    };
+
     explicit PlaceChooser(QWidget *parent = nullptr);
     ~PlaceChooser();
 
@@ -32,8 +38,12 @@ public:
     double getModelHeight();
     checkBox getDirection();
 
+    stat status;
+
 private slots:
     void on_buttonBox_accepted();
+
+    void on_buttonBox_rejected();
 
 private:
     Ui::PlaceChooser *ui;
