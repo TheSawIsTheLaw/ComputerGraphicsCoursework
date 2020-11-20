@@ -1133,45 +1133,39 @@ int UsageFacade::addCupboard(int xCell, int yCell, double modelLength, double mo
     yMagicEnd = yFactorStart - 10;
 
     addQuad(vertices, facets, xFactorStart, yFactorStart, magicZ, xFactorStart, yMagicEnd,
-            magicZ, xMagicEnd, yMagicEnd, magicZ, xMagicEnd, yFactorStart, magicZ);
+        magicZ, xMagicEnd, yMagicEnd, magicZ, xMagicEnd, yFactorStart, magicZ);
 
-    addQuad(vertices, facets, xFactorStart, yFactorStart, zEnd, xFactorStart,
-            yMagicEnd, zEnd, xFactorStart, yMagicEnd, magicZ, xFactorStart,
-            yFactorStart, magicZ);
-    addQuad(vertices, facets, xFactorStart, yMagicEnd, zEnd, xMagicEnd, yMagicEnd,
-            zEnd, xMagicEnd, yMagicEnd, magicZ, xFactorStart, yMagicEnd, magicZ);
-    addQuad(vertices, facets, xMagicEnd, yMagicEnd, zEnd, xMagicEnd, yFactorStart,
-            zEnd, xMagicEnd, yFactorStart, magicZ, xMagicEnd, yMagicEnd, magicZ);
-    addQuad(vertices, facets, xMagicEnd, yFactorStart, zEnd, xFactorStart,
-            yFactorStart, zEnd, xFactorStart, yFactorStart, magicZ, xMagicEnd,
-            yFactorStart, magicZ);
+    addQuad(vertices, facets, xFactorStart, yFactorStart, zEnd, xFactorStart, yMagicEnd,
+        zEnd, xFactorStart, yMagicEnd, magicZ, xFactorStart, yFactorStart, magicZ);
+    addQuad(vertices, facets, xFactorStart, yMagicEnd, zEnd, xMagicEnd, yMagicEnd, zEnd,
+        xMagicEnd, yMagicEnd, magicZ, xFactorStart, yMagicEnd, magicZ);
+    addQuad(vertices, facets, xMagicEnd, yMagicEnd, zEnd, xMagicEnd, yFactorStart, zEnd,
+        xMagicEnd, yFactorStart, magicZ, xMagicEnd, yMagicEnd, magicZ);
+    addQuad(vertices, facets, xMagicEnd, yFactorStart, zEnd, xFactorStart, yFactorStart,
+        zEnd, xFactorStart, yFactorStart, magicZ, xMagicEnd, yFactorStart, magicZ);
 
-    addQuad(vertices, facets, xFactorStart, yFactorStart, zEnd, xFactorStart,
-            yMagicEnd, zEnd, xMagicEnd, yMagicEnd, zEnd, xMagicEnd,
-            yFactorStart, zEnd);
+    addQuad(vertices, facets, xFactorStart, yFactorStart, zEnd, xFactorStart, yMagicEnd,
+        zEnd, xMagicEnd, yMagicEnd, zEnd, xMagicEnd, yFactorStart, zEnd);
 
     // Правая створка
     xFactorStart = magicX + 100;
 
     addQuad(vertices, facets, xFactorStart, yFactorStart, magicZ, xFactorStart, yMagicEnd,
-            magicZ, xMagicEnd, yMagicEnd, magicZ, xMagicEnd, yFactorStart, magicZ);
+        magicZ, xMagicEnd, yMagicEnd, magicZ, xMagicEnd, yFactorStart, magicZ);
 
-    addQuad(vertices, facets, xFactorStart, yFactorStart, zEnd, xFactorStart,
-            yMagicEnd, zEnd, xFactorStart, yMagicEnd, magicZ, xFactorStart,
-            yFactorStart, magicZ);
-    addQuad(vertices, facets, xFactorStart, yMagicEnd, zEnd, xMagicEnd, yMagicEnd,
-            zEnd, xMagicEnd, yMagicEnd, magicZ, xFactorStart, yMagicEnd, magicZ);
-    addQuad(vertices, facets, xMagicEnd, yMagicEnd, zEnd, xMagicEnd, yFactorStart,
-            zEnd, xMagicEnd, yFactorStart, magicZ, xMagicEnd, yMagicEnd, magicZ);
-    addQuad(vertices, facets, xMagicEnd, yFactorStart, zEnd, xFactorStart,
-            yFactorStart, zEnd, xFactorStart, yFactorStart, magicZ, xMagicEnd,
-            yFactorStart, magicZ);
+    addQuad(vertices, facets, xFactorStart, yFactorStart, zEnd, xFactorStart, yMagicEnd,
+        zEnd, xFactorStart, yMagicEnd, magicZ, xFactorStart, yFactorStart, magicZ);
+    addQuad(vertices, facets, xFactorStart, yMagicEnd, zEnd, xMagicEnd, yMagicEnd, zEnd,
+        xMagicEnd, yMagicEnd, magicZ, xFactorStart, yMagicEnd, magicZ);
+    addQuad(vertices, facets, xMagicEnd, yMagicEnd, zEnd, xMagicEnd, yFactorStart, zEnd,
+        xMagicEnd, yFactorStart, magicZ, xMagicEnd, yMagicEnd, magicZ);
+    addQuad(vertices, facets, xMagicEnd, yFactorStart, zEnd, xFactorStart, yFactorStart,
+        zEnd, xFactorStart, yFactorStart, magicZ, xMagicEnd, yFactorStart, magicZ);
 
-    addQuad(vertices, facets, xFactorStart, yFactorStart, zEnd, xFactorStart,
-            yMagicEnd, zEnd, xMagicEnd, yMagicEnd, zEnd, xMagicEnd,
-            yFactorStart, zEnd);
+    addQuad(vertices, facets, xFactorStart, yFactorStart, zEnd, xFactorStart, yMagicEnd,
+        zEnd, xMagicEnd, yMagicEnd, zEnd, xMagicEnd, yFactorStart, zEnd);
 
-    PolModel cupboardModel(vertices, facets, "Sofa");
+    PolModel cupboardModel(vertices, facets, "Cupdoard");
     cupboardModel.setUsedCell(xCell, yCell);
 
     if (direction == PlaceChooser::checkBox::YAXIS)
@@ -1185,6 +1179,139 @@ int UsageFacade::addCupboard(int xCell, int yCell, double modelLength, double mo
 int UsageFacade::addRack(int xCell, int yCell, double modelLength, double modelHeight,
     PlaceChooser::checkBox direction)
 {
+    if (xCell >= (int) scene->getWidth() || yCell >= (int) scene->getHeight())
+        return 2;
+    std::vector<Vertex> vertices;
+    std::vector<Facet> facets;
+
+    std::vector<size_t> vec;
+
+    int xFactor = xCell * SCALE_FACTOR;
+    int yFactor = yCell * SCALE_FACTOR;
+
+    int magicZ = PLATE_Z + 80 * modelHeight + 1;
+    int magicX = SCALE_FACTOR * (xCell + modelLength - 1);
+    int magicY = yFactor;
+
+    int xFactorStart = xFactor + 30;
+    int yFactorStart = yFactor + 30;
+    int xMagicEnd = magicX + 90;
+    int yMagicEnd = magicY + 90;
+
+    // Ножка лево верх
+    xFactorStart = xFactor + 17;
+    yFactorStart = yFactor + 17;
+    xMagicEnd = xFactor + 13;
+    yMagicEnd = yFactor + 13;
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, magicZ, xFactorStart, yMagicEnd,
+        magicZ, xMagicEnd, yMagicEnd, magicZ, xMagicEnd, yFactorStart, magicZ);
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, PLATE_Z + 1, xFactorStart,
+        yMagicEnd, PLATE_Z + 1, xFactorStart, yMagicEnd, magicZ, xFactorStart,
+        yFactorStart, magicZ);
+    addQuad(vertices, facets, xFactorStart, yMagicEnd, PLATE_Z + 1, xMagicEnd, yMagicEnd,
+        PLATE_Z + 1, xMagicEnd, yMagicEnd, magicZ, xFactorStart, yMagicEnd, magicZ);
+    addQuad(vertices, facets, xMagicEnd, yMagicEnd, PLATE_Z + 1, xMagicEnd, yFactorStart,
+        PLATE_Z + 1, xMagicEnd, yFactorStart, magicZ, xMagicEnd, yMagicEnd, magicZ);
+    addQuad(vertices, facets, xMagicEnd, yFactorStart, PLATE_Z + 1, xFactorStart,
+        yFactorStart, PLATE_Z + 1, xFactorStart, yFactorStart, magicZ, xMagicEnd,
+        yFactorStart, magicZ);
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, PLATE_Z + 1, xFactorStart,
+        yMagicEnd, PLATE_Z + 1, xMagicEnd, yMagicEnd, PLATE_Z + 1, xMagicEnd,
+        yFactorStart, PLATE_Z + 1);
+
+    // Ножка лево низ
+    xFactorStart = xFactor + 17;
+    yFactorStart = yFactor + 107;
+    xMagicEnd = xFactor + 13;
+    yMagicEnd = yFactor + 103;
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, magicZ, xFactorStart, yMagicEnd,
+        magicZ, xMagicEnd, yMagicEnd, magicZ, xMagicEnd, yFactorStart, magicZ);
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, PLATE_Z + 1, xFactorStart,
+        yMagicEnd, PLATE_Z + 1, xFactorStart, yMagicEnd, magicZ, xFactorStart,
+        yFactorStart, magicZ);
+    addQuad(vertices, facets, xFactorStart, yMagicEnd, PLATE_Z + 1, xMagicEnd, yMagicEnd,
+        PLATE_Z + 1, xMagicEnd, yMagicEnd, magicZ, xFactorStart, yMagicEnd, magicZ);
+    addQuad(vertices, facets, xMagicEnd, yMagicEnd, PLATE_Z + 1, xMagicEnd, yFactorStart,
+        PLATE_Z + 1, xMagicEnd, yFactorStart, magicZ, xMagicEnd, yMagicEnd, magicZ);
+    addQuad(vertices, facets, xMagicEnd, yFactorStart, PLATE_Z + 1, xFactorStart,
+        yFactorStart, PLATE_Z + 1, xFactorStart, yFactorStart, magicZ, xMagicEnd,
+        yFactorStart, magicZ);
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, PLATE_Z + 1, xFactorStart,
+        yMagicEnd, PLATE_Z + 1, xMagicEnd, yMagicEnd, PLATE_Z + 1, xMagicEnd,
+        yFactorStart, PLATE_Z + 1);
+
+    // Ножка право верх
+    xFactorStart = magicX + 107;
+    yFactorStart = yFactor + 17;
+    xMagicEnd = magicX + 103;
+    yMagicEnd = yFactor + 13;
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, magicZ, xFactorStart, yMagicEnd,
+        magicZ, xMagicEnd, yMagicEnd, magicZ, xMagicEnd, yFactorStart, magicZ);
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, PLATE_Z + 1, xFactorStart,
+        yMagicEnd, PLATE_Z + 1, xFactorStart, yMagicEnd, magicZ, xFactorStart,
+        yFactorStart, magicZ);
+    addQuad(vertices, facets, xFactorStart, yMagicEnd, PLATE_Z + 1, xMagicEnd, yMagicEnd,
+        PLATE_Z + 1, xMagicEnd, yMagicEnd, magicZ, xFactorStart, yMagicEnd, magicZ);
+    addQuad(vertices, facets, xMagicEnd, yMagicEnd, PLATE_Z + 1, xMagicEnd, yFactorStart,
+        PLATE_Z + 1, xMagicEnd, yFactorStart, magicZ, xMagicEnd, yMagicEnd, magicZ);
+    addQuad(vertices, facets, xMagicEnd, yFactorStart, PLATE_Z + 1, xFactorStart,
+        yFactorStart, PLATE_Z + 1, xFactorStart, yFactorStart, magicZ, xMagicEnd,
+        yFactorStart, magicZ);
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, PLATE_Z + 1, xFactorStart,
+        yMagicEnd, PLATE_Z + 1, xMagicEnd, yMagicEnd, PLATE_Z + 1, xMagicEnd,
+        yFactorStart, PLATE_Z + 1);
+
+    // Ножка право низ
+    xFactorStart = magicX + 107;
+    yFactorStart = yFactor + 107;
+    xMagicEnd = magicX + 103;
+    yMagicEnd = yFactor + 103;
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, magicZ, xFactorStart, yMagicEnd,
+        magicZ, xMagicEnd, yMagicEnd, magicZ, xMagicEnd, yFactorStart, magicZ);
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, PLATE_Z + 1, xFactorStart,
+        yMagicEnd, PLATE_Z + 1, xFactorStart, yMagicEnd, magicZ, xFactorStart,
+        yFactorStart, magicZ);
+    addQuad(vertices, facets, xFactorStart, yMagicEnd, PLATE_Z + 1, xMagicEnd, yMagicEnd,
+        PLATE_Z + 1, xMagicEnd, yMagicEnd, magicZ, xFactorStart, yMagicEnd, magicZ);
+    addQuad(vertices, facets, xMagicEnd, yMagicEnd, PLATE_Z + 1, xMagicEnd, yFactorStart,
+        PLATE_Z + 1, xMagicEnd, yFactorStart, magicZ, xMagicEnd, yMagicEnd, magicZ);
+    addQuad(vertices, facets, xMagicEnd, yFactorStart, PLATE_Z + 1, xFactorStart,
+        yFactorStart, PLATE_Z + 1, xFactorStart, yFactorStart, magicZ, xMagicEnd,
+        yFactorStart, magicZ);
+
+    addQuad(vertices, facets, xFactorStart, yFactorStart, PLATE_Z + 1, xFactorStart,
+        yMagicEnd, PLATE_Z + 1, xMagicEnd, yMagicEnd, PLATE_Z + 1, xMagicEnd,
+        yFactorStart, PLATE_Z + 1);
+
+    xFactorStart = xFactor + 17;
+    yFactorStart = yFactor + 17;
+    xMagicEnd = magicX + 103;
+    yMagicEnd = yFactor + 103;
+    for (int i = magicZ - PLATE_Z; i > 0; i -= 30)
+    {
+        double curZ = PLATE_Z + i;
+        addQuad(vertices, facets, xFactorStart, yFactorStart, curZ, xFactorStart,
+            yMagicEnd, curZ, xMagicEnd, yMagicEnd, curZ, xMagicEnd, yFactorStart, curZ);
+    }
+
+    PolModel rackModel(vertices, facets, "Rack");
+    rackModel.setUsedCell(xCell, yCell);
+    if (direction == PlaceChooser::checkBox::YAXIS)
+        rackModel.rotateZ(-90);
+    scene->addModel(rackModel);
+
+    return 0;
 }
 
 void UsageFacade::addIlluminant(int xAngle, int yAngle)
