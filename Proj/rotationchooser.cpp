@@ -52,7 +52,7 @@ void rotationChooser::on_buttonBox_accepted()
     newXCell = gotText.toInt();
 
     gotText = this->ui->lineEdit_3->text();
-    if (gotText == "0")
+    if (gotText == "")
     {
         stat = ERROR_WAS_ACCURED;
         this->close();

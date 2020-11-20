@@ -29,14 +29,14 @@
     <item>
      <widget class="QPushButton" name="pushButton">
       <property name="text">
-       <string>Удалить объект</string>
+       <string>Удалить</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QPushButton" name="pushButton_2">
       <property name="text">
-       <string>Повернуть объект</string>
+       <string>Повернуть или изменить положение</string>
       </property>
      </widget>
     </item>
