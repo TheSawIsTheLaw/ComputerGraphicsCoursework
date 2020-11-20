@@ -382,8 +382,7 @@ void MainWindow::on_pushButton_clicked()
                 placeChooserWindow.getDirection());
         else if (curRow == 5)
             facade->addPlant(placeChooserWindow.getXCell(), placeChooserWindow.getYCell(),
-                placeChooserWindow.getModelLength(), placeChooserWindow.getModelHeight(),
-                placeChooserWindow.getDirection());
+                placeChooserWindow.getModelHeight(), placeChooserWindow.getDirection());
         else if (curRow == 6)
             facade->addPodium(placeChooserWindow.getXCell(),
                 placeChooserWindow.getYCell(), placeChooserWindow.getModelLength(),
@@ -455,8 +454,7 @@ void MainWindow::on_pushButton_8_clicked()
         return;
     if (ui->graphicsView->scene())
         delete ui->graphicsView->scene();
-    QGraphicsScene *setScene =
-        facade->toCenter(ui->graphicsView->rect());
+    QGraphicsScene *setScene = facade->toCenter(ui->graphicsView->rect());
 
     ui->graphicsView->setScene(setScene);
 }

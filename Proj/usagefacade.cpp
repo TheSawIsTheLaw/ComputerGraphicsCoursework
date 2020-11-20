@@ -165,9 +165,6 @@ int UsageFacade::addTable(int xCell, int yCell, double modelLength, double model
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
 
-    Dot3D dot;
-    std::vector<size_t> vec;
-
     int xFactor = xCell * SCALE_FACTOR;
     int yFactor = yCell * SCALE_FACTOR;
 
@@ -231,9 +228,6 @@ int UsageFacade::addBarTable(int xCell, int yCell, double modelLength, double mo
         return 2;
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
-
-    Dot3D dot;
-    std::vector<size_t> vec;
 
     int xFactor = xCell * SCALE_FACTOR;
     int yFactor = yCell * SCALE_FACTOR;
@@ -341,9 +335,6 @@ int UsageFacade::addChair(int xCell, int yCell, double modelLength, double model
         return 2;
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
-
-    Dot3D dot;
-    std::vector<size_t> vec;
 
     int xFactor = xCell * SCALE_FACTOR;
     int yFactor = yCell * SCALE_FACTOR;
@@ -475,9 +466,6 @@ int UsageFacade::addBarChair(int xCell, int yCell, double modelLength, double mo
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
 
-    Dot3D dot;
-    std::vector<size_t> vec;
-
     int xFactor = xCell * SCALE_FACTOR;
     int yFactor = yCell * SCALE_FACTOR;
 
@@ -598,9 +586,6 @@ int UsageFacade::addSofa(int xCell, int yCell, double modelLength, double modelH
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
 
-    Dot3D dot;
-    std::vector<size_t> vec;
-
     int xFactor = xCell * SCALE_FACTOR;
     int yFactor = yCell * SCALE_FACTOR;
 
@@ -719,16 +704,13 @@ int UsageFacade::addSofa(int xCell, int yCell, double modelLength, double modelH
     return 0;
 }
 
-int UsageFacade::addPlant(int xCell, int yCell, double modelLength, double modelHeight,
+int UsageFacade::addPlant(int xCell, int yCell, double modelHeight,
     PlaceChooser::checkBox direction)
 {
     if (xCell >= (int) scene->getWidth() || yCell >= (int) scene->getHeight())
         return 2;
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
-
-    Dot3D dot;
-    std::vector<size_t> vec;
 
     int xFactor = xCell * SCALE_FACTOR;
     int yFactor = yCell * SCALE_FACTOR;
@@ -822,9 +804,6 @@ int UsageFacade::addPodium(int xCell, int yCell, double modelLength, double mode
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
 
-    Dot3D dot;
-    std::vector<size_t> vec;
-
     int xFactor = xCell * SCALE_FACTOR;
     int yFactor = yCell * SCALE_FACTOR;
 
@@ -874,9 +853,6 @@ int UsageFacade::addScreen(int xCell, int yCell, double modelLength, double mode
         return 2;
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
-
-    Dot3D dot;
-    std::vector<size_t> vec;
 
     int xFactor = xCell * SCALE_FACTOR;
     int yFactor = yCell * SCALE_FACTOR;
@@ -967,9 +943,6 @@ int UsageFacade::addTV(int xCell, int yCell, double modelLength, double modelHei
         return 2;
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
-
-    Dot3D dot;
-    std::vector<size_t> vec;
 
     int xFactor = xCell * SCALE_FACTOR;
     int yFactor = yCell * SCALE_FACTOR;
@@ -1093,7 +1066,6 @@ int UsageFacade::addCupboard(int xCell, int yCell, double modelLength, double mo
     std::vector<Facet> facets;
 
     Dot3D start(PLATE_START);
-    std::vector<size_t> vec;
 
     int xFactor = xCell * SCALE_FACTOR;
     int yFactor = yCell * SCALE_FACTOR;
@@ -1184,25 +1156,17 @@ int UsageFacade::addRack(int xCell, int yCell, double modelLength, double modelH
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
 
-    std::vector<size_t> vec;
-
     int xFactor = xCell * SCALE_FACTOR;
     int yFactor = yCell * SCALE_FACTOR;
 
     int magicZ = PLATE_Z + 80 * modelHeight + 1;
     int magicX = SCALE_FACTOR * (xCell + modelLength - 1);
-    int magicY = yFactor;
-
-    int xFactorStart = xFactor + 30;
-    int yFactorStart = yFactor + 30;
-    int xMagicEnd = magicX + 90;
-    int yMagicEnd = magicY + 90;
 
     // Ножка лево верх
-    xFactorStart = xFactor + 17;
-    yFactorStart = yFactor + 17;
-    xMagicEnd = xFactor + 13;
-    yMagicEnd = yFactor + 13;
+    int xFactorStart = xFactor + 17;
+    int yFactorStart = yFactor + 17;
+    int xMagicEnd = xFactor + 13;
+    int yMagicEnd = yFactor + 13;
 
     addQuad(vertices, facets, xFactorStart, yFactorStart, magicZ, xFactorStart, yMagicEnd,
         magicZ, xMagicEnd, yMagicEnd, magicZ, xMagicEnd, yFactorStart, magicZ);
