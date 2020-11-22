@@ -232,7 +232,7 @@ int UsageFacade::addBarTable(int xCell, int yCell, double modelLength, double mo
     int xFactor = xCell * SCALE_FACTOR;
     int yFactor = yCell * SCALE_FACTOR;
 
-    int magicZ = PLATE_Z + 120 * modelHeight + 1;
+    int magicZ = PLATE_Z + 90 * modelHeight + 1;
     int magicX = (direction == PlaceChooser::checkBox::XAXIS)
                      ? SCALE_FACTOR * (xCell + modelLength - 1)
                      : xFactor;
@@ -469,7 +469,7 @@ int UsageFacade::addBarChair(int xCell, int yCell, double modelLength, double mo
     int xFactor = xCell * SCALE_FACTOR;
     int yFactor = yCell * SCALE_FACTOR;
 
-    int magicZ = PLATE_Z + 40 * modelHeight + 1;
+    int magicZ = PLATE_Z + 60 * modelHeight + 1;
     int magicX = SCALE_FACTOR * (xCell + modelLength - 1);
     int magicY = yFactor;
 
@@ -1751,11 +1751,11 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     scene->buildPlateModel(Dot3D(PLATE_START), Dot3D(width, height, PLATE_Z));
 
     using namespace std::chrono;
-    milliseconds start =
-        duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+    nanoseconds start =
+        duration_cast<nanoseconds>(system_clock::now().time_since_epoch());
     zBufferAlg(scene, rect.size().height(), rect.size().width());
-    milliseconds end =
-        duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+    nanoseconds end =
+        duration_cast<nanoseconds>(system_clock::now().time_since_epoch());
 
     qDebug() << "Time for zBuf" << (end - start).count();
 
@@ -1765,7 +1765,7 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     QPen blackPen(Qt::black);
     //    QPen redPen(Qt::red);
 
-    start = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+    nanoseconds start2 = duration_cast<nanoseconds>(system_clock::now().time_since_epoch());
 
     //    int w = rect.size().width();  /* Put here what ever width you want */
     //    int h = rect.size().height(); /* Put here what ever height you want */
@@ -1867,8 +1867,10 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
             }
         }
 
-    end = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-    qDebug() << "Time for drawing" << (end - start).count();
+    nanoseconds end2 = duration_cast<nanoseconds>(system_clock::now().time_since_epoch());
+    qDebug() << "Time for drawing" << (end2 - start2).count();
+
+    qDebug() << "Total time" << (end2 - start2).count() + (end - start).count();
     outScene->addPixmap(QPixmap::fromImage(*image));
     delete image;
     for (size_t i = 0; i < scene->getIllumNum(); i++)
