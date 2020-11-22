@@ -30,13 +30,13 @@ class Facet
 {
 public:
     Facet() {}
-    Facet(std::vector<size_t> usedDots_) : usedDots(usedDots_) {}
+    Facet(std::vector<size_t> usedVertices_) : usedVertices(usedVertices_) {}
 
-    const std::vector<size_t> getUsedDots();
-    void setUsedDots(std::vector<size_t> usedDots_);
+    const std::vector<size_t> getUsedVertices();
+    void setUsedVertices(std::vector<size_t> usedVertices_);
 
 private:
-    std::vector<size_t> usedDots;
+    std::vector<size_t> usedVertices;
 };
 
 class PolModel
@@ -86,7 +86,7 @@ public:
     Illuminant(Eigen::Matrix4f &transMat);
     Illuminant(){};
 
-    void setBuf(std::vector<std::vector<double>> &setBuf);
+    void setShadowMap(std::vector<std::vector<double>> &setShadowMap);
     std::vector<std::vector<double>> &getShadowMap();
     void clearShadowMap();
 
@@ -98,7 +98,7 @@ public:
     Eigen::Matrix4f &getTransMat();
 
 private:
-    std::vector<std::vector<double>> shadowBuffer;
+    std::vector<std::vector<double>> shadowMap;
     Eigen::Matrix4f transMatrix;
     int xAngle, yAngle;
 };

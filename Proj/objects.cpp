@@ -11,9 +11,9 @@ const std::vector<size_t> Vertex::getUsedFacets() { return usedFacets; }
 
 void Vertex::setUsedFacets(std::vector<size_t> usedFacets_) { usedFacets = usedFacets_; }
 
-const std::vector<size_t> Facet::getUsedDots() { return usedDots; }
+const std::vector<size_t> Facet::getUsedVertices() { return usedVertices; }
 
-void Facet::setUsedDots(std::vector<size_t> usedDots_) { usedDots = usedDots_; }
+void Facet::setUsedVertices(std::vector<size_t> usedVertices_) { usedVertices = usedVertices_; }
 
 const std::vector<Vertex> PolModel::getVertices() { return vertices; }
 
@@ -71,26 +71,26 @@ int PolModel::getUsedXCell() { return xCell; }
 
 int PolModel::getUsedYCell() { return yCell; }
 
-std::vector<std::vector<double>> &Illuminant::getShadowMap() { return shadowBuffer; }
+std::vector<std::vector<double>> &Illuminant::getShadowMap() { return shadowMap; }
 
 Illuminant::Illuminant(Eigen::Matrix4f &transMatrix_)
 {
     transMatrix = transMatrix_;
     for (size_t i = 0; i < ILLUM_VIS_X; i++)
-    { shadowBuffer.push_back(std::vector<double>(ILLUM_VIS_Y, 0)); }
+    { shadowMap.push_back(std::vector<double>(ILLUM_VIS_Y, 0)); }
 }
 
-void Illuminant::setBuf(std::vector<std::vector<double>> &setBuf)
+void Illuminant::setShadowMap(std::vector<std::vector<double>> &setShadowMap)
 {
-    shadowBuffer = setBuf;
+    shadowMap = setShadowMap;
 }
 
 void Illuminant::clearShadowMap()
 {
-    for (size_t i = 0; i < shadowBuffer.size(); i++)
+    for (size_t i = 0; i < shadowMap.size(); i++)
     {
-        for (size_t j = 0; j < shadowBuffer.at(0).size(); j++)
-            shadowBuffer.at(i).at(j) = 0;
+        for (size_t j = 0; j < shadowMap.at(0).size(); j++)
+            shadowMap.at(i).at(j) = 0;
     }
 }
 

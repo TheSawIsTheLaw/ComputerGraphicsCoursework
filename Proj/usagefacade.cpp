@@ -1396,7 +1396,7 @@ void Drawer::shadowMapForModel(std::vector<Facet> &facets, std::vector<Vertex> &
     {
         Eigen::MatrixXf coordinatesVec(3, 4);
 
-        std::vector<size_t> curDots = facets.at(curFaceNum).getUsedDots();
+        std::vector<size_t> curDots = facets.at(curFaceNum).getUsedVertices();
         dotsArr[0] = vertices.at(curDots.at(0)).getPosition();
         dotsArr[1] = vertices.at(curDots.at(1)).getPosition();
         dotsArr[2] = vertices.at(curDots.at(2)).getPosition();
@@ -1526,7 +1526,7 @@ void Drawer::zBufForModel(std::vector<Facet> &facets, std::vector<Vertex> &verti
     {
         Eigen::MatrixXf coordinatesVec(3, 4);
 
-        std::vector<size_t> curDots = facets.at(curFaceNum).getUsedDots();
+        std::vector<size_t> curDots = facets.at(curFaceNum).getUsedVertices();
         dotsArr[0] = vertices.at(curDots.at(0)).getPosition();
         dotsArr[1] = vertices.at(curDots.at(1)).getPosition();
         dotsArr[2] = vertices.at(curDots.at(2)).getPosition();
