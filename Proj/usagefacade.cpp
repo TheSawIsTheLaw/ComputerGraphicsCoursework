@@ -1836,11 +1836,11 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
     QImage *image =
         new QImage(rect.size().width(), rect.size().height(), QImage::Format_RGB32);
     image->fill(Qt::white);
-    uint plateCol = qRgb(255, 150, 255);
-    uint darkPlateCol = qRgb(190, 130, 190);
-    uint blackCol = qRgb(0, 0, 0);
-    uint goldCol = qRgb(255, 215, 0);
-    uint darkGoldCol = qRgb(205, 170, 0);
+    uint plateCol = qRgb(VIOLET_COLOUR);
+    uint darkPlateCol = qRgb(DARK_VIOLET_COLOUR);
+    uint blackCol = qRgb(BLACK_COLOUR);
+    uint modelsCol = qRgb(ORANGE_COLOUR);
+    uint darkModelsCol = qRgb(DARK_ORANGE_COLOUR);
 
     for (size_t i = 0; i < rect.size().width() - 1; i++)
         for (size_t j = 0; j < rect.size().height() - 1; j++)
@@ -1855,11 +1855,11 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
             }
             else if (frameBuffer.at(i).at(j) == 3)
             {
-                image->setPixel(i, j, darkGoldCol);
+                image->setPixel(i, j, darkModelsCol);
             }
             else if (frameBuffer.at(i).at(j) == 4)
             {
-                image->setPixel(i, j, goldCol);
+                image->setPixel(i, j, modelsCol);
             }
             else if (frameBuffer.at(i).at(j) == 5)
             {
