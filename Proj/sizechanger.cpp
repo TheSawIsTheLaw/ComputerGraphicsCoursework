@@ -6,6 +6,7 @@
 SizeChanger::SizeChanger(QWidget *parent) : QDialog(parent), ui(new Ui::SizeChanger)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Изменение размеров сцены");
 }
 
 SizeChanger::~SizeChanger() { delete ui; }

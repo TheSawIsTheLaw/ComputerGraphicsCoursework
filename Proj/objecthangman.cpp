@@ -9,6 +9,7 @@ ObjectHangman::ObjectHangman(CellScene *scene_, QWidget *parent)
 : QDialog(parent), ui(new Ui::ObjectHangman)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Изменение объектов сцены");
 
     scene = scene_;
 

@@ -6,6 +6,7 @@ IlluminantPlaceChooser::IlluminantPlaceChooser(QWidget *parent) :
     ui(new Ui::IlluminantPlaceChooser)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Выбор расположения источника света");
 }
 
 IlluminantPlaceChooser::~IlluminantPlaceChooser()

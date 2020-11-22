@@ -6,6 +6,7 @@ rotationChooser::rotationChooser(int curXCell, int curYCell, QWidget *parent) :
     ui(new Ui::rotationChooser)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Изменение положения модели на сцене");
 
     ui->lineEdit_4->setText(QString::number(curXCell));
     ui->lineEdit_3->setText(QString::number(curYCell));
