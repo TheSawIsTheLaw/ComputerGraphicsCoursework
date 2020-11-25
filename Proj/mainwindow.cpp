@@ -339,6 +339,14 @@ void MainWindow::on_pushButton_5_clicked()
     SizeChanger changerWindow(nullptr);
     changerWindow.setModal(true);
     changerWindow.exec();
+
+    facade->changeCellScene(changerWindow.getNewWidth(), changerWindow.getNewHeight());
+
+    QGraphicsScene *setScene = facade->drawScene(ui->graphicsView->rect());
+
+    if (ui->graphicsView->scene())
+        delete ui->graphicsView->scene();
+    ui->graphicsView->setScene(setScene);
 }
 
 void MainWindow::on_pushButton_clicked()

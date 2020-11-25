@@ -481,8 +481,8 @@ PolModel &CellScene::getPlateModel() { return *plateModel; }
 
 void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
 {
-    if (plateModel)
-        return;
+//    if (plateModel)
+//        return;
 
     std::vector<Vertex> vertices;
     std::vector<Facet> facets;
@@ -528,18 +528,34 @@ void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
     plateModel = new PolModel(vertices, facets);
 }
 
-void CellScene::changeSize(size_t newWidth, size_t newheight)
+void CellScene::changeSize(size_t newWidth, size_t newHeight)
 {
-    if (newWidth >= width)
-        width = newWidth;
-    //    else Вот тут потребуется анализ ситуации...
-    //    qDebug("%zu is new width\n", width);
+    if (newWidth < width)
+    {
+        for (size_t i = 0; i < modelsNum; i++)
+        {
+            if (getModel(i).getUsedXCell() >= (int)newWidth)
+            {
+                deleteModel(i);
+                i--;
+            }
+        }
+    }
 
-    if (newheight >= height)
-        height = newheight;
-    //    else Тоже самое
+    if (newHeight < height)
+    {
+        for (size_t i = 0; i < modelsNum; i++)
+        {
+            if (getModel(i).getUsedYCell() >= (int)newHeight)
+            {
+                deleteModel(i);
+                i--;
+            }
+        }
+    }
 
-    //    qDebug("%zu is new height\n", height);
+    width = newWidth;
+    height = newHeight;
 }
 
 Eigen::Matrix4f &CellScene::getTransMatrix() { return transMatrix; }

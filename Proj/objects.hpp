@@ -117,7 +117,7 @@ public:
     void buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_);
     PolModel &getPlateModel();
 
-    void changeSize(size_t newWidth, size_t newheight);
+    void changeSize(size_t newWidth, size_t newHeight);
 
     void moveUp(double value);
     void moveDown(double value);

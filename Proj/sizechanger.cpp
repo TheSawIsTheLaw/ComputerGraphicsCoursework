@@ -40,7 +40,7 @@ void SizeChanger::on_buttonBox_accepted()
     if (!catchedErrors)
     {
         newWidth = widthValue;
-        newheight = heightValue;
+        newHeight = heightValue;
     }
     else
     {
@@ -54,4 +54,4 @@ void SizeChanger::on_buttonBox_accepted()
 
 size_t SizeChanger::getNewWidth() { return newWidth; }
 
-size_t SizeChanger::getNewheight() { return newheight; }
+size_t SizeChanger::getNewHeight() { return newHeight; }

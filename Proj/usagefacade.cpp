@@ -1747,6 +1747,7 @@ QGraphicsScene *Drawer::drawScene(CellScene *scene, QRectF rect)
 {
     size_t width = scene->getWidth() * SCALE_FACTOR;
     size_t height = scene->getHeight() * SCALE_FACTOR;
+    qDebug() << width << height;
 
     scene->buildPlateModel(Dot3D(PLATE_START), Dot3D(width, height, PLATE_Z));
 
