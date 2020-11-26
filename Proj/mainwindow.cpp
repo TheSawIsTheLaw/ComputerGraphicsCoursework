@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 #ifdef FLEX
     QMediaPlayer *player = new QMediaPlayer();
-    player->setMedia(QUrl("C:/Users/dobri/Downloads/BigBabyTape.mp3"));
+    player->setMedia(QUrl("../BigBabyTape.mp3"));
     player->play();
 #endif
 
