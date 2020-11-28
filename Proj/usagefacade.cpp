@@ -189,9 +189,9 @@ int UsageFacade::addTable(int xCell, int yCell, double modelLength, double model
     addQuad(vertices, facets, magicX + 100, magicY + 100, magicZ, magicX + 100,
         yFactor + 20, magicZ, magicX + 100, yFactor + 20, magicZ + 10, magicX + 100,
         magicY + 100, magicZ + 10);
-    addQuad(vertices, facets, magicX + 100, magicY + 100, magicZ, xFactor + 20,
-        magicY + 100, magicZ, xFactor + 20, magicY + 100, magicZ + 10, magicX + 100,
-        magicY + 100, magicZ + 10);
+    addQuad(vertices, facets, magicX + 100, magicY + 20, magicZ, xFactor + 20,
+        magicY + 20, magicZ, xFactor + 20, magicY + 20, magicZ + 10, magicX + 100,
+        magicY + 20, magicZ + 10);
 
     addQuad(vertices, facets, xFactor + 20, yFactor + 20, magicZ, xFactor + 20,
         magicY + 100, magicZ, magicX + 100, magicY + 100, magicZ, magicX + 100,
@@ -253,9 +253,9 @@ int UsageFacade::addBarTable(int xCell, int yCell, double modelLength, double mo
     addQuad(vertices, facets, magicX + 100, magicY + 100, magicZ, magicX + 100,
         yFactor + 20, magicZ, magicX + 100, yFactor + 20, magicZ + 10, magicX + 100,
         magicY + 100, magicZ + 10);
-    addQuad(vertices, facets, magicX + 100, magicY + 100, magicZ, xFactor + 20,
-        magicY + 100, magicZ, xFactor + 20, magicY + 100, magicZ + 10, magicX + 100,
-        magicY + 100, magicZ + 10);
+    addQuad(vertices, facets, magicX + 100, magicY + 20, magicZ, xFactor + 20,
+            magicY + 20, magicZ, xFactor + 20, magicY + 20, magicZ + 10, magicX + 100,
+            magicY + 20, magicZ + 10);
 
     addQuad(vertices, facets, xFactor + 20, yFactor + 20, magicZ, xFactor + 20,
         magicY + 100, magicZ, magicX + 100, magicY + 100, magicZ, magicX + 100,

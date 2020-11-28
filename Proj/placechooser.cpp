@@ -75,13 +75,13 @@ void PlaceChooser::on_buttonBox_accepted()
                          "Убедитесь, что в поле выбора размера модели\n"
                          "передано положительное вещественное значение.");
     }
-
-    status = OK;
+    else
+        status = OK;
     this->close();
 }
 
 void PlaceChooser::on_buttonBox_rejected()
 {
-    this->close();
     status = CANCEL;
+    this->close();
 }
