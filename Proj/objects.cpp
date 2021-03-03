@@ -530,32 +530,40 @@ void CellScene::buildPlateModel(Dot3D startOfPlate_, Dot3D endOfPlate_)
 
 void CellScene::changeSize(size_t newWidth, size_t newHeight)
 {
-    if (newWidth < width)
+    if (newWidth)
     {
-        for (size_t i = 0; i < modelsNum; i++)
+        if (newWidth < width)
         {
-            if (getModel(i).getUsedXCell() >= (int)newWidth)
+            for (size_t i = 0; i < modelsNum; i++)
             {
-                deleteModel(i);
-                i--;
+                if (getModel(i).getUsedXCell() >= (int)newWidth)
+                {
+                    deleteModel(i);
+                    i--;
+                }
             }
         }
+
+        width = newWidth;
     }
 
-    if (newHeight < height)
+
+    if (newHeight)
     {
-        for (size_t i = 0; i < modelsNum; i++)
+        if (newHeight < height)
         {
-            if (getModel(i).getUsedYCell() >= (int)newHeight)
+            for (size_t i = 0; i < modelsNum; i++)
             {
-                deleteModel(i);
-                i--;
+                if (getModel(i).getUsedYCell() >= (int)newHeight)
+                {
+                    deleteModel(i);
+                    i--;
+                }
             }
         }
-    }
 
-    width = newWidth;
-    height = newHeight;
+        height = newHeight;
+    }
 }
 
 Eigen::Matrix4f &CellScene::getTransMatrix() { return transMatrix; }

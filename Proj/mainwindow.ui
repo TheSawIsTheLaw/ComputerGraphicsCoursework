@@ -212,7 +212,6 @@
     <property name="title">
      <string>Справка</string>
     </property>
-    <addaction name="action_2"/>
    </widget>
    <addaction name="menu"/>
   </widget>

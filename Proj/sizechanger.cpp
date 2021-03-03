@@ -39,8 +39,11 @@ void SizeChanger::on_buttonBox_accepted()
 
     if (!catchedErrors)
     {
-        newWidth = widthValue;
-        newHeight = heightValue;
+        qDebug("HUINYA %zu %zu", widthValue, heightValue);
+        if (widthValue)
+            newWidth = widthValue;
+        if (heightValue)
+            newHeight = heightValue;
     }
     else
     {
